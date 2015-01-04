@@ -63,6 +63,7 @@ DATABASES = {
         'NAME': 'felicity_threads_base',
 	'USER' : 'root',
 	'PASSWORD' : 'root',
+        'HOST' : 'localhost',
     }
 }
 
