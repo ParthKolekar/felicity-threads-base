@@ -1,11 +1,17 @@
 from django.db import models
 from django_countries.fields import CountryField
+import datetime
 
 def question_image_filepath(instance , filename):
 	return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
 
 def question_checker_script(instance , filename):
-	return '/'.join(['images' , instance.question_level , instance.question_level_id , filepath])
+	return '/'.join(['checker' , instance.question_level , instance.question_level_id , filename])
+
+def submission_storage_path(instance, filename):
+	string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
+	string += datetime.datetime.now().strftime("-%I:%M%p-%m-%d-%Y") 
+	return string
 
 # Create your models here.
 class Question(models.Model):
@@ -111,6 +117,9 @@ class Submission(models.Model):
 	submission_user = models.ForeignKey(User)
 	submission_timestamp = models.DateField(
 		auto_now = True,
-		auto_now_add = True
+		auto_now_add = True,
 	)
-			
+	submission_storage = models.FileField(
+		editable = False,
+		upload_to = submission_storage_path,
+	)
