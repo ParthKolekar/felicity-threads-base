@@ -9,3 +9,4 @@ Required Dependencies
 + python-mysqldb (apt-get)
 + Pillow (pip install Pillow)
 + django-countries (pip install django-countries)
++ django-messages-extends (pip install django-messages-extends)
