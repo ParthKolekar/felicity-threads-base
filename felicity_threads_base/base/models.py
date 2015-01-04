@@ -3,123 +3,194 @@ from django_countries.fields import CountryField
 import datetime
 
 def question_image_filepath(instance , filename):
-	return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
+    return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
 
 def question_checker_script(instance , filename):
-	return '/'.join(['checker' , instance.question_level , instance.question_level_id , filename])
+    return '/'.join(['checker' , instance.question_level , instance.question_level_id , filename])
 
 def submission_storage_path(instance, filename):
-	string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
-	string += datetime.datetime.now().strftime("-%I:%M%p-%m-%d-%Y") 
-	return string
+    string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
+    string += datetime.datetime.now().strftime("-%I:%M%p-%m-%d-%Y") 
+    return string
+
+
+FILE = "FL"
+STRING = "ST"
+UPLOAD_CHOICES = (
+    ( FILE , "File" ),
+    ( STRING , "String" ),
+)
+
+WA = 'WA'
+AC = 'AC'
+PR = 'PR'
+SUBMISSION_STATE_CHOICES = (
+    ( WA, "Wrong Answer" ),
+    ( AC, "Accepted" ),
+    ( PR, "Processing" ),
+)
 
 # Create your models here.
 class Question(models.Model):
-	""" 
-		This Database stores the questions that are to be rendered.
-		Also provides descriptive functions which provide easy rendering abilities.
-	"""	
-	question_title = models.CharField(
-		max_length = 255,
-		unique = True
-	)
-	question_desc = models.TextField()
-	question_image = models.ImageField(
-		upload_to = question_image_filepath,
-		#lambda instance, filename: '/'.join(['images' , instance.question_level , instance.question_level_id]), 
-	)
 
-	# Sets the question level and the identifier inside the level. 
-	# Level can also be designated as question type.
-	question_level = models.IntegerField()
-	question_level_id = models.IntegerField()
+    """ 
+        This Database stores the questions that are to be rendered.
+        Also provides descriptive functions which provide easy rendering abilities.
+    """
 
-	# question upload details.
-	# Keep these fields in mind when you derive from base.
-	FILE = "FL"
-	STRING = "ST"
-	UPLOAD_CHOICES = (
-		( FILE , "File" ),
-		( STRING , "String" ),
-	)
-	question_upload_type = models.CharField(
-		max_length = 2, 
-		choices = UPLOAD_CHOICES, 
-		default = STRING
-	)
-	question_upload_file = models.FileField() # if upload_type == ST, ignore. 
-	question_checker_script = models.FileField(
-		upload_to = question_checker_script
-		#lambda instance, filename: '/'.join(['checkers' , instance.question_level , instance.question_level_id]),
-	)
+    # Sets the question level and the identifier inside the level. 
+    # Level can also be designated as question type.
+    # Example - Question 4 of Level 3. 
+    # ===> level = 4, level_id = 3
+    question_level = models.IntegerField()
+    question_level_id = models.IntegerField()
+
+    # Question Details
+    question_title = models.CharField(
+        max_length = 255,
+        unique = True,
+    )
+    question_desc = models.TextField()
+    question_image = models.ImageField(
+        blank = True,
+        upload_to = question_image_filepath,
+    )
+
+    #TODO - Validate Question Fields based on Type.
+    # However use is_question_valid till then.    
+
+    # question upload details.
+    # Keep these fields in mind when you derive from base.
+    question_upload_type = models.CharField(
+        max_length = 2, 
+        choices = UPLOAD_CHOICES, 
+        default = STRING,
+    )
+    
+    # If ST then answer string is to be provided
+    question_answer_string = models.CharField(
+        blank = True,
+        max_length = 255,
+        default = '',
+    )
+
+    # If not ST then the upload file is the file to be compared to
+    # and checker script is the one which checks the submission.
+    question_upload_file = models.FileField(
+        blank = True,
+    ) # if upload_type == ST, ignore. 
+    question_checker_script = models.FileField(
+        blank = True,
+        upload_to = question_checker_script,
+    )
+
+
+    def is_question_accessible(self,level):
+        if level >= self.question_level:
+            return True
+        return False
+
+    def is_question_valid(self):
+        if self.question_upload_type == STRING:
+            return self.question_answer_string and True
+        else:
+            return self.question_upload_file and self.question_checker_script
+
+    def check_submission(self,submission_string):
+        if question_upload_type == STRING:
+            return question_answer_string == submission_string
+        else: #TODO -- FILE UPLOAD SUBMISSION CHECK
+            # Essentially Something like this.
+            # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
+            pass
+            
 
 class Team(models.Model):
-	"""
-		This database stores the Team Information.
-	"""
-	team_name = models.CharField(
-		max_length = 255
-	)
-	team_score = models.IntegerField(
-		default = 0
-	)
+    """
+        This database stores the Team Information.
+    """
+    team_name = models.CharField(
+        max_length = 255,
+    )
+    team_score = models.IntegerField(
+        editable = False,
+        default = 0,
+    )
 
 class User(models.Model):
-	"""
-		This Database stores the User Information.
-		The comments on the side refer to the 
-		CAS login creds for reference.
-	"""	
-	user_username = models.CharField(
-		max_length = 255
-	) # returned by CAS::getUser(), normally equal to mail.
-	user_email = models.EmailField(
-		max_length=255,
-		unique=True
-	) #mail
-	user_nick = models.CharField(
-		max_length=255
-	) # displayName
-	user_firstname = models.CharField(
-		max_length=255
-	) # givenName
-	user_surname = models.CharField(
-		max_length=255
-	) #sn
-	user_country =  CountryField(
-	)# c , ISO-alpha2
-	user_location = models.CharField(
-		max_length=255
-	) #l
+    """
+        This Database stores the User Information.
+        The comments on the side refer to the 
+        CAS login creds for reference.
+    """ 
+    user_username = models.CharField(
+        max_length = 255,
+    ) # returned by CAS::getUser(), normally equal to mail.
+    user_email = models.EmailField(
+        max_length=255,
+        unique=True
+    ) #mail
+    user_nick = models.CharField(
+        max_length=255,
+    ) # displayName
+    user_firstname = models.CharField(
+        max_length=255,
+    ) # givenName
+    user_surname = models.CharField(
+        max_length=255,
+    ) #sn
+    user_country =  CountryField(
+    ) # c , ISO-alpha2
+    user_location = models.CharField(
+        max_length=255,
+    ) #l
 
-	user_last_ip = models.GenericIPAddressField(
-		editable = False
-	)
-	user_timestamp = models.DateField(
-		auto_now = True,
-		auto_now_add = True
-	)
-	
-	# This is the highest level of questions that one can access.
-	user_access_level = models.IntegerField(
-		default = 1,
-		editable = False
-	)
-	
-	#team attributes
-	user_team = models.ForeignKey(Team)
+    user_last_ip = models.GenericIPAddressField(
+        editable = False,
+    )
+    user_timestamp = models.DateField(
+        auto_now = True,
+        auto_now_add = True,
+    )
+    
+    # This is the highest level of questions that one can access.
+    user_access_level = models.IntegerField(
+        default = 1,
+        editable = False,
+    )
+    
+    #team attributes
+    user_team = models.ForeignKey(Team)
+    
+    def get_team_name(self):
+        return self.user_team.team_name
+    
+    def get_team_score(self):
+        return self.user_team.team_score
 
 class Submission(models.Model):
-	"""
-		This Database stores the Submissions Information.
-	"""
-	submission_question = models.ForeignKey(Question)
-	submission_user = models.ForeignKey(User)
-	submission_timestamp = models.DateField(
-		auto_now = True,
-		auto_now_add = True,
-	)
-	submission_storage = models.FileField(
-		editable = False,
-		upload_to = submission_storage_path,
-	)
+    """
+        This Database stores the Submissions Information.
+    """
+    submission_question = models.ForeignKey(Question)
+    submission_user = models.ForeignKey(User)
+    submission_timestamp = models.DateField(
+        auto_now = True,
+        auto_now_add = True,
+    )
+    submission_storage = models.FileField(
+        editable = False,
+        upload_to = submission_storage_path,
+    )
+    submission_state = models.CharField(
+        max_length = 2,
+        choices = SUBMISSION_STATE_CHOICES,
+        default = PR,
+    )
+
+    def get_team_name(self):
+        return self.submission_user.get_team_name()
+    
+    def get_team_score(self):
+        return self.submission_user.get_team_score()
+    
