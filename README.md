@@ -9,4 +9,4 @@ Required Dependencies
 + python-mysqldb (apt-get)
 + Pillow (pip install Pillow)
 + django-countries (pip install django-countries)
-+ django-messages-extends (pip install django-messages-extends)
++ django-messages-extends (pip install django-messages-extends) (NOTE: NEEDS SOME HACKERY-LIBRARY-EDITING) (import import_strings as get_storage for django 1.7+)
