@@ -5,8 +5,11 @@ import datetime
 def question_image_filepath(instance , filename):
     return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
 
-def question_checker_script(instance , filename):
-    return '/'.join(['checker' , instance.question_level , instance.question_level_id , filename])
+def question_file_upload(instance, filename):
+    return '/'.join(['question',instance.question_leve, instance.question_level_id, filename])
+
+def question_checker_upload(instance , filename):
+    return '/'.join(['checker', instance.question_level, instance.question_level_id, filename])
 
 def submission_storage_path(instance, filename):
     string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
@@ -78,10 +81,11 @@ class Question(models.Model):
     # and checker script is the one which checks the submission.
     question_upload_file = models.FileField(
         blank = True,
+	upload_to = question_file_upload,
     ) # if upload_type == ST, ignore. 
     question_checker_script = models.FileField(
         blank = True,
-        upload_to = question_checker_script,
+        upload_to = question_checker_upload,
     )
 
 
