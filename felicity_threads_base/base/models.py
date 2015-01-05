@@ -40,7 +40,8 @@ class Question(models.Model):
         This Database stores the questions that are to be rendered.
         Also provides descriptive functions which provide easy rendering abilities.
     """
-
+    def __str__(self):
+        return str(self.question_title)
     # Sets the question level and the identifier inside the level. 
     # Level can also be designated as question type.
     # Example - Question 4 of Level 3. 
@@ -113,6 +114,9 @@ class Team(models.Model):
     """
         This database stores the Team Information.
     """
+    def __str__(self):
+        return str(self.team_name)
+
     team_name = models.CharField(
         max_length = 255,
     )
@@ -127,6 +131,9 @@ class User(models.Model):
         The comments on the side refer to the 
         CAS login creds for reference.
     """ 
+    def __str__(self):
+        return str(self.user_username)
+
     user_username = models.CharField(
         max_length = 255,
     ) # returned by CAS::getUser(), normally equal to mail.
@@ -150,7 +157,7 @@ class User(models.Model):
     ) #l
 
     user_last_ip = models.GenericIPAddressField(
-        editable = False,
+        editable = True,
     )
     user_timestamp = models.DateField(
         auto_now = True,
@@ -176,6 +183,8 @@ class Submission(models.Model):
     """
         This Database stores the Submissions Information.
     """
+    def __str__(self):
+        return ' '.join([self.submission_question.question_title, self.submission_user.user_username])
     submission_question = models.ForeignKey(Question)
     submission_user = models.ForeignKey(User)
     submission_timestamp = models.DateField(

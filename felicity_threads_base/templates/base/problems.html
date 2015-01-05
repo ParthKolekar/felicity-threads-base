@@ -1,0 +1,10 @@
+<table border=1>
+	<thead><td>Level</td><td>ID</td><td>Title</td><td>Successful Submissions</td></thead>
+	{% for problem in problem_data %}
+		<tr>
+		{% for field in problem %}
+			<td>{{field}}</td>
+		{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
