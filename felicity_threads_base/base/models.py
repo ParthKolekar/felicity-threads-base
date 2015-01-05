@@ -6,7 +6,7 @@ def question_image_filepath(instance , filename):
     return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
 
 def question_file_upload(instance, filename):
-    return '/'.join(['question',instance.question_leve, instance.question_level_id, filename])
+    return '/'.join(['question',instance.question_level, instance.question_level_id, filename])
 
 def question_checker_upload(instance , filename):
     return '/'.join(['checker', instance.question_level, instance.question_level_id, filename])
