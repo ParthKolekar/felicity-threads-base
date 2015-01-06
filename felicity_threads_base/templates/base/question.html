@@ -5,3 +5,9 @@
 {% else %}
 	{{'Question does not exist!'}}
 {% endif %}
+<form action="/base/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<input type="file" name="answer_file" />
+	<input type="text" name="answer_text" />
+	<input type="submit" value="Submit" />
+</form>

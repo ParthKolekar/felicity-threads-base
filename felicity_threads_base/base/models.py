@@ -12,7 +12,7 @@ def question_checker_upload(instance , filename):
     return '/'.join(['checker', instance.question_level, instance.question_level_id, filename])
 
 def submission_storage_path(instance, filename):
-    string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
+    string = '/'.join(['submissions', instance.submission_user.user_username, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id), str(instance.id) ]) 
     string += datetime.datetime.now().strftime("-%I:%M%p-%m-%d-%Y") 
     return string
 
@@ -198,7 +198,7 @@ class Submission(models.Model):
         max_length = 255,
     )
     submission_storage = models.FileField(
-        editable = False,
+        editable = True,
         upload_to = submission_storage_path,
     )
     submission_state = models.CharField(
