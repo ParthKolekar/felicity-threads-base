@@ -7,5 +7,6 @@ from base import views
 urlpatterns = patterns('',
 	url(r'^$' , views.index, name='index'),
     url(r'^problems$', views.problems, name='problems'),
+    url(r'^submissions$', views.submissions, name='submissions'),
     url(r'^question/(\d{1,2})/(\d{1,2})$', views.question, name='question'),
 )

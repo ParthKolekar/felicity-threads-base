@@ -1,3 +1,7 @@
-{{question_data.question_title}}
-<br/>
-{{question_data.question_desc}}
+{% if question_data != 'none' %}
+	{{question_data.question_title}}
+	<br/>
+	{{question_data.question_desc}}
+{% else %}
+	{{'Question does not exist!'}}
+{% endif %}

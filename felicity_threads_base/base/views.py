@@ -18,5 +18,16 @@ def problems(request):
     return render(request, 'base/problems.html', {'problem_data':problem_data})
 
 def question(request, level, id):
-    question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
-    return render(request, 'base/question.html', {'question_data':question_data[0]})
+    question_data = Question.objects.filter(question_level=level).filter(question_level_id=id);
+    if len(question_data):
+        question_details = question_data[0];
+    else:
+        question_details = 'none';
+    return render(request, 'base/question.html', {'question_data':question_details})
+
+def submissions(request):
+    user_submissions = Submission.objects.filter(submission_user__user_username='admin').order_by('id')
+    #replace admin by session variable for username
+    user_submissions = user_submissions.reverse()
+    return render(request, 'base/submissions.html', {'user_submissions':user_submissions})
+

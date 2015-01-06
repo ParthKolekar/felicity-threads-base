@@ -184,7 +184,8 @@ class Submission(models.Model):
         This Database stores the Submissions Information.
     """
     def __str__(self):
-        return ' '.join([self.submission_question.question_title, self.submission_user.user_username])
+        return '_'.join([self.submission_question.question_title, self.submission_user.user_username])
+
     submission_question = models.ForeignKey(Question)
     submission_user = models.ForeignKey(User)
     submission_timestamp = models.DateField(
