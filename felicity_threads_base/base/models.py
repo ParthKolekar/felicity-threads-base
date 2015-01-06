@@ -102,8 +102,8 @@ class Question(models.Model):
             return self.question_upload_file and self.question_checker_script
 
     def check_submission(self,submission_string):
-        if question_upload_type == STRING:
-            return question_answer_string == submission_string
+        if self.question_upload_type == STRING:
+            return self.question_answer_string == submission_string
         else: #TODO -- FILE UPLOAD SUBMISSION CHECK
             # Essentially Something like this.
             # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
@@ -159,7 +159,7 @@ class User(models.Model):
     user_last_ip = models.GenericIPAddressField(
         editable = True,
     )
-    user_timestamp = models.DateField(
+    user_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
     )
@@ -188,9 +188,14 @@ class Submission(models.Model):
 
     submission_question = models.ForeignKey(Question)
     submission_user = models.ForeignKey(User)
-    submission_timestamp = models.DateField(
+    submission_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
+    )
+    submission_string = models.CharField(
+        editable = True,
+        default = '',  
+        max_length = 255,
     )
     submission_storage = models.FileField(
         editable = False,
@@ -201,6 +206,16 @@ class Submission(models.Model):
         choices = SUBMISSION_STATE_CHOICES,
         default = PR,
     )
+    submission_score = models.FloatField(
+        default = 0,
+    )
+
+    def __check_ans__(self):
+        if(self.submission_question.check_submission(self.submission_string)):
+            self.submission_state = AC
+            self.submission_score = 100
+        else:
+            self.submission_state = WA
 
     def get_team_name(self):
         return self.submission_user.get_team_name()

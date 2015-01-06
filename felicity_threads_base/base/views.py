@@ -5,6 +5,8 @@ from base.models import Question, Submission
 
 from django.http import HttpResponse
 
+SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing' }
+
 def index(request):
     return render(request , 'base/index.html' , {'foo' : "bar"})
 
@@ -29,5 +31,7 @@ def submissions(request):
     user_submissions = Submission.objects.filter(submission_user__user_username='admin').order_by('id')
     #replace admin by session variable for username
     user_submissions = user_submissions.reverse()
+    for submit in user_submissions:
+        submit.submission_state = SUBMISSION_STATE_CHOICES[submit.submission_state]
     return render(request, 'base/submissions.html', {'user_submissions':user_submissions})
 
