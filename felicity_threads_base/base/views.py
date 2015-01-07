@@ -46,10 +46,7 @@ def submit(request, level, id):
     user = User.objects.filter(user_username='admin')[0] #replace admin with the session variable for username
     if len(question):
         question = question[0]
-        submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text)
-        submission.save()
-        submission.submission_storage = ans_file
-        submission.save()        
+        submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
         submission.__check_ans__()
         submission.save()
     return HttpResponseRedirect('/base/submissions')
