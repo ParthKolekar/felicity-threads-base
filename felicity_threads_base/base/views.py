@@ -2,11 +2,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from base.models import Question, Submission
-
 from django.http import HttpResponse
 
 def index(request):
-    return render(request , 'base/index.html' , {'foo' : "bar"})
+    st = ""
+    for i in request.session.items():
+        st += str(i)
+    return HttpResponse(st)
+#    return render(request , 'base/index.html' , {'foo' : "bar"})
 
 def problems(request):
     query_result = Question.objects.all()
