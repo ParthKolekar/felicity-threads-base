@@ -12,8 +12,8 @@ def question_checker_upload(instance , filename):
     return '/'.join(['checker', instance.question_level, instance.question_level_id, filename])
 
 def submission_storage_path(instance, filename):
-    string = '/'.join(['submissions', instance.user.user_username, instance.question_level, instance.question_level_id, instance.id ]) 
-    string += datetime.datetime.now().strftime("-%I:%M%p-%m-%d-%Y") 
+    string = '/'.join(['submissions', instance.submission_user.user_username, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
+    string += '/'+datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
     return string
 
 
@@ -102,8 +102,8 @@ class Question(models.Model):
             return self.question_upload_file and self.question_checker_script
 
     def check_submission(self,submission_string):
-        if question_upload_type == STRING:
-            return question_answer_string == submission_string
+        if self.question_upload_type == STRING:
+            return self.question_answer_string == submission_string
         else: #TODO -- FILE UPLOAD SUBMISSION CHECK
             # Essentially Something like this.
             # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
@@ -159,7 +159,7 @@ class User(models.Model):
     user_last_ip = models.GenericIPAddressField(
         editable = True,
     )
-    user_timestamp = models.DateField(
+    user_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
     )
@@ -188,12 +188,17 @@ class Submission(models.Model):
 
     submission_question = models.ForeignKey(Question)
     submission_user = models.ForeignKey(User)
-    submission_timestamp = models.DateField(
+    submission_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
     )
+    submission_string = models.CharField(
+        editable = True,
+        default = '',  
+        max_length = 255,
+    )
     submission_storage = models.FileField(
-        editable = False,
+        editable = True,
         upload_to = submission_storage_path,
     )
     submission_state = models.CharField(
@@ -201,6 +206,16 @@ class Submission(models.Model):
         choices = SUBMISSION_STATE_CHOICES,
         default = PR,
     )
+    submission_score = models.FloatField(
+        default = 0,
+    )
+
+    def __check_ans__(self):
+        if(self.submission_question.check_submission(self.submission_string)):
+            self.submission_state = AC
+            self.submission_score = 100
+        else:
+            self.submission_state = WA
 
     def get_team_name(self):
         return self.submission_user.get_team_name()
