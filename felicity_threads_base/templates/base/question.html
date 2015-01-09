@@ -1,7 +1,11 @@
-{% if question_data != 'none' %}
+{% if question_data != None %}
 	{{question_data.question_title}}
 	<br/>
 	{{question_data.question_desc}}
+	<br />
+	{% if question_data.question_image != '' %}
+		<img src="{{question_data.question_image}}" />
+	{% endif %}
 {% else %}
 	{{'Question does not exist!'}}
 {% endif %}

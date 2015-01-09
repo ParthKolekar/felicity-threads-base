@@ -29,7 +29,7 @@ def question(request, level, id):
     if len(question_data):
         question_details = question_data[0];
     else:
-        question_details = 'none';
+        question_details = None;
     return render(request, 'base/question.html', {'question_data':question_details})
 
 def submissions(request):
