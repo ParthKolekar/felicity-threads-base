@@ -52,10 +52,15 @@ MIDDLEWARE_CLASSES = (
         'django.contrib.admindocs.middleware.XViewMiddleware',
         )
 
+
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend', 
+        'base.backends.PopulatedCASBackend',
+        )
+
 ROOT_URLCONF = 'felicity_threads_base.urls'
 
 WSGI_APPLICATION = 'felicity_threads_base.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
