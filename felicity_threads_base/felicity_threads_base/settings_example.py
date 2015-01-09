@@ -30,24 +30,27 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_countries',
-    'base',
-)
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'django_countries',
+        'longerusername',
+        'base',
+        )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'django_cas.middleware.CASMiddleware',
+        'django.contrib.admindocs.middleware.XViewMiddleware',
+        )
 
 ROOT_URLCONF = 'felicity_threads_base.urls'
 
@@ -58,14 +61,14 @@ WSGI_APPLICATION = 'felicity_threads_base.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'felicity_threads_base',
-	'USER' : 'root',
-	'PASSWORD' : 'root',
-        'HOST' : 'localhost',
-    }
-}
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'felicity_threads_base',
+            'USER' : 'root',
+            'PASSWORD' : 'root',
+            'HOST' : 'localhost',
+            }
+        }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -96,3 +99,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 TEMPLATE_DIRS = (TEMPLATE_PATH,)
+
+# CAS settings
+
+CAS_SERVER_URL = 'http://felicity.iiit.ac.in/cas/'
+CAS_VERSION = '3'
+CAS_LOGOUT_COMPLETLY = True

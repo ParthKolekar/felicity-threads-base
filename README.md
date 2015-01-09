@@ -9,3 +9,4 @@ Required Dependencies
 + python-mysqldb (apt-get)
 + Pillow (pip install Pillow)
 + django-countries (pip install django-countries)
++ django-cas (from ssh://hg@bitbucket.org/ParthKolekar/django-cas, pypi is too old to be relevent in Django >=1.7)

@@ -9,7 +9,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing' }
 
 def index(request):
-    return render(request , 'base/index.html' , {'foo' : "bar"})
+    st = ""
+    for i in request.session.items():
+        st += str(i)
+    return HttpResponse(st)
+#    return render(request , 'base/index.html' , {'foo' : "bar"})
 
 def problems(request):
     query_result = Question.objects.all()
