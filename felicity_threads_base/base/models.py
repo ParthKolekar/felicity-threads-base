@@ -173,8 +173,10 @@ class User(models.Model):
 
     def level_up(self):
         self.user_access_level += 1
-        self.save()
 
+    def score_up(self, increment):
+        self.user_score += increment
+        
     """#team attributes
     user_team = models.ForeignKey(Team)
     
@@ -225,7 +227,6 @@ class Submission(models.Model):
         elif(self.submission_question.check_submission(self.submission_string)):
             self.submission_state = AC
             self.submission_score = 100
-            self.submission_user.user_score += 100
         else:
             self.submission_state = WA
         return self.submission_state
