@@ -1,14 +1,6 @@
 body {
     background-color: #000;
-}
-h1.page-title {
-    font-family: "Monoton", "Open Sans", sans-serif;
-    font-size: 48px;
-    font-weight: normal;
-}
-p.page-sub-title {
-    font-size: 1.2em;
-    text-align: center;
+    overflow-y: scroll;
 }
 .box {
     border-radius: 25px 25px 0 0;
@@ -16,6 +8,16 @@ p.page-sub-title {
 }
 .sub-navbar {
     text-align: center;
+    border-bottom: 1px solid #098816;
+}
+.sub-navbar .box {
+    background: rgb(5,17,22);
+    border-left: 1px solid #098816;
+    border-radius: 0 0 25px 25px;
+    border-right: 1px solid #098816;
+    float: right;
+    margin-bottom: 25px;
+    white-space: nowrap;
 }
 .sub-navbar .box, .box .well {
     border-bottom: 3px solid #098816;
@@ -30,7 +32,6 @@ p.page-sub-title {
     display: inline-block;
 }
 .sub-navbar a {
-    border-radius: 7px 7px 0 0;
     display: block;
     margin: 0 5px;
     padding: 5px 20px;
@@ -42,12 +43,50 @@ p.page-sub-title {
 .sub-navbar a:hover {
     background-color: #005810;
 }
+h1 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 48px;
+    font-weight: normal;
+    margin: 0;
+}
+p.page-sub-title {
+    font-size: 1.2em;
+}
+p.page-description {
+    font-size: 1.5em;
+    margin: 30px auto;
+    text-align: center;
+}
 .box h3 {
     text-align: center;
     padding: 5px;
 }
 .box-item {
-    padding: 5px 10px;
+    font-size: 1.2em;
+    padding: 10px;
+    padding-bottom: 10px;
+}
+.box-item li {
+    margin: 15px auto;
+}
+#rules-box {
+    padding-bottom: 20px;
+}
+#rules-btn {
+    cursor: pointer;
+    padding: 5px 0;
+    border-bottom: 1px solid white;
+}
+#rules-arrow {
+    display: inline-block;
+    transition: all 0.5s;
+    transform: rotate(-90deg);
+}
+.opened #rules-arrow {
+    transform: rotate(0deg);
+}
+#rules {
+    display: none;
 }
 .question-title {
     padding-bottom: 10px;
@@ -59,23 +98,4 @@ hr {
     margin: 20px 0;
     border: none;
     height: 2px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-a {
-
 }
