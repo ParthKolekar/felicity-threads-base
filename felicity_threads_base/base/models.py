@@ -222,4 +222,12 @@ class Submission(models.Model):
     
     def get_team_score(self):
         return self.submission_user.get_team_score()
-    
+   
+class ClarificationMessages(models.Model):
+
+    def __str__(self):
+        return str(self.clarification_messages_message)
+
+    clarification_messages_message = models.CharField(
+            max_length = 255,
+    )
