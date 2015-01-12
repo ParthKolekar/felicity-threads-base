@@ -26,9 +26,9 @@
         </div>
         <div class="sub-navbar">
             <ul class="box">
-                <li><a href="/cache_in" class="active">Dashboard</a></li>
-                <li><a href="/cache_in/problems">Problems</a></li>
-                <li><a href="#">Scoreboard</a></li>
+                <li><a href="/cache_in" id="dashboard-link">Dashboard</a></li>
+                <li><a href="/cache_in/problems" id="problems-link">Problems</a></li>
+                <li><a href="#" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
         <div class="container">
@@ -42,6 +42,22 @@
             {% endblock %}
         </div>
     </div>
+
+    <script>
+    $(function(){
+        $('.wrapper').css('min-width', ($('.sub-navbar .box').outerWidth()+10)+'px');
+        var title = $('title').text().toLowerCase();
+        if (title.indexOf('dashboard') !== -1) {
+            $('#dashboard-link').addClass('active');
+        }
+        else if (title.indexOf('problem') !== -1) {
+            $('#problems-link').addClass('active');
+        }
+        else if (title.indexOf('score') !== -1) {
+            $('#scoreboard-link').addClass('active');
+        }
+    });
+    </script>
     <div class="footer">
         <p>&copy; Felicity 2014-2015</p>
     </div>
