@@ -1,15 +1,18 @@
 {% extends 'cache_in/layout.html' %}
-{% block title_block %}Cache In{% endblock %}
+{% block title_block %}Dashboard | Cache In, Felicity Threads {% endblock %}
 {% block main_block %}
+    <p class="page-description">
+        <span id="timer-text">The event will start in <span id="timer-min">0</span> min <span id="timer-sec">12</span> sec</span>
+    </p>
     <div class="row">
         <div class="col-offset-1-12 col-3-12">
             <div class="box" id="notifications-box">
                 <div class="well">
-                    <h3>Notifications and updates</h3>
+                    <h3>Updates</h3>
                 </div>
                 <p>
                 <div class="box-item">
-                    Hello
+                    Any updates will be posted here.
                 </div>
             </div>
         </div>
@@ -18,8 +21,90 @@
                 <div class="well">
                     <h3>Instructions</h3>
                 </div>
+                <div class="box-item">
+                    For any query, doubts, suggessions or discrepencies contact via
+                    <ul>
+                        <li>Email: <a href="mailto:cachein@felicity.iiit.ac.in" target="_top">cachein@felicity.iiit.ac.in</a></li>
+                        <li>Facebook: <a href="https://www.facebook.com/events/400975350085040/" target="_top">Cache In @ Felicity'15</a></li>
+                        <li>IRC: <a href="#" target="_top">#CacheIn</a></li>
+                    </ul>
+                </div>
+                <div class="box-item">
+                    <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
+                    <ol id="rules">
+                        <li>
+                            Each right answer will fetch you 100 points and will lead you to the next level.<br>
+                        </li>
+                        <li>
+                            The answers can be a single word or a phrase.
+                        </li>
+                        <li>
+                            There is no partial scoring for any question.
+                        </li>
+                        <li>
+                            This is an individual event. Any type of plagiarism will lead to disqualification.
+                        </li>
+                        <li>
+                            Hints will be provided from time to time.
+                        </li>
+                        <li>
+                            The participants will be ranked first on number of questions solved. In case of a tie, the time taken to solve the questions will be considered.
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}   
-    
+    <script>
+        $(function(){
+            $('.wrapper').css('min-width', ($('.sub-navbar .box').outerWidth())+'px');
+        });
+    </script>
+    <script>
+        $(function(){
+            $('#rules-btn').click(function(){
+                var $this = $(this);
+                if ($this.hasClass('opened')) {
+                    $('#rules').stop().slideUp(500);
+                    $this.removeClass('opened');
+                }
+                else {
+                    $('#rules').stop().slideDown(500);
+                    $this.addClass('opened');
+                }
+            });
+        });
+    </script>
+    <script>
+        (function(){
+            $(function(){
+                var
+                $min = $('#timer-min'),
+                $sec = $('#timer-sec');
+                var interval = setInterval(function(){
+                    var min = $min.text(), sec = $sec.text();
+                    if ( isNaN( parseInt(min) ) || isNaN( parseInt(sec) ) ) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    else {
+                        sec--;
+                        if (sec == -1) {
+                            sec = 59;
+                            min--;
+                        }
+                        if (min < 0) {
+                            $('#timer-text').fadeOut(function(){
+                                $(this).text('The event has started. Go to Problems page to view problems').fadeIn();
+                            });
+                            clearInterval(interval);
+                            return;
+                        }
+                        $min.text(min);
+                        $sec.text(sec);
+                    }
+                }, 1000);
+            });
+        })();
+    </script>
+{% endblock %}
