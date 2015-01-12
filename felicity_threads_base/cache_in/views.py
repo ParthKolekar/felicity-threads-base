@@ -22,7 +22,16 @@ SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Proc
 
 @login_required
 def index(request):
-    st = ""
+    profile = User.objects.filter(user_username = request.user.username)[0]
+    if profile.user_notification_flash == True:
+        message = "You have a new notification"
+        profile.user_notification_flash = False
+        profile.save()
+    else:
+        message = ""
+
+
+    st = "" + message
     for i in request.session.items():
         st += str(i)
     st += request.user.username
