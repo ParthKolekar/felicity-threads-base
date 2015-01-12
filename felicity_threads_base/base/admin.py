@@ -4,5 +4,6 @@ from base.models import *
 # admin.site.register(Question)
 # admin.site.register(Team)
 admin.site.register(User)
+admin.site.register(ClarificationMessages)
 # admin.site.register(Submission)
 

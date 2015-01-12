@@ -12,7 +12,11 @@
                 </div>
                 <p>
                 <div class="box-item">
-                    Any updates will be posted here.
+                    <ul>
+                        {% for notif in notifs %}
+                            <li>{{notif.clarification_messages_message}}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

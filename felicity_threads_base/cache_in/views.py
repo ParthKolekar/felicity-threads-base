@@ -31,7 +31,8 @@ def index(request):
         message = ""
 
     notifs = ClarificationMessages.objects.all().order_by('id').reverse()
-    return render(request, 'cache_in/index.html', {'user_nick':profile.user_nick, 'notfis': notifs})
+    print notifs
+    return render(request, 'cache_in/index.html', {'user_nick':profile.user_nick, 'notifs': notifs})
 
 @login_required
 def problems(request):
