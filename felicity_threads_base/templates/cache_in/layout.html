@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title_block %}{% endblock %}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/base.css"/>
+    <link rel="stylesheet" href="/static/css/portals.css"/>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Monoton" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="navbar">
+            <a class="navbar-title" href="http://felicity.iiit.ac.in/home">Felicity</a>
+            <ul>
+                <li>
+                    Hello, {{user_nick}}
+                </li>
+                <li>
+                    <a href="../accounts/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <h1 class="page-title">
+                Cache &nbsp;&nbsp;&nbsp; In
+            </h1>
+            <p class="page-sub-title lead">
+                Better you think -> Better you find
+            </p>
+            <div class="sub-navbar">
+                <ul class="box">
+                    <li><a href="/cache_in" class="active">Dashboard</a></li>
+                    <li><a href="/cache_in/problems">Problems</a></li>
+                    <li><a href="#">Scoreboard</a></li>
+                </ul>
+            </div>
+            {% block main_block %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; Felicity 2014-2015</p>
+    </div>
+</body>
+</html>

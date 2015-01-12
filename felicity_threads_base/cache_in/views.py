@@ -18,7 +18,7 @@ class UTC(datetime.tzinfo):
 
 utc = UTC()
 
-SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing' }
+SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing', 'NA': 'Not Attempted' }
 
 @login_required
 def index(request):
@@ -29,27 +29,35 @@ def index(request):
         profile.save()
     else:
         message = ""
-
-
     st = "" + message
     for i in request.session.items():
         st += str(i)
     st += request.user.username
-    return render(request, 'cache_in/index.html')
+    return render(request, 'cache_in/index.html', {'user_nick':profile.user_nick})
 
 @login_required
 def problems(request):
-    query_result = Question.objects.all()
-    success_sub = Submission.objects.filter(submission_state='AC')
+    profile = User.objects.filter(user_username = request.user.username)[0]
+    query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('id')
+    success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
     problem_data = []
     for question in query_result:
-        total = len(success_sub.filter(submission_question=question))
-        problem_data.append([question.question_level, question.question_level_id, question.question_title, total])
-    return render(request, 'cache_in/problems.html', {'problem_data':problem_data})
+        acc = success_sub.filter(submission_question=question).filter(submission_state='AC')
+        wan = success_sub.filter(submission_question=question).filter(submission_state='WA')
+        if acc:
+            sta = SUBMISSION_STATE_CHOICES['AC']
+        elif wan:
+            sta = SUBMISSION_STATE_CHOICES['WA']
+        else:
+            sta = SUBMISSION_STATE_CHOICES['NA']
+        problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
+    return render(request, 'cache_in/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick})
 
 @login_required
 def question(request, level, id):
-    user_level = User.objects.filter(user_username=request.user.username)[0].user_access_level
+    profile = User.objects.filter(user_username=request.user.username)[0]
+    user_level = profile.user_access_level
+    user_nick = profile.user_nick
     if(int(level) <= user_level):
         question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
         if len(question_data):
@@ -58,7 +66,7 @@ def question(request, level, id):
             question_details = None;
     else:
         question_details = None;
-    return render(request, 'cache_in/question.html', {'question_data':question_details})
+    return render(request, 'cache_in/question.html', {'question_data':question_details, 'user_nick':user_nick})
 
 @login_required
 def submissions(request):
@@ -87,7 +95,7 @@ def submit(request, level, id):
             question = question[0]
             submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
             ans = submission.__check_ans__()
-            if(ans == 'AC' and level == submission.submission_user.user_access_level):
+            if(ans == 'AC' and int(level) == int(submission.submission_user.user_access_level)):
                 print "Correct"
                 submission.submission_user.level_up()
                 submission.submission_user.score_up(100)
@@ -95,4 +103,4 @@ def submit(request, level, id):
             submission.save()
     else:
         return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
-    return HttpResponseRedirect('/cache_in/submissions')
+    return HttpResponseRedirect('/cache_in/problems')

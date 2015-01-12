@@ -106,7 +106,7 @@ class Question(models.Model):
 
     def check_submission(self,submission_string):
         if self.question_upload_type == STRING:
-            return self.question_answer_string == submission_string
+            return self.question_answer_string.lower() == submission_string.lower()
         else: #TODO -- FILE UPLOAD SUBMISSION CHECK
             # Essentially Something like this.
             # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
