@@ -78,10 +78,13 @@ def submissions(request):
 def submit(request, level, id):
     context = RequestContext(request)
     #print request.method
-    time_last = Submission.objects.filter(submission_user__user_username=request.user.username).order_by('submission_timestamp').last().submission_timestamp
+    time_last = None
+    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).order_by('submission_timestamp').last()
+    if time_last_query:
+        time_last = time_last_query.submission_timestamp
     time_limit = datetime.timedelta(0, 30)
     print time_last, datetime.datetime.now(utc)
-    if(time_last + time_limit <= datetime.datetime.now(utc)):
+    if(time_last is None or time_last + time_limit <= datetime.datetime.now(utc)):
         ans_file = request.FILES.get("answer_file")
         #print ans_file, request.FILES
         ans_text = request.POST.get("answer_text")
