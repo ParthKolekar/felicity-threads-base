@@ -3,13 +3,13 @@ from django_countries.fields import CountryField
 import datetime
 
 def question_image_filepath(instance , filename):
-    return '/'.join(['images' , instance.question_level , instance.question_level_id, filename])
+    return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), filename])
 
 def question_file_upload(instance, filename):
-    return '/'.join(['question',instance.question_level, instance.question_level_id, filename])
+    return '/'.join(['question',str(instance.question_level), str(instance.question_level_id), filename])
 
 def question_checker_upload(instance , filename):
-    return '/'.join(['checker', instance.question_level, instance.question_level_id, filename])
+    return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), filename])
 
 def submission_storage_path(instance, filename):
     string = '/'.join(['submissions', instance.submission_user.user_username, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
@@ -40,6 +40,9 @@ class Question(models.Model):
         This Database stores the questions that are to be rendered.
         Also provides descriptive functions which provide easy rendering abilities.
     """
+    class Meta:
+        abstract = True
+
     def __str__(self):
         return str(self.question_title)
     # Sets the question level and the identifier inside the level. 
@@ -110,10 +113,11 @@ class Question(models.Model):
             pass
             
 
-class Team(models.Model):
-    """
-        This database stores the Team Information.
-    """
+"""class Team(models.Model):
+    
+    class Meta:
+        abstract = True
+
     def __str__(self):
         return str(self.team_name)
 
@@ -124,6 +128,7 @@ class Team(models.Model):
         editable = False,
         default = 0,
     )
+"""
 
 class User(models.Model):
     """
@@ -131,6 +136,7 @@ class User(models.Model):
         The comments on the side refer to the 
         CAS login creds for reference.
     """ 
+
     def __str__(self):
         return str(self.user_username)
 
@@ -144,18 +150,8 @@ class User(models.Model):
     user_nick = models.CharField(
         max_length=255,
     ) # displayName
-    user_firstname = models.CharField(
-        max_length=255,
-    ) # givenName
-    user_surname = models.CharField(
-        max_length=255,
-    ) #sn
-    user_country =  CountryField(
-    ) # c , ISO-alpha2
-    user_location = models.CharField(
-        max_length=255,
-    ) #l
-
+    """user_country =  CountryField(
+    ) # c , ISO-alpha2"""
     user_last_ip = models.GenericIPAddressField(
         editable = True,
     )
@@ -170,7 +166,24 @@ class User(models.Model):
         editable = False,
     )
     
-    #team attributes
+    user_score = models.FloatField(
+        default = 0,
+        editable = False,
+    )
+
+    def level_up(self):
+        self.user_access_level += 1
+
+    def score_up(self, increment):
+        self.user_score += increment
+
+    # flash message
+    user_notification_flash = models.BooleanField(
+    	default = False,
+    )
+
+        
+    """#team attributes
     user_team = models.ForeignKey(Team)
     
     def get_team_name(self):
@@ -178,15 +191,19 @@ class User(models.Model):
     
     def get_team_score(self):
         return self.user_team.team_score
+    """
 
 class Submission(models.Model):
     """
         This Database stores the Submissions Information.
     """
+
+    class Meta:
+        abstract = True
+
     def __str__(self):
         return '_'.join([self.submission_question.question_title, self.submission_user.user_username])
 
-    submission_question = models.ForeignKey(Question)
     submission_user = models.ForeignKey(User)
     submission_timestamp = models.DateTimeField(
         auto_now = True,
@@ -211,18 +228,22 @@ class Submission(models.Model):
     )
 
     def __check_ans__(self):
-        if(self.submission_question.check_submission(self.submission_string)):
+        if(self.submission_question.question_upload_type == FILE):
+            pass
+        elif(self.submission_question.check_submission(self.submission_string)):
             self.submission_state = AC
             self.submission_score = 100
         else:
             self.submission_state = WA
+        return self.submission_state
 
-    def get_team_name(self):
+    """def get_team_name(self):
         return self.submission_user.get_team_name()
     
     def get_team_score(self):
         return self.submission_user.get_team_score()
-   
+    """
+ 
 class ClarificationMessages(models.Model):
 
     def __str__(self):

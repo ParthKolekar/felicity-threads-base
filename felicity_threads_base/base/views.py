@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from base.models import Question, Submission, User
 from django.shortcuts import render_to_response
@@ -8,13 +8,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing' }
 
+@login_required
 def index(request):
     st = ""
     for i in request.session.items():
         st += str(i)
+    st += request.user.username
     return HttpResponse(st)
 #    return render(request , 'base/index.html' , {'foo' : "bar"})
 
+@login_required
 def problems(request):
     query_result = Question.objects.all()
     success_sub = Submission.objects.filter(submission_state='AC')
@@ -24,6 +27,7 @@ def problems(request):
         problem_data.append([question.question_level, question.question_level_id, question.question_title, total])
     return render(request, 'base/problems.html', {'problem_data':problem_data})
 
+@login_required
 def question(request, level, id):
     question_data = Question.objects.filter(question_level=level).filter(question_level_id=id);
     if len(question_data):
@@ -32,14 +36,16 @@ def question(request, level, id):
         question_details = None;
     return render(request, 'base/question.html', {'question_data':question_details})
 
+@login_required
 def submissions(request):
-    user_submissions = Submission.objects.filter(submission_user__user_username='admin').order_by('id')
+    user_submissions = Submission.objects.filter(submission_user__user_username=request.user.username).order_by('id')
     #replace admin by session variable for username
     user_submissions = user_submissions.reverse()
     for sub in user_submissions:
         sub.submission_state = SUBMISSION_STATE_CHOICES[sub.submission_state]
     return render(request, 'base/submissions.html', {'user_submissions':user_submissions})
 
+@login_required
 def submit(request, level, id):
     context = RequestContext(request)
     #print request.method
@@ -47,7 +53,7 @@ def submit(request, level, id):
     #print ans_file, request.FILES
     ans_text = request.POST.get("answer_text")
     question = Question.objects.filter(question_level=level).filter(question_level_id=id)
-    user = User.objects.filter(user_username='admin')[0] #replace admin with the session variable for username
+    user = User.objects.filter(user_username=request.user.username)[0] #replace admin with the session variable for username
     if len(question):
         question = question[0]
         submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)

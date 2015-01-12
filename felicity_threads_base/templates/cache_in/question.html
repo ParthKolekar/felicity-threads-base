@@ -1,0 +1,26 @@
+{% extends "base/question.html" %}
+<!-- {% if question_data != None %}
+	{{question_data.question_title}}
+	<br/>
+	{{question_data.question_desc}}
+	<br />
+	{% if question_data.question_image != '' %}
+		<img src="/media/{{question_data.question_image}}" />
+	{% endif %}
+{% else %}
+	{{'Question does not exist!'}}
+{% endif %}
+<form action="/base/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<input type="file" name="answer_file" />
+	<input type="text" name="answer_text" />
+	<input type="submit" value="Submit" />
+</form> -->
+{% block form_block %}
+<form action="/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<input type="file" name="answer_file" />
+	<input type="text" name="answer_text" />
+	<input type="submit" value="Submit" />
+</form>
+{% endblock %}
