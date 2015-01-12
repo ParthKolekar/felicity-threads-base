@@ -1,7 +1,7 @@
 from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from base.models import User
+from base.models import User, ClarificationMessages
 from cache_in.models import Question, Submission
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -29,11 +29,9 @@ def index(request):
         profile.save()
     else:
         message = ""
-    st = "" + message
-    for i in request.session.items():
-        st += str(i)
-    st += request.user.username
-    return render(request, 'cache_in/index.html', {'user_nick':profile.user_nick})
+
+    notifs = ClarificationMessages.objects.all().order_by('id').reverse()
+    return render(request, 'cache_in/index.html', {'user_nick':profile.user_nick, 'notfis': notifs})
 
 @login_required
 def problems(request):
