@@ -26,8 +26,7 @@ def index(request):
     for i in request.session.items():
         st += str(i)
     st += request.user.username
-    return HttpResponse(st)
-#    return render(request , 'base/index.html' , {'foo' : "bar"})
+    return render(request, 'cache_in/index.html')
 
 @login_required
 def problems(request):
