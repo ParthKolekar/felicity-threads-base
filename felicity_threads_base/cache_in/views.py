@@ -83,7 +83,7 @@ def submit(request, level, id):
     context = RequestContext(request)
     #print request.method
     time_last = None
-    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).order_by('submission_timestamp').last()
+    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
     time_limit = datetime.timedelta(0, 30)
