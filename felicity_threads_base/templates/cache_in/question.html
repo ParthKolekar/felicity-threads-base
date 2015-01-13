@@ -11,7 +11,7 @@
 				<p class="question-text">{{question_data.question_desc}}</p>
 				{% if question_data.question_image != '' %}
 					<div class="question-image-wrapper">
-						<img class="question-image" src="/media/{{question_data.question_image}}" />
+						<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
 					</div>
 				{% endif %}
 			</div>
@@ -19,7 +19,7 @@
 				<hr/>
 			</div>
 			<div class="col-offset-3-12 col-6-12">
-				<form action="/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+				<form action="/contest/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="row">
 						<div>

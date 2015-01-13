@@ -111,3 +111,5 @@ TEMPLATE_DIRS = (TEMPLATE_PATH,)
 CAS_SERVER_URL = 'http://felicity.iiit.ac.in/cas/'
 CAS_VERSION = '3'
 CAS_LOGOUT_COMPLETLY = True
+CAS_LOGOUT_URL = 'http://felicity.iiit.ac.in/logout'
+CAS_DISPLAY_MESSAGES = False
