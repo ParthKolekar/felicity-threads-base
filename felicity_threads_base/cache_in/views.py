@@ -18,7 +18,7 @@ class UTC(datetime.tzinfo):
 
 utc = UTC()
 
-TIME_SINCE_MY_BIRTH = datetime.datetime(1995,12,21,20,5,0,0,utc)
+TIME_SINCE_MY_BIRTH = datetime.datetime(2015,1,1,1,1,1,1,utc)
 
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing', 'NA': 'Not Attempted' }
 
