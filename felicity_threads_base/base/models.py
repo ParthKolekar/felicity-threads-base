@@ -12,7 +12,7 @@ def question_checker_upload(instance , filename):
     return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), filename])
 
 def submission_storage_path(instance, filename):
-    string = '/'.join(['submissions', instance.submission_user.user_username, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
+    string = '/'.join(['submissions', instance.submission_user.user_nick, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
     string += '/'+datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
     return string
 
