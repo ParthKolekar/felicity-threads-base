@@ -105,4 +105,4 @@ def submit(request, level, id):
             submission.save()
     else:
         return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
-    return HttpResponseRedirect('/cache_in/problems')
+    return HttpResponseRedirect('/contest/cache_in/problems')

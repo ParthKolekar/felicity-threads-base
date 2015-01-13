@@ -8,13 +8,13 @@
         	<h3 class="question-title">{{question_data.question_title}}</h3>
         	<p>{{question_data.question_desc}}</p>
 			{% if question_data.question_image != '' %}
-				<img class="question-image" src="/media/{{question_data.question_image}}" />
+				<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
 			{% endif %}
 			<div class="col-offset-1-12 col-10-12">
         		<hr>
     		</div>
 			<div class="col-offset-2-12 col-8-12">
-			    <form action="/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+			    <form action="/contest/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
 					{% csrf_token %}
 					<input type="text" name="answer_text" />
 					<input type="submit" value="Submit" class="btn btn-green" />
