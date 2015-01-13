@@ -2,5 +2,33 @@
 {% block title_block %}Scoreboard | Cache In, Felicity Threads{% endblock %}
 {% block pagesubtitle %}| Scoreboard{% endblock %}
 {% block main_block %}
-<script type="text/javascript"></script>
+<div class="container" id="problems-list">
+	<div id="problems-table-wrapper" class="box">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var $tbody = $('tbody');
+		$.get('/contest/static/score.json', function(results) {
+			$.each(results, function(i, row){
+				$('<tr>')
+				.append( $('<td>').text(i+1) )
+				.append( $('<td>').text(row[0]) )
+				.append( $('<td>').text(row[1]) )
+				.appendTo( $tbody );
+			});
+		});
+	});
+</script>
 {% endblock %}
