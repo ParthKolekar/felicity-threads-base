@@ -110,3 +110,6 @@ def submit(request, level, id):
         return render(request, 'cache_in/error.html', {'error_code':4})
     return HttpResponseRedirect('/contest/cache_in/problems')
 
+@login_required
+def scoreboard(request):
+    return render(request, 'cache_in/scoreboard.html')

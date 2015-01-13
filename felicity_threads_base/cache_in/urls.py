@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     #regex \d{1,2} means that the question level or question id will be at max 99.
     url(r'^question/(\d{1,2})/(\d{1,2})$', views.question, name='question'),
     url(r'^submit/(\d{1,2})/(\d{1,2})$', views.submit, name='submit'),
+    url(r'^scoreboard$', views.scoreboard, name='scoreboard'),
 )
