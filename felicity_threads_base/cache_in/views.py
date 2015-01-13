@@ -59,15 +59,16 @@ def question(request, level, id):
     profile = User.objects.filter(user_username=request.user.username)[0]
     user_level = profile.user_access_level
     user_nick = profile.user_nick
-    if(int(level) <= user_level):
-        question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
-        if len(question_data):
-            question_details = question_data[0];
+
+    question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
+    if len(question_data):
+        if int(level) <= user_level:
+            question_details = question_data[0]
+            return render(request, 'cache_in/question.html', {'question_data':question_details, 'user_nick':user_nick})
         else:
-            question_details = None;
+            return render(request, 'cache_in/error.html', {'error_code': 1, 'user_nick':user_nick})
     else:
-        question_details = None;
-    return render(request, 'cache_in/question.html', {'question_data':question_details, 'user_nick':user_nick})
+        return render(request, 'cache_in/error.html', {'error_code': 2, 'user_nick':user_nick})
 
 @login_required
 def submissions(request):
@@ -92,7 +93,8 @@ def submit(request, level, id):
         #print ans_file, request.FILES
         ans_text = request.POST.get("answer_text")
         if ans_text and len(ans_text) > 255:
-            return HttpResponse(content = 'String too large.', status=413)
+            # return HttpResponse(content = 'String too large.', status=413)
+            return render(request, 'cache_in/error.html', {'error_code':3})
         question = Question.objects.filter(question_level=level).filter(question_level_id=id)
         user = User.objects.filter(user_username=request.user.username)[0]
         if len(question):
@@ -108,5 +110,7 @@ def submit(request, level, id):
                 submission.submission_user.save()
             submission.save()
     else:
-        return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
+        # return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
+        return render(request, 'cache_in/error.html', {'error_code':4})
     return HttpResponseRedirect('/contest/cache_in/problems')
+
