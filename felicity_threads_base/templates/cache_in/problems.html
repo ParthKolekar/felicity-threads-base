@@ -1,66 +1,33 @@
 {% extends "cache_in/layout.html" %}
 {% block title_block %}Problems | Cache In, Felicity Threads {% endblock %}
+{% block pagesubtitle %}| Problems{% endblock %}
 {% block main_block %}
-<style>
-	.table{
-	background-color: rgba(0, 38, 56, 0.7);
-	margin:auto;
-	border-top-left-radius:45px;
-	border-top-right-radius:45px;
-	border-bottom:8px groove #098816;
-	border-spacing:10px;
-	padding: 15px;
-	border-collapse:collapse;
-	text-align:center;
-	transition: background-color 0.2s;
-	}
-	td,th{
-	border-spacing:10px;
-	padding: 15px;
-	border-collapse:collapse;
-	text-align:center;
-	}
-	td a {
-		padding: 5px;
-	}
-	.table .correct{
-	background-color: #098816;
-	}
-	.table .wrong{
-	background-color: #A00;
-	}
-	.table .unattempted{
-	background-color: #0D5C84;
-	}
-	.table a:hover{
-	border-radius: 7px 7px 0 0;
-	background-color: #005810;
-	}
-</style>
-
-
-<table class="table">
-	<thead>
-		<tr>
-			<th>Level</th>
-			<th>Title</th>
-			<th>Status</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for problem in problem_data %}
-			<tr>
-				<td>{{problem.0}}</td>
-				<td><a href="/contest/cache_in/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
-				{% if problem.3 == "Accepted" %}
-					<td class="correct">{{problem.3}}</td>
-				{% elif problem.3 == "Wrong Answer" %}
-					<td class="wrong">{{problem.3}}</td>
-				{% else %}
-					<td class="unattempted">{{problem.3}}</td>
-				{% endif %}
-			</tr>
-		{% endfor %}
-	</tbody>
-</table>
+<div class="container" id="problems-list">
+	<div id="problems-table-wrapper" class="box">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Title</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for problem in problem_data %}
+					<tr>
+						<td>{{problem.0}}</td>
+						<td><a href="/contest/cache_in/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
+						{% if problem.3 == "Accepted" %}
+							<td><span class="label correct">{{problem.3}}</span></td>
+						{% elif problem.3 == "Wrong Answer" %}
+							<td class="problem-title"><span class="label wrong">{{problem.3}}</span></td>
+						{% else %}
+							<td><span class="label unattempted">{{problem.3}}</span></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
 {% endblock %}

@@ -1,29 +1,39 @@
 {% extends "cache_in/layout.html" %}
 {% block title_block %}Level {{question_data.question_level}} | Cache In, Felicity Threads{% endblock %}
 {% block main_block %}
-<div class="row">
-    <div class="col-offset-1-12 col-10-12">
-        {% if question_data != None %}
-			<h4>Level {{question_data.question_level}}</h4>
-        	<h3 class="question-title">{{question_data.question_title}}</h3>
-        	<p>{{question_data.question_desc}}</p>
-			{% if question_data.question_image != '' %}
-				<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
-			{% endif %}
+<div id="question">
+	<div class="row">
+		{% if question_data != None %}
 			<div class="col-offset-1-12 col-10-12">
-        		<hr>
-    		</div>
+				<h4>Level {{question_data.question_level}}</h4>
+				<h3>{{question_data.question_title}}</h3>
+				<hr/>
+				<p class="question-text">{{question_data.question_desc}}</p>
+				{% if question_data.question_image != '' %}
+					<div class="question-image-wrapper">
+						<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
+					</div>
+				{% endif %}
+			</div>
 			<div class="col-offset-2-12 col-8-12">
-			    <form action="/contest/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+				<hr/>
+			</div>
+			<div class="col-offset-3-12 col-6-12">
+				<form action="/contest/cache_in/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
 					{% csrf_token %}
-					<input type="text" name="answer_text" />
-					<input type="submit" value="Submit" class="btn btn-green" />
+					<div class="row">
+						<div>
+							<input type="text" placeholder="Answer" name="answer_text" />
+							<input type="submit" value="Submit" class="btn btn-green" />
+						</div>
+					</div>
 				</form>
-
 			</div>
 		{% else %}
-			<p>{{'What the hell are you trying to do? >('}}</p>
+			<div class="col-offset-1-12 col-10-12">
+				<p>{{'You don\'t have access to view this question, or the question doesn\'t exists.'}}</p>
+			</div>
 		{% endif %}
-    </div>
+	</div>
 </div>
 {% endblock %}
