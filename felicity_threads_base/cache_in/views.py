@@ -18,6 +18,8 @@ class UTC(datetime.tzinfo):
 
 utc = UTC()
 
+TIME_SINCE_MY_BIRTH = datetime.datetime(1995,12,21,20,5,0,0,utc)
+
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing', 'NA': 'Not Attempted' }
 
 @login_required
@@ -103,6 +105,8 @@ def submit(request, level, id):
                 print "Correct"
                 submission.submission_user.level_up()
                 submission.submission_user.score_up(100)
+                time_taken = datetime.datetime.now(utc) - TIME_SINCE_MY_BIRTH
+                submission.submission_user.user_total_time += time_taken
                 submission.submission_user.save()
             submission.save()
     else:
