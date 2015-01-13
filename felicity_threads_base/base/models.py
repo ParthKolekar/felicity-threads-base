@@ -33,6 +33,18 @@ SUBMISSION_STATE_CHOICES = (
     ( PR, "Processing" ),
 )
 
+class UTC(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+    def tzname(self, dt):
+        return "UTC"
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+utc = UTC()
+
+TIME_SINCE_MY_BIRTH = datetime.datetime(1995,12,21,20,5,0,0,utc)
+
 # Create your models here.
 class Question(models.Model):
 
@@ -180,6 +192,11 @@ class User(models.Model):
     # flash message
     user_notification_flash = models.BooleanField(
     	default = False,
+    )
+
+    user_total_time = models.DateTimeField(
+            blank = True,
+            default = TIME_SINCE_MY_BIRTH,
     )
 
         
