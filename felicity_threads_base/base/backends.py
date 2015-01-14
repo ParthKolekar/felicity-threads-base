@@ -23,7 +23,7 @@ class PopulatedCASBackend(CASBackend):
         else:
             ip_address = request.META.get('REMOTE_ADDR')
 
-        profile, created = Profile.objects.get_or_create(user_username=user.username, user_last_ip=ip_address)
+        profile, created = Profile.objects.get_or_create(user_username=user.username, user_last_ip='0.0.0.0')
         if created is not None and attributes is not None:
             profile.user_email = attributes['mail']
             profile.user_nick = attributes['displayName']

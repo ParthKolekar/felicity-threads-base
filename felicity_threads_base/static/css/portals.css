@@ -192,4 +192,22 @@ p.page-description {
 .footer {
     border-top: 1px solid #098816;
 }
-
+.scoreboard tr:nth-child(even) {
+    background-color: rgba(0,0,0,.3);
+}
+tr.current-user {
+    background-color: rgba(220,220,255,.4);
+}
+#rules-box a {
+    text-decoration: underline;
+    transition: all 0.3s ease 0.1s;
+}
+#rules-box a:hover {
+    color: orange;
+}
+.wrapper {
+padding-bottom:50px;
+}
+td:nth-child(2) {
+  min-width: 300px;
+}

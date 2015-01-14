@@ -116,4 +116,6 @@ def submit(request, level, id):
 
 @login_required
 def scoreboard(request):
-    return render(request, 'cache_in/scoreboard.html')
+    profile = User.objects.filter(user_username = request.user.username)[0]
+    user_nick = profile.user_nick
+    return render(request, 'cache_in/scoreboard.html',  {'user_nick':user_nick})
