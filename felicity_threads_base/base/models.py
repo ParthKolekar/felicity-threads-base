@@ -1,15 +1,15 @@
 from django.db import models
 from django_countries.fields import CountryField
-import datetime
+import datetime, os, binascii
 
 def question_image_filepath(instance , filename):
-    return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), filename])
+    return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def question_file_upload(instance, filename):
-    return '/'.join(['question',str(instance.question_level), str(instance.question_level_id), filename])
+    return '/'.join(['question',str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def question_checker_upload(instance , filename):
-    return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), filename])
+    return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def submission_storage_path(instance, filename):
     string = '/'.join(['submissions', instance.submission_user.user_nick, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
