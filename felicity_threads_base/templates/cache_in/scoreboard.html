@@ -52,7 +52,6 @@ if (c.length !=0) {
   var target = c.offset().top - $(window).height()/2 + c.height();
   var curr = $(document).scrollTop();
   var time = Math.min(parseInt(Math.abs(target-curr)/2), 2500);
-console.log(time);
  c.animate({ 'opacity':'1'}, time+1500);
  $('html, body').animate({ 'scrollTop': c.offset().top - $(window).height()/2 + c.height() }, time);
 }
