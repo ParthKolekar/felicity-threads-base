@@ -186,6 +186,39 @@ class User(models.Model):
     def score_up(self, increment):
         self.user_score += increment
 
+    def counter_inc(self, level):
+        if(level == 1):
+            self.user_level_1 += 1
+            return self.user_level_1
+        elif(level == 2):
+            self.user_level_2 += 1
+            return self.user_level_2
+        elif(level == 3):
+            self.user_level_3 += 1
+            return self.user_level_3
+        elif(level == 4):
+            self.user_level_4 += 1
+            return self.user_level_4
+        elif(level == 5):
+            self.user_level_5 += 1
+            return self.user_level_5
+        elif(level == 6):
+            self.user_level_6 += 1
+            return self.user_level_6
+        elif(level == 7):
+            self.user_level_7 += 1
+            return self.user_level_7
+        elif(level == 8):
+            self.user_level_8 += 1
+            return self.user_level_8
+        elif(level == 9):
+            self.user_level_9 += 1
+            return self.user_level_9
+        elif(level == 10):
+            self.user_level_10 += 1
+            return self.user_level_10
+
+
     # flash message
     user_notification_flash = models.BooleanField(
     	default = False,

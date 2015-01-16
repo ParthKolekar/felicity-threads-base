@@ -39,7 +39,7 @@ def index(request):
 @login_required
 def problems(request):
     profile = User.objects.filter(user_username = request.user.username)[0]
-    query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('question_level').order_by('question_level_id')
+    query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('question_level_id').order_by('question_level')
     success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
     problem_data = []
     for question in query_result:
@@ -102,14 +102,20 @@ def submit(request, level, id):
             question = question[0]
             submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
             ans = submission.__check_ans__()
-            level_acc_question_ids_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_state='AC').values('submission_question').distinct()
+            level_subs = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level)
+            level_acc_question_ids_query = level_subs.filter(submission_state='AC').values('submission_question').distinct()
             print level_acc_question_ids_query
             level_acc_question_ids = []
             for questions in level_acc_question_ids_query:
-                level_acc_question_ids.append(questions['submission_question'])
-            if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and long(id) not in level_acc_question_ids):
+                level_acc_question_ids.append(int(questions['submission_question']))
+            if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 print "Correct"
-                submission.submission_user.level_up()
+                count = submission.submission_user.counter_inc(int(level))
+                if(count == 5):
+                    no_of_submissions = level_subs.count()
+                    submission.submission_user.score_up(int(level)*10 - no_of_submissions)
+                if(count == 3):
+                    submission.submission_user.level_up()
                 submission.submission_user.score_up(int(level)*100)
                 submission.submission_user.save()
             submission.save()
