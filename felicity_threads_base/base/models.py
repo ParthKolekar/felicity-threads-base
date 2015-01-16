@@ -172,12 +172,12 @@ class User(models.Model):
     # This is the highest level of questions that one can access.
     user_access_level = models.IntegerField(
         default = 1,
-        editable = False,
+        editable = True,
     )
     
     user_score = models.FloatField(
         default = 0,
-        editable = False,
+        editable = True,
     )
 
     def level_up(self):

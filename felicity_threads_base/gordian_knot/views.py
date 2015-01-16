@@ -6,6 +6,7 @@ from gordian_knot.models import Question, Submission, Comment
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+import logging
 import datetime
 
 class UTC(datetime.tzinfo):
@@ -17,7 +18,7 @@ class UTC(datetime.tzinfo):
         return datetime.timedelta(0)
 
 utc = UTC()
-
+logger = logging.getLogger(__name__)
 # TIME_SINCE_MY_BIRTH = datetime.datetime(2015,1,1,1,1,1,1,utc)
 
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing', 'NA': 'Not Attempted' }
@@ -63,7 +64,7 @@ def question(request, level, id):
     question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
     if len(question_data):
         question_comments = Comment.objects.filter(comment_question=question_data).filter(comment_is_approved=True).order_by('comment_timestamp')
-        if int(level) <= user_level:
+        if int(level) <= user_level or request.user.is_staff :
             question_details = question_data[0]
             return render(request, 'gordian_knot/question.html', {'question_data':question_details, 'user_nick':user_nick, 'question_comments':question_comments})
         else:
@@ -82,9 +83,12 @@ def submissions(request):
 @login_required
 def submit(request, level, id):
     context = RequestContext(request)
+    user = User.objects.filter(user_username=request.user.username)[0]
+    if str(user.user_access_level) < level:
+        return render(request, 'base/error.html', {'error_code':1})
     #print request.method
     time_last = None
-    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_state='WA').order_by('submission_timestamp').last()
+    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
     time_limit = datetime.timedelta(0, 30)
@@ -97,23 +101,23 @@ def submit(request, level, id):
             # return HttpResponse(content = 'String too large.', status=413)
             return render(request, 'base/error.html', {'error_code':3})
         question = Question.objects.filter(question_level=level).filter(question_level_id=id)
-        user = User.objects.filter(user_username=request.user.username)[0]
         if len(question):
             question = question[0]
             submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
             ans = submission.__check_ans__()
             level_subs = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level)
-            level_acc_question_ids_query = level_subs.filter(submission_state='AC').values('submission_question').distinct()
-            print level_acc_question_ids_query
-            level_acc_question_ids = []
-            for questions in level_acc_question_ids_query:
-                level_acc_question_ids.append(int(questions['submission_question']))
+            level_acc_question_ids_query = level_subs.filter(submission_state='AC')       
+            print level_subs, level_acc_question_ids_query
+            level_acc_question_ids = set()
+            for subs in level_acc_question_ids_query:
+                level_acc_question_ids.add(subs.submission_question.question_level_id)
+            print level_acc_question_ids
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 print "Correct"
                 count = submission.submission_user.counter_inc(int(level))
                 if(count == 5):
-                    no_of_submissions = level_subs.count()
-                    submission.submission_user.score_up(int(level)*10 - no_of_submissions)
+                    no_of_submissions = len(level_subs) + 1 #for current submission +1
+                    submission.submission_user.score_up(int(level)*20 - no_of_submissions)
                 if(count == 3):
                     submission.submission_user.level_up()
                 submission.submission_user.score_up(int(level)*100)
@@ -127,6 +131,9 @@ def submit(request, level, id):
 @login_required
 def comment_submit(request, level, id):
     context = RequestContext(request)
+    user = User.objects.filter(user_username=request.user.username)[0]
+    if str(user.user_access_level) < level:
+        return render(request, 'base/error.html', {'error_code':1})
     #print request.method
     time_last = None
     time_last_query = Comment.objects.filter(comment_user__user_username=request.user.username).order_by('comment_timestamp').last()
@@ -139,7 +146,6 @@ def comment_submit(request, level, id):
         if comment_text and len(comment_text) > 255:
             return render(request, 'base/error.html', {'error_code':3})
         question = Question.objects.filter(question_level=level).filter(question_level_id=id)
-        user = User.objects.filter(user_username=request.user.username)[0]
         if len(question):
             question = question[0]
             comment = Comment(comment_question=question, comment_user=user, comment_message=comment_text)

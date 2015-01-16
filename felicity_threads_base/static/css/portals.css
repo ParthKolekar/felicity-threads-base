@@ -3,7 +3,8 @@ body {
     overflow-y: scroll;
 }
 /*
- * Dark green used on page here and there (borders) - #098816
+ * dark green used in cache in - #098816
+ * Dark yellow used on page here and there (borders) - #96BC0B
  */
 
 ::-moz-selection {
@@ -14,32 +15,42 @@ body {
     color: white;
     background: #195684;
 }
+.btn.btn-yellow {
+    color: #fff;
+    background-color: #96BC0B;
+    border: 1px solid #71890F;
+}
+
+.btn.btn-yellow:hover {
+    background-color: #71890F;
+    border: 1px solid #515E15;
+}
 
 .box {
     border-radius: 25px 25px 0 0;
     margin-top: 20px;
 }
 hr {
-    background: #098816;
+    background: #96BC0B;
     margin: 20px 0;
     border: none;
     height: 2px;
 }
 .sub-navbar {
     text-align: center;
-    border-bottom: 1px solid #098816;
+    border-bottom: 1px solid #96BC0B;
 }
 .sub-navbar .box {
     background: rgb(5,17,22);
-    border-left: 1px solid #098816;
+    border-left: 1px solid #96BC0B;
     border-radius: 0 0 25px 25px;
-    border-right: 1px solid #098816;
+    border-right: 1px solid #96BC0B;
     float: right;
     margin-bottom: 25px;
     white-space: nowrap;
 }
 .sub-navbar .box, .box .well {
-    border-bottom: 3px solid #098816;
+    border-bottom: 3px solid #96BC0B;
 }
 .sub-navbar ul {
     display: inline-block;
@@ -57,10 +68,10 @@ hr {
     transition: background-color 0.2s;
 }
 .sub-navbar a.active {
-    background-color: #098816;
+    background-color: #96BC0B;
 }
 .sub-navbar a:hover {
-    background-color: #005810;
+    background-color: #71890F;
 }
 h1 {
     font-family: "Open Sans", sans-serif;
@@ -108,9 +119,9 @@ p.page-description {
     text-align: center;
 }
 #problems-list #problems-table-wrapper {
-    border: 1px solid #098816;
+    border: 1px solid #96BC0B;
     border-bottom: none;
-    box-shadow: 0 -2px 0px #098816;
+    box-shadow: 0 -2px 0px #96BC0B;
     display: inline-block;
 }
 #problems-list thead tr, #problems-list tbody tr:not(:last-child) {
@@ -146,7 +157,7 @@ p.page-description {
     white-space: nowrap;
 }
 #problems-list .label.correct {
-  background-color:  #098816;
+  background-color:  #96BC0B;
 }
 #problems-list .label.wrong {
     background: #9B1E1B;
@@ -157,7 +168,7 @@ p.page-description {
 #question .question-text {
     font-size: 1.1em;
 }
-#question input[type="text"] {
+#question input[type="text"], #question textarea {
     background-color: #eee;
     border: 1px solid #ccc;
     border-radius: 2px;
@@ -171,7 +182,7 @@ p.page-description {
             transition: all 0.1s;
     width: 100%;
 }
-#question input[type="text"]:focus {
+#question input[type="text"]:focus, #question textarea:focus {
     border-color: #0EA010;
 }
 #question input[type="submit"] {
@@ -188,7 +199,7 @@ p.page-description {
     max-height: 500px;
 }
 .footer {
-    border-top: 1px solid #098816;
+    border-top: 1px solid #96BC0B;
 }
 #notifications-box .box-item:nth-child(odd),
 .scoreboard tr:nth-child(even) {
@@ -198,7 +209,7 @@ tr.current-user {
     background-color: rgba(220,220,255,.4);
 }
 #rules-box a,
-#problems-list h4 a 
+#problems-list h4 a
 {
     border-bottom: 1px solid #ccc;
     transition: all 0.3s ease 0.1s;
@@ -211,7 +222,7 @@ tr.current-user {
 .wrapper {
 padding-bottom:50px;
 }
-td:nth-child(2) {
+td:nth-child(3) {
   min-width: 300px;
 }
 @media all and (max-width: 668px) {
@@ -227,3 +238,33 @@ td:nth-child(2) {
         padding: 5px;
     }
 }
+.comment {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding-left: 5px;
+    border-bottom: 2px solid #77770D;
+    border-left: 2px solid #77770D;
+}
+.comment .usernick {
+    line-height: 40px;
+    font-size: 1.2em;
+    font-style: italic;
+}
+.comment .comment-text {
+    padding-top: 5px;
+}
+.comment .time {
+    text-align: right;
+}
+.commentform {
+    margin-top: 50px;
+}
+#comment-btn.btn.btn-blue {
+    margin: 20px 0 0 0;
+}
+
+
+
+
+
+

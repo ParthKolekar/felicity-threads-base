@@ -1,15 +1,14 @@
 {% extends "base/layout.html" %}
-{% block title_block %}Problems | Cache In, Felicity Threads {% endblock %}
+{% block title_block %}Problems | Gordian Knot, Felicity Threads {% endblock %}
 {% block pagesubtitle %}| Problems{% endblock %}
 {% block main_block %}
 <div class="container" id="problems-list">
-    <h4>Hints available at <a href="https://www.facebook.com/pages/CacheIn/353693844812708?sk=app_202980683107053" target="_top">CacheIn | Forum</a></h4>
 	<div id="problems-table-wrapper" class="box">
 		<table border="0">
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>$</th>
+					<th>Level</th>
+					<th>Question</th>
 					<th>Title</th>
 					<th>Status</th>
 				</tr>
@@ -19,7 +18,7 @@
 					<tr>
 						<td>{{problem.0}}</td>
 						<td>{{problem.1}}</td>
-						<td><a href="/contest/gordion_knot/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
+						<td><a href="/contest/gordian_knot/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
 						{% if problem.3 == "Accepted" %}
 							<td><span class="label correct">{{problem.3}}</span></td>
 						{% elif problem.3 == "Wrong Answer" %}

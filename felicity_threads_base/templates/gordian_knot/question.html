@@ -1,5 +1,8 @@
 {% extends "base/layout.html" %}
-{% block title_block %}Level {{question_data.question_level}} | Cache In, Felicity Threads{% endblock %}
+{% block title_block %}Level {{question_data.question_level}} Question {{question_data.question_level_id}} | Gordian Knot, Felicity Threads{% endblock %}
+{% block head_block %}
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+{% endblock %}
 {% block main_block %}
 <div id="question">
 	<div class="row">
@@ -8,7 +11,7 @@
 				<h4>Level {{question_data.question_level}}</h4>
 				<h3>{{question_data.question_title}}</h3>
 				<hr/>
-				<p class="question-text">{{question_data.question_desc}}</p>
+				<p class="question-text">{{question_data.question_desc | safe}}</p>
 				{% if question_data.question_image != '' %}
 					<div class="question-image-wrapper">
 						<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
@@ -24,7 +27,7 @@
 					<div class="row">
 						<div>
 							<input type="text" placeholder="Answer" name="answer_text" />
-							<input type="submit" value="Submit" class="btn btn-green" />
+							<input type="submit" value="Submit" class="btn btn-yellow" />
 						</div>
 					</div>
 				</form>
@@ -35,22 +38,35 @@
 			</div>
 		{% endif %}
 	</div>
-	<div class="row">
-		{% if question_comments != None %}
-			{% for comment in question_comments %}
-				<p>{{comment.comment_user.user_nick}} {{comment.comment_message}} {{comment.comment_timestamp}}</p>
-			{% endfor %}
-		{% endif %}
-		<form action="/contest/gordian_knot/comment_submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post">
-			{% csrf_token %}
-			<div class="row">
-				<div>
-					<input type="text" placeholder="Comment here..." name="comment_text" />
-					<input type="submit" value="Submit" class="btn btn-green" />
-				</div>
+	<hr />
+	<div class="comment-box row">
+		<div class="col-offset-1-12 col-10-12 row">
+			<h2 style="font-weight: normal;">Comments</h2>
+			<div class="col-9-12">
+				{% if question_comments != None %}
+					{% for comment in question_comments %}
+						<div class="comment row">
+							<div class="col-7-12 usernick">{{comment.comment_user.user_nick}}</div>
+							<div class="col-5-12 time">{{comment.comment_timestamp}}</div>
+							<div class="col-11-12 comment-text"> {{comment.comment_message}} </div>
+						</div>
+					{% endfor %}
+				{% endif %}
 			</div>
-		</form>
+			<div class="commentform" style="margin-top: 30px;">
+				<form action="/contest/gordian_knot/comment_submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-9-12">
+							<textarea type="text" placeholder="You can comment here..." name="comment_text" rows="2" ></textarea>
+						</div>
+						<div class="col-5-12">
+							<input type="submit" value="Comment" class="btn btn-blue" id="comment-btn"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
-	<h3>Ask for Hints at <a href="https://www.facebook.com/pages/CacheIn/353693844812708?sk=app_202980683107053" target="_top">CacheIn | Forum</a></h3>
 </div>
 {% endblock %}
