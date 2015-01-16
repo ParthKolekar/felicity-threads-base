@@ -166,10 +166,7 @@ class User(models.Model):
     ) # c , ISO-alpha2"""
     user_last_ip = models.GenericIPAddressField(
         editable = True,
-    )
-    user_timestamp = models.DateTimeField(
-        auto_now = True,
-        auto_now_add = True,
+        default = '0.0.0.0',
     )
     
     # This is the highest level of questions that one can access.
@@ -194,10 +191,46 @@ class User(models.Model):
     	default = False,
     )
 
-    user_total_time = models.DateTimeField(
-            blank = True,
-            default = TIME_SINCE_MY_BIRTH,
+    user_level_1 = models.IntegerField(
+        default = 0,
     )
+
+    user_level_2 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_3 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_4 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_5 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_6 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_7 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_8 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_9 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_10 = models.IntegerField(
+        default = 0,
+    )
+
 
         
     """#team attributes
@@ -219,9 +252,10 @@ class Submission(models.Model):
         abstract = True
 
     def __str__(self):
-        return '_'.join([self.submission_question.question_title, self.submission_user.user_username])
+        return '_'.join([self.submission_question.question_title, self.submission_user.user_nick])
 
-    submission_user = models.ForeignKey(User)
+    submission_user = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_related")
+
     submission_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
@@ -268,4 +302,28 @@ class ClarificationMessages(models.Model):
 
     clarification_messages_message = models.CharField(
             max_length = 255,
+    )
+
+class Comment(models.Model):
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return str(self.comment_user.user_nick + '_' + self.comment_message)
+
+    comment_timestamp = models.DateTimeField(
+        auto_now = True,
+        auto_now_add = True,
+    )
+    
+    comment_message = models.CharField(
+            max_length = 255,
+            default = '',
+    )
+
+    comment_user = models.ForeignKey(User)
+
+    comment_is_approved = models.BooleanField(
+        default = False,
     )

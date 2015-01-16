@@ -1,6 +1,7 @@
 from django.contrib import admin
-from cache_in.models import *
+from gordion_knot.models import *
 
 # Register your models here.
 admin.site.register(Question)
 admin.site.register(Submission)
+admin.site.register(Comment)

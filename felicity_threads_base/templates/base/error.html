@@ -17,6 +17,9 @@
 			{% elif error_code == 4 %}
 				<h3>Can not Submit before 30 seconds after previous submission.<h3>
 				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
+			{% elif error_code == 5 %}
+				<h3>Can not comment before 30 seconds after previous comment.<h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
 			{% endif %}
 		</div>
 	</div>

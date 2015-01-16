@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^contest/accounts/login' , 'django_cas.views.login'),
     url(r'^contest/accounts/logout' ,'django_cas.views.logout'),
     url(r'^contest/cache_in/' , include('cache_in.urls')),
+    url(r'^contest/gordion_knot/' , include('gordion_knot.urls')),
 ) + static (settings.STATIC_URL , document_root = settings.STATIC_ROOT) + static (settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
 
