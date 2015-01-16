@@ -1,5 +1,7 @@
 from django.http import HttpResponseForbidden
 from django.conf import settings
+from django.contrib.auth.views import login, logout
+from django_cas.views import login as cas_login, logout as cas_logout
 import datetime
 
 class UTC(datetime.tzinfo):
@@ -18,15 +20,17 @@ class RestrictAccessTillTime(object):
         pass
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-	return None
+        if view_func == login or view_func == logout or view_func == cas_login or view_func == cas_logout:
+            return None
+
         if request.user.is_authenticated():
             if request.user.is_staff:
-            	return None
+                return None
             time_now = datetime.datetime.now(utc)
             if time_now < settings.CONTEST_START_DATETIME or time_now > settings.CONTEST_END_DATETIME:
-            	error = ('<h1>Forbidden</h1><p>Contest Not Started</p>')
+                error = ('<h1>Forbidden</h1><p>Contest Not Started</p>')
                 return HttpResponseForbidden(error)
             else:
-		return None
+                return None
         else:
             return None
