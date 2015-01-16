@@ -1,5 +1,5 @@
 from django.contrib import admin
-from gordion_knot.models import *
+from gordian_knot.models import *
 
 # Register your models here.
 admin.site.register(Question)

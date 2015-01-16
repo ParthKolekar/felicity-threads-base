@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from django.conf import settings
 from django.conf.urls.static import static
-from gordion_knot import views
+from gordian_knot import views
 
 urlpatterns = patterns('',
 	url(r'^$' , views.index, name='index'),
