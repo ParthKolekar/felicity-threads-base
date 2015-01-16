@@ -42,7 +42,7 @@ INSTALLED_APPS = (
         'django_countries',
         'longerusername',
         'base',
-        'cache_in',
+        'gordian_knot',
         )
 
 MIDDLEWARE_CLASSES = (
