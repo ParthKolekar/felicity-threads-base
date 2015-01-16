@@ -9,6 +9,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th>$</th>
 					<th>Title</th>
 					<th>Status</th>
 				</tr>
@@ -17,6 +18,7 @@
 				{% for problem in problem_data %}
 					<tr>
 						<td>{{problem.0}}</td>
+						<td>{{problem.1}}</td>
 						<td><a href="/contest/gordion_knot/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
 						{% if problem.3 == "Accepted" %}
 							<td><span class="label correct">{{problem.3}}</span></td>
