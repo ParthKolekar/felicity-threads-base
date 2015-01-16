@@ -10,8 +10,18 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import datetime
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+class UTC(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+    def tzname(self, dt):
+        return "UTC"
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+utc = UTC()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -54,6 +64,7 @@ MIDDLEWARE_CLASSES = (
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django_cas.middleware.CASMiddleware',
         'django.contrib.admindocs.middleware.XViewMiddleware',
+        'base.middleware.RestrictAccessTillTime'
         )
 
 
@@ -117,6 +128,9 @@ CAS_DISPLAY_MESSAGES = False
 LOGIN_URL = '/contest/accounts/login'
 LOGOUT_URL = '/contest/accounts/logout'
 LOGIN_REDIRECT_URL = '/'
+
+CONTEST_START_DATETIME = datetime.datetime()
+CONTEST_END_DATETIME = datetime.datetime()
 
 LOGGING = {
         'version': 1,
