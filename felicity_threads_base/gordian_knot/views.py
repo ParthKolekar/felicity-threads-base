@@ -2,7 +2,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 from base.models import User, ClarificationMessages
-from gordion_knot.models import Question, Submission, Comment
+from gordian_knot.models import Question, Submission, Comment
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
@@ -34,7 +34,7 @@ def index(request):
 
     notifs = ClarificationMessages.objects.all().order_by('id').reverse()
     print notifs
-    return render(request, 'gordion_knot/index.html', {'user_nick':profile.user_nick, 'notifs': notifs})
+    return render(request, 'gordian_knot/index.html', {'user_nick':profile.user_nick, 'notifs': notifs})
 
 @login_required
 def problems(request):
@@ -52,7 +52,7 @@ def problems(request):
         else:
             sta = SUBMISSION_STATE_CHOICES['NA']
         problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
-    return render(request, 'gordion_knot/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick})
+    return render(request, 'gordian_knot/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick})
 
 @login_required
 def question(request, level, id):
@@ -65,7 +65,7 @@ def question(request, level, id):
         question_comments = Comment.objects.filter(comment_question=question_data).filter(comment_is_approved=True).order_by('comment_timestamp')
         if int(level) <= user_level:
             question_details = question_data[0]
-            return render(request, 'gordion_knot/question.html', {'question_data':question_details, 'user_nick':user_nick, 'question_comments':question_comments})
+            return render(request, 'gordian_knot/question.html', {'question_data':question_details, 'user_nick':user_nick, 'question_comments':question_comments})
         else:
             return render(request, 'base/error.html', {'error_code': 1, 'user_nick':user_nick})
     else:
@@ -77,7 +77,7 @@ def submissions(request):
     user_submissions = user_submissions.reverse()
     for sub in user_submissions:
         sub.submission_state = SUBMISSION_STATE_CHOICES[sub.submission_state]
-    return render(request, 'gordion_knot/submissions.html', {'user_submissions':user_submissions})
+    return render(request, 'gordian_knot/submissions.html', {'user_submissions':user_submissions})
 
 @login_required
 def submit(request, level, id):
@@ -116,7 +116,7 @@ def submit(request, level, id):
     else:
         # return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
         return render(request, 'base/error.html', {'error_code':4})
-    return HttpResponseRedirect('/contest/gordion_knot/problems')
+    return HttpResponseRedirect('/contest/gordian_knot/problems')
 
 @login_required
 def comment_submit(request, level, id):
@@ -140,11 +140,11 @@ def comment_submit(request, level, id):
             comment.save()
     else:
         return render(request, 'base/error.html', {'error_code':5})
-    return HttpResponseRedirect('/contest/gordion_knot/question/'+level+'/'+id)
+    return HttpResponseRedirect('/contest/gordian_knot/question/'+level+'/'+id)
 
 
 @login_required
 def scoreboard(request):
     profile = User.objects.filter(user_username = request.user.username)[0]
     user_nick = profile.user_nick
-    return render(request, 'gordion_knot/scoreboard.html',  {'user_nick':user_nick})
+    return render(request, 'gordian_knot/scoreboard.html',  {'user_nick':user_nick})
