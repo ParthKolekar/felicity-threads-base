@@ -222,9 +222,13 @@ tr.current-user {
 .wrapper {
 padding-bottom:50px;
 }
-td:nth-child(3) {
+td:nth-child(3):not(.scoreboard td) {
   min-width: 300px;
 }
+.scoreboard table tr td:nth-child(2) {
+    min-width: 300px;
+}
+
 @media all and (max-width: 668px) {
     .container {
         width:100%;
@@ -263,8 +267,9 @@ td:nth-child(3) {
     margin: 20px 0 0 0;
 }
 
-
-
-
-
-
+tbody:nth-child(even) {
+    background: rgba(0,0,0,.5);
+}
+.scoreboard tbody {
+    background: none;
+}

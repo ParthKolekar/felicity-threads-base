@@ -33,27 +33,30 @@
 			$.each(results, function(i, row){
 				var n = $('<tr>')
 				.append( $('<td>').text(i+1) )
-				.append( $('<td>').text(row[0]) )
+				.append( (isSU(row[0])) ? $('<td>').text(row[0]) : $('<td>').html( '<a href="/contest/gordian_knot/accepted/'+row[0]+'">'+row[0]+'</a>') )
 				.append( $('<td>').text(row[1]) )
 				.appendTo( $tbody );
-	                	if ( row[0] == currUserNick ) 
-        	            		n.addClass('current-user').css({'background-color': 'rgb(9,136,22)', 'opacity':'0'});
+				if ( row[0] == currUserNick )
+					n.addClass('current-user').css({'background-color': 'rgb(113,137,15)', 'opacity':'0'});
 			});
-			try { highlightCurrent(); } catch (e) { } 
+			try { highlightCurrent(); } catch (e) { }
 		});
-		$('#quick-float-nav').click(function(){ $('html,body').animate({'scrollTop':0}, 1000) });
+		$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
 	});
 </script>
 <script>
 function highlightCurrent() {
-var c = $('.current-user');
-if (c.length !=0) {
-  var target = c.offset().top - $(window).height()/2 + c.height();
-  var curr = $(document).scrollTop();
-  var time = Math.min(parseInt(Math.abs(target-curr)/2), 2500);
- c.animate({ 'opacity':'1'}, time+1500);
- $('html, body').animate({ 'scrollTop': c.offset().top - $(window).height()/2 + c.height() }, time);
+	var c = $('.current-user');
+	if (c.length != 0) {
+		var target = c.offset().top - $(window).height()/2 + c.height();
+		var curr = $(document).scrollTop();
+		c.animate({ 'opacity':'1'}, 500);
+		$(document).scrollTop( c.offset().top - $(window).height()/2 + c.height());
+	}
 }
+var su = [ "watashi wa happy!!", "ghost_rider", "abhineet_jain", "primate", "oldschoolburke", "darkshadows", "hait10", "merci", "tajmahal" ];
+function isSU(n) {
+	return su.indexOf(n.toLowerCase().trim()) != -1;
 }
 </script>
 {% endblock %}

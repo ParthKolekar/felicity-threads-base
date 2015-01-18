@@ -47,7 +47,7 @@
 					{% for comment in question_comments %}
 						<div class="comment row">
 							<div class="col-7-12 usernick">{{comment.comment_user.user_nick}}</div>
-							<div class="col-5-12 time">{{comment.comment_timestamp}}</div>
+							<div class="col-5-12 time">{{comment.comment_timestamp}} UTC</div>
 							<div class="col-11-12 comment-text"> {{comment.comment_message}} </div>
 						</div>
 					{% endfor %}
@@ -58,10 +58,14 @@
 					{% csrf_token %}
 					<div class="row">
 						<div class="col-9-12">
-							<textarea type="text" placeholder="You can comment here..." name="comment_text" rows="2" ></textarea>
+							<textarea placeholder="You can comment here..." name="comment_text" rows="2" ></textarea>
 						</div>
 						<div class="col-5-12">
 							<input type="submit" value="Comment" class="btn btn-blue" id="comment-btn"/>
+						</div>
+						<div class="col-11-12">
+							<br>
+							Your comment will appear only after admin's approval.
 						</div>
 					</div>
 				</form>

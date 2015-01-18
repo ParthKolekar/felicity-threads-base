@@ -40,7 +40,10 @@ def index(request):
 @login_required
 def problems(request):
     profile = User.objects.filter(user_username = request.user.username)[0]
-    query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('question_level_id').order_by('question_level')
+    if request.user.is_staff:
+        query_result = Question.objects.all().order_by('question_level_id').order_by('question_level')
+    else:
+        query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('question_level_id').order_by('question_level')
     success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
     problem_data = []
     for question in query_result:
@@ -54,6 +57,32 @@ def problems(request):
             sta = SUBMISSION_STATE_CHOICES['NA']
         problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
     return render(request, 'gordian_knot/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick})
+
+@login_required
+def accepted(request, uid):
+    profile_curr = User.objects.filter(user_username = request.user.username)[0]
+    profile = User.objects.filter(user_nick = uid)
+    if len(profile) == 0:
+        return render(request, 'base/error.html', {'error_code': 1, 'user_nick':profile_curr.user_nick})
+    profile = profile[0]
+    if request.user.is_staff:
+        query_result = Question.objects.all().order_by('question_level_id').order_by('question_level')
+    else:
+        query_result = Question.objects.filter(question_level__lte=profile.user_access_level).order_by('question_level_id').order_by('question_level')
+    success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
+    problem_data = []
+    for question in query_result:
+        acc = success_sub.filter(submission_question=question).filter(submission_state='AC')
+        wan = success_sub.filter(submission_question=question).filter(submission_state='WA')
+        if acc:
+            sta = SUBMISSION_STATE_CHOICES['AC']
+        elif wan:
+            sta = SUBMISSION_STATE_CHOICES['NA']
+        else:
+            sta = SUBMISSION_STATE_CHOICES['NA']
+        problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
+    return render(request, 'gordian_knot/accepted.html', {'problem_data':problem_data, 'user_nick':profile_curr.user_nick, 'look_nick': profile.user_nick})
+
 
 @login_required
 def question(request, level, id):
