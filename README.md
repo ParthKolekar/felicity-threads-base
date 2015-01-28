@@ -14,10 +14,12 @@ Required Dependencies
 + virtualenv (pip install virtualenv)
 + redis (apt-get install redis-server)
 + celery (pip install celery[redis])
-
++ djcelery (pip install django-celery)
 
 Setting Up The Virtual Env
 --------------------------
+If not on some virtual environment already
+------------------------------------------
 Execute these:
 + virtualenv venv --distribute
 + source venv/bin/activate

@@ -1,7 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 import datetime, os, binascii
-import tasks 
+#import tasks 
 
 def question_image_filepath(instance , filename):
     return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
@@ -117,16 +117,12 @@ class Question(models.Model):
         else:
             return self.question_upload_file and self.question_checker_script
 
-    def check_submission(self,submission_string):
+    def check_submission(self,submission_string,submission_id):
         if self.question_upload_type == STRING:
             return self.question_answer_string.lower().replace(' ','') == submission_string.lower().replace(' ','')
         else:
-            # Essentially Something like this.
-            tasks.checker_queue(self.id)
-	    return True
-            # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
             pass
-            
+            #tasks.checker_queue(submission_id)
 
 """class Team(models.Model):
     
@@ -298,7 +294,7 @@ class Submission(models.Model):
     )
     submission_string = models.CharField(
         blank = True,
-	editable = True,
+        editable = True,
         default = '',  
         max_length = 255,
     )
@@ -317,8 +313,10 @@ class Submission(models.Model):
 
     def __check_ans__(self):
         if(self.submission_question.question_upload_type == FILE):
+        # if file type then let the celery queue handle the submission and the database update
+        #self.submission_question.check_submission(self.submission_storage,self.id)
             pass
-        elif(self.submission_question.check_submission(self.submission_string)):
+        elif(self.submission_question.check_submission(self.submission_string,self.id)):
             self.submission_state = AC
             self.submission_score = 100
         else:
