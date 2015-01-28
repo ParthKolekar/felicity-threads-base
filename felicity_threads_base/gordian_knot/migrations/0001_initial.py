@@ -13,6 +13,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Comment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('comment_timestamp', models.DateTimeField(auto_now=True, auto_now_add=True)),
+                ('comment_message', models.CharField(default=b'', max_length=255)),
+                ('comment_is_approved', models.BooleanField(default=False)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Question',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -40,12 +53,24 @@ class Migration(migrations.Migration):
                 ('submission_storage', models.FileField(upload_to=base.models.submission_storage_path)),
                 ('submission_state', models.CharField(default=b'PR', max_length=2, choices=[(b'WA', b'Wrong Answer'), (b'AC', b'Accepted'), (b'PR', b'Processing')])),
                 ('submission_score', models.FloatField(default=0)),
-                ('submission_question', models.ForeignKey(to='cache_in.Question')),
-                ('submission_user', models.ForeignKey(to='base.User')),
+                ('submission_question', models.ForeignKey(to='gordian_knot.Question')),
+                ('submission_user', models.ForeignKey(related_name='gordian_knot_submission_related', to='base.User')),
             ],
             options={
                 'abstract': False,
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='comment',
+            name='comment_question',
+            field=models.ForeignKey(to='gordian_knot.Question'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='comment',
+            name='comment_user',
+            field=models.ForeignKey(to='base.User'),
+            preserve_default=True,
         ),
     ]

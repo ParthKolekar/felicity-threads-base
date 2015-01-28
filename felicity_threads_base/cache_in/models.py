@@ -7,3 +7,4 @@ class Question(Q):
 
 class Submission(S):
     submission_question = models.ForeignKey(Question)
+

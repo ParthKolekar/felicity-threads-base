@@ -18,6 +18,8 @@ class UTC(datetime.tzinfo):
 
 utc = UTC()
 
+TIME_SINCE_MY_BIRTH = datetime.datetime(2015,1,1,1,1,1,1,utc)
+
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing', 'NA': 'Not Attempted' }
 
 @login_required
@@ -57,15 +59,16 @@ def question(request, level, id):
     profile = User.objects.filter(user_username=request.user.username)[0]
     user_level = profile.user_access_level
     user_nick = profile.user_nick
-    if(int(level) <= user_level):
-        question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
-        if len(question_data):
-            question_details = question_data[0];
+
+    question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
+    if len(question_data):
+        if int(level) <= user_level:
+            question_details = question_data[0]
+            return render(request, 'cache_in/question.html', {'question_data':question_details, 'user_nick':user_nick})
         else:
-            question_details = None;
+            return render(request, 'cache_in/error.html', {'error_code': 1, 'user_nick':user_nick})
     else:
-        question_details = None;
-    return render(request, 'cache_in/question.html', {'question_data':question_details, 'user_nick':user_nick})
+        return render(request, 'cache_in/error.html', {'error_code': 2, 'user_nick':user_nick})
 
 @login_required
 def submissions(request):
@@ -80,7 +83,7 @@ def submit(request, level, id):
     context = RequestContext(request)
     #print request.method
     time_last = None
-    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).order_by('submission_timestamp').last()
+    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
     time_limit = datetime.timedelta(0, 30)
@@ -90,7 +93,8 @@ def submit(request, level, id):
         #print ans_file, request.FILES
         ans_text = request.POST.get("answer_text")
         if ans_text and len(ans_text) > 255:
-            return HttpResponse(content = 'String too large.', status=413)
+            # return HttpResponse(content = 'String too large.', status=413)
+            return render(request, 'cache_in/error.html', {'error_code':3})
         question = Question.objects.filter(question_level=level).filter(question_level_id=id)
         user = User.objects.filter(user_username=request.user.username)[0]
         if len(question):
@@ -101,8 +105,17 @@ def submit(request, level, id):
                 print "Correct"
                 submission.submission_user.level_up()
                 submission.submission_user.score_up(100)
+                time_taken = datetime.datetime.now(utc) - TIME_SINCE_MY_BIRTH
+                submission.submission_user.user_total_time += time_taken
                 submission.submission_user.save()
             submission.save()
     else:
-        return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
-    return HttpResponseRedirect('/cache_in/problems')
+        # return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
+        return render(request, 'cache_in/error.html', {'error_code':4})
+    return HttpResponseRedirect('/contest/cache_in/problems')
+
+@login_required
+def scoreboard(request):
+    profile = User.objects.filter(user_username = request.user.username)[0]
+    user_nick = profile.user_nick
+    return render(request, 'cache_in/scoreboard.html',  {'user_nick':user_nick})

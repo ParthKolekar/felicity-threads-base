@@ -10,8 +10,18 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import datetime
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+class UTC(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+    def tzname(self, dt):
+        return "UTC"
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+utc = UTC()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -24,7 +34,10 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        '.felicity.iiit.ac.in',
+        '.felicity.iiit.ac.in.',
+        ]
 
 
 # Application definition
@@ -39,7 +52,7 @@ INSTALLED_APPS = (
         'django_countries',
         'longerusername',
         'base',
-        'cache_in',
+        'gordian_knot',
         )
 
 MIDDLEWARE_CLASSES = (
@@ -51,6 +64,7 @@ MIDDLEWARE_CLASSES = (
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django_cas.middleware.CASMiddleware',
         'django.contrib.admindocs.middleware.XViewMiddleware',
+        'base.middleware.RestrictAccessTillTime'
         )
 
 
@@ -69,10 +83,10 @@ WSGI_APPLICATION = 'felicity_threads_base.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'felicity_threads_base',
-            'USER' : 'root',
-            'PASSWORD' : 'root',
-            'HOST' : 'localhost',
+            'NAME': '<db-name>',
+            'USER' : '<user>',
+            'PASSWORD' : '<password>',
+            'HOST' : '<host>',
             }
         }
 
@@ -93,13 +107,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/contest/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-MEDIA_URL = '/media/'
+MEDIA_URL = '/contest/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
@@ -111,3 +122,31 @@ TEMPLATE_DIRS = (TEMPLATE_PATH,)
 CAS_SERVER_URL = 'http://felicity.iiit.ac.in/cas/'
 CAS_VERSION = '3'
 CAS_LOGOUT_COMPLETLY = True
+CAS_LOGOUT_URL = 'http://felicity.iiit.ac.in/logout'
+CAS_DISPLAY_MESSAGES = False
+
+LOGIN_URL = '/contest/accounts/login'
+LOGOUT_URL = '/contest/accounts/logout'
+LOGIN_REDIRECT_URL = '/'
+
+CONTEST_START_DATETIME = datetime.datetime()
+CONTEST_END_DATETIME = datetime.datetime()
+
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '/tmp/django-debug.log',
+                },
+            },
+        'loggers': {
+            'django': {
+                'handlers': ['file'],
+                'level': 'ERROR',
+                'propagate': True,
+                },
+            },
+        }

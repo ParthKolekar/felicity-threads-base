@@ -1,18 +1,18 @@
 from django.db import models
 from django_countries.fields import CountryField
-import datetime
+import datetime, os, binascii
 
 def question_image_filepath(instance , filename):
-    return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), filename])
+    return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def question_file_upload(instance, filename):
-    return '/'.join(['question',str(instance.question_level), str(instance.question_level_id), filename])
+    return '/'.join(['question',str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def question_checker_upload(instance , filename):
-    return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), filename])
+    return '/'.join(['checker', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
 
 def submission_storage_path(instance, filename):
-    string = '/'.join(['submissions', instance.submission_user.user_username, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
+    string = '/'.join(['submissions', instance.submission_user.user_nick, str(instance.submission_question.question_level), str(instance.submission_question.question_level_id) ]) 
     string += '/'+datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
     return string
 
@@ -32,6 +32,18 @@ SUBMISSION_STATE_CHOICES = (
     ( AC, "Accepted" ),
     ( PR, "Processing" ),
 )
+
+class UTC(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+    def tzname(self, dt):
+        return "UTC"
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+utc = UTC()
+
+TIME_SINCE_MY_BIRTH = datetime.datetime(1995,12,21,20,5,0,0,utc)
 
 # Create your models here.
 class Question(models.Model):
@@ -106,7 +118,7 @@ class Question(models.Model):
 
     def check_submission(self,submission_string):
         if self.question_upload_type == STRING:
-            return self.question_answer_string.lower() == submission_string.lower()
+            return self.question_answer_string.lower().replace(' ','') == submission_string.lower().replace(' ','')
         else: #TODO -- FILE UPLOAD SUBMISSION CHECK
             # Essentially Something like this.
             # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
@@ -154,21 +166,18 @@ class User(models.Model):
     ) # c , ISO-alpha2"""
     user_last_ip = models.GenericIPAddressField(
         editable = True,
-    )
-    user_timestamp = models.DateTimeField(
-        auto_now = True,
-        auto_now_add = True,
+        default = '0.0.0.0',
     )
     
     # This is the highest level of questions that one can access.
     user_access_level = models.IntegerField(
         default = 1,
-        editable = False,
+        editable = True,
     )
     
     user_score = models.FloatField(
         default = 0,
-        editable = False,
+        editable = True,
     )
 
     def level_up(self):
@@ -177,10 +186,84 @@ class User(models.Model):
     def score_up(self, increment):
         self.user_score += increment
 
+    def counter_inc(self, level):
+        if(level == 1):
+            self.user_level_1 += 1
+            return self.user_level_1
+        elif(level == 2):
+            self.user_level_2 += 1
+            return self.user_level_2
+        elif(level == 3):
+            self.user_level_3 += 1
+            return self.user_level_3
+        elif(level == 4):
+            self.user_level_4 += 1
+            return self.user_level_4
+        elif(level == 5):
+            self.user_level_5 += 1
+            return self.user_level_5
+        elif(level == 6):
+            self.user_level_6 += 1
+            return self.user_level_6
+        elif(level == 7):
+            self.user_level_7 += 1
+            return self.user_level_7
+        elif(level == 8):
+            self.user_level_8 += 1
+            return self.user_level_8
+        elif(level == 9):
+            self.user_level_9 += 1
+            return self.user_level_9
+        elif(level == 10):
+            self.user_level_10 += 1
+            return self.user_level_10
+
+
     # flash message
     user_notification_flash = models.BooleanField(
     	default = False,
     )
+
+    user_level_1 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_2 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_3 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_4 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_5 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_6 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_7 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_8 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_9 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_10 = models.IntegerField(
+        default = 0,
+    )
+
 
         
     """#team attributes
@@ -202,9 +285,10 @@ class Submission(models.Model):
         abstract = True
 
     def __str__(self):
-        return '_'.join([self.submission_question.question_title, self.submission_user.user_username])
+        return '_'.join([self.submission_question.question_title, self.submission_user.user_nick])
 
-    submission_user = models.ForeignKey(User)
+    submission_user = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_related")
+
     submission_timestamp = models.DateTimeField(
         auto_now = True,
         auto_now_add = True,
@@ -251,4 +335,28 @@ class ClarificationMessages(models.Model):
 
     clarification_messages_message = models.CharField(
             max_length = 255,
+    )
+
+class Comment(models.Model):
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return str(self.comment_user.user_nick + '_' + self.comment_message)
+
+    comment_timestamp = models.DateTimeField(
+        auto_now = True,
+        auto_now_add = True,
+    )
+    
+    comment_message = models.CharField(
+            max_length = 255,
+            default = '',
+    )
+
+    comment_user = models.ForeignKey(User)
+
+    comment_is_approved = models.BooleanField(
+        default = False,
     )

@@ -1,8 +1,8 @@
-{% extends 'cache_in/layout.html' %}
+{% extends 'base/layout.html' %}
 {% block title_block %}Dashboard | Cache In, Felicity Threads {% endblock %}
 {% block main_block %}
     <p class="page-description">
-        <span id="timer-text">The event will start in <span id="timer-min">0</span> min <span id="timer-sec">12</span> sec</span>
+        The event has started. Go to Problems page to view problems.
     </p>
     <div class="row">
         <div class="col-offset-1-12 col-3-12">
@@ -10,14 +10,9 @@
                 <div class="well">
                     <h3>Updates</h3>
                 </div>
-                <p>
-                <div class="box-item">
-                    <ul>
-                        {% for notif in notifs %}
-                            <li>{{notif.clarification_messages_message}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% for notif in notifs %}
+                    <div class="box-item">{{notif.clarification_messages_message}}</div>
+                {% endfor %}
             </div>
         </div>
         <div class="col-offset-1-12 col-6-12">
@@ -28,16 +23,20 @@
                 <div class="box-item">
                     For any query, doubts, suggessions or discrepencies contact via
                     <ul>
-                        <li>Email: <a href="mailto:cachein@felicity.iiit.ac.in" target="_top">cachein@felicity.iiit.ac.in</a></li>
-                        <li>Facebook: <a href="https://www.facebook.com/events/400975350085040/" target="_top">Cache In @ Felicity'15</a></li>
-                        <li>IRC: <a href="#" target="_top">#CacheIn</a></li>
+                        <li>Email: <a href="mailto:cachein@felicity.iiit.ac.in" target="_blank">cachein@felicity.iiit.ac.in</a></li>
+                        <li>Facebook Forum: <a href="https://www.facebook.com/pages/CacheIn/353693844812708?sk=app_202980683107053" target="_blank">CacheIn | Forum</a></li>
+                        <li>Facebook Events page: <a href="https://www.facebook.com/events/400975350085040/" target="_blank">Cache In @ Felicity'15</a></li>
+                        <!--li>IRC: <a href="#" target="_top">#CacheIn</a></li-->
                     </ul>
                 </div>
                 <div class="box-item">
                     <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
                     <ol id="rules">
                         <li>
-                            Each right answer will fetch you 100 points and will lead you to the next level.<br>
+                            Each right answer will fetch you 100 points and will lead you to the next level.
+                        </li>
+                        <li>
+                            Each wrong answer will penalize you for 30 seconds.
                         </li>
                         <li>
                             The answers can be a single word or a phrase.
@@ -73,37 +72,5 @@
                 }
             });
         });
-    </script>
-    <script>
-        (function(){
-            $(function(){
-                var
-                $min = $('#timer-min'),
-                $sec = $('#timer-sec');
-                var interval = setInterval(function(){
-                    var min = $min.text(), sec = $sec.text();
-                    if ( isNaN( parseInt(min) ) || isNaN( parseInt(sec) ) ) {
-                        clearInterval(interval);
-                        return;
-                    }
-                    else {
-                        sec--;
-                        if (sec == -1) {
-                            sec = 59;
-                            min--;
-                        }
-                        if (min < 0) {
-                            $('#timer-text').fadeOut(function(){
-                                $(this).text('The event has started. Go to Problems page to view problems').fadeIn();
-                            });
-                            clearInterval(interval);
-                            return;
-                        }
-                        $min.text(min);
-                        $sec.text(sec);
-                    }
-                }, 1000);
-            });
-        })();
     </script>
 {% endblock %}
