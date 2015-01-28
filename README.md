@@ -11,7 +11,7 @@ Required Dependencies
 + django-countries (pip install django-countries)
 + django-cas (from ssh://hg@bitbucket.org/ParthKolekar/django-cas, pypi is too old to be relevent in Django >=1.7)
 + longerusername (pip install longerusername)
-+ virtualenv (pip install virtualenv)
++ virtualenv (pip install virtualenv) ### ONLY IF VITRUAL ENVIRONMENT NECESSARY. DON'T IF ALREADY ON A VIRTUALENV. ###
 + redis (apt-get install redis-server)
 + celery (pip install celery[redis])
 + djcelery (pip install django-celery)
