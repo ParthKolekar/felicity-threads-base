@@ -1,12 +1,16 @@
 from django.shortcuts import render
-# Create your views here.
+
 from django.contrib.auth.decorators import login_required
+
 from base.models import User, ClarificationMessages
-from base.tasks import checker_queue
 from kings_of_ml.models import Question, Submission, Comment
+
+from kings_of_ml.tasks import checker_queue
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+
 import logging
 import datetime
 
@@ -125,10 +129,11 @@ def submit(request, level, id):
     print time_last, datetime.datetime.now(utc)
     if(time_last is None or time_last + time_limit <= datetime.datetime.now(utc)):
         ans_file = request.FILES.get("answer_file")
-        #print ans_file, request.FILES
         ans_text = request.POST.get("answer_text")
+
         if not ans_text: #FILE Type Question.
             ans_text = ''
+
         if ans_text and len(ans_text) > 255:
             # return HttpResponse(content = 'String too large.', status=413)
             return render(request, 'base/error.html', {'error_code':3})
@@ -137,16 +142,10 @@ def submit(request, level, id):
 
             question = question[0]
             submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
-
-            # Question Upload type is file. Yahaan ka done done :D
-            if question.question_upload_type == 'FL':
-            	submission.save()
-                checker_queue.delay(submission.id)
-                return HttpResponseRedirect('/contest/kings_of_ml/problems')
-
-            ans = submission.__check_ans__()
-
-            
+            submission.save()
+        
+            if question.question_upload_type == 'ST':
+                ans = submission.__check_ans__()
 
             level_subs = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level)
             level_acc_question_ids_query = level_subs.filter(submission_state='AC')       
@@ -155,6 +154,12 @@ def submit(request, level, id):
 
             for subs in level_acc_question_ids_query:
                 level_acc_question_ids.add(subs.submission_question.question_level_id)
+
+            bool_level_up = (int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids)
+            # Question Upload type is file. Yahaan ka done done :D
+            if question.question_upload_type == 'FL':
+                checker_queue.delay(submission.id,bool_level_up)
+                return HttpResponseRedirect('/contest/kings_of_ml/problems')
 
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 count = submission.submission_user.counter_inc(int(level))

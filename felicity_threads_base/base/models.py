@@ -121,7 +121,7 @@ class Question(models.Model):
         if self.question_upload_type == STRING:
             return self.question_answer_string.lower().replace(' ','') == submission_string.lower().replace(' ','')
         else:
-            pass
+            raise Exception("Question not String Type.")
             #tasks.checker_queue(submission_id)
 
 """class Team(models.Model):
@@ -313,9 +313,7 @@ class Submission(models.Model):
 
     def __check_ans__(self):
         if(self.submission_question.question_upload_type == FILE):
-        # if file type then let the celery queue handle the submission and the database update
-        #self.submission_question.check_submission(self.submission_storage,self.id)
-            pass
+            raise Exception("Wrong Method Called.Question not String Type.")
         elif(self.submission_question.check_submission(self.submission_string,self.id)):
             self.submission_state = AC
             self.submission_score = 100
