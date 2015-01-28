@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 import datetime, os, binascii
+import tasks 
 
 def question_image_filepath(instance , filename):
     return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
@@ -119,8 +120,10 @@ class Question(models.Model):
     def check_submission(self,submission_string):
         if self.question_upload_type == STRING:
             return self.question_answer_string.lower().replace(' ','') == submission_string.lower().replace(' ','')
-        else: #TODO -- FILE UPLOAD SUBMISSION CHECK
+        else:
             # Essentially Something like this.
+            tasks.checker_queue(self.id)
+	    return True
             # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
             pass
             
@@ -294,7 +297,8 @@ class Submission(models.Model):
         auto_now_add = True,
     )
     submission_string = models.CharField(
-        editable = True,
+        blank = True,
+	editable = True,
         default = '',  
         max_length = 255,
     )
