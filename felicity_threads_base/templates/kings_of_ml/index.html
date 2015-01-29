@@ -1,0 +1,76 @@
+{% extends 'base/layout.html' %}
+{% block title_block %}Dashboard | Kings Of ML, Felicity Threads {% endblock %}
+{% block main_block %}
+    <p class="page-description">
+        The event has started. Go to Problems page to view problems.
+    </p>
+    <div class="row">
+        <div class="col-offset-1-12 col-3-12">
+            <div class="box" id="notifications-box">
+                <div class="well">
+                    <h3>Updates</h3>
+                </div>
+                {% for notif in notifs %}
+                    <div class="box-item">{{notif.clarification_messages_message}}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-offset-1-12 col-6-12">
+            <div class="box" id="rules-box">
+                <div class="well">
+                    <h3>Instructions</h3>
+                </div>
+                <div class="box-item">
+                    For any query, doubts, suggessions or discrepencies contact via
+                    <ul>
+                        <li>Email: <a href="mailto:kingsofml@felicity.iiit.ac.in" target="_blank">kingsofml@felicity.iiit.ac.in</a></li>
+                        <li>Facebook Events page: <a href="https://www.facebook.com/events/1399059787059518/" target="_blank">Kings Of ML @ Felicity'15</a></li>
+                    </ul>
+                </div>
+                <div class="box-item">
+                    <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
+                    <ol id="rules">
+                        <li>   
+		                Scoring for this event will be based on the accuracy of your algorithm.
+                        </li>
+                        <li>   
+                        For each problem you will be given a dataset to work on which will have its own constraints.
+                        </li>   
+                        <li>   
+                        Participants will have to submit a .txt file as their submission.
+                        </li>   
+                        <li>   
+                        Participant cannot submit a solution for a problem more than 10 times in a span of 24 hrs.
+                        </li>   
+                        <li>  
+                        The score you will see during the contest will only be partial (obtained on 40% of the test data).
+                        </li>
+                        <li>
+                        The submission will be re-judged at the end of the event on complete test data.
+                        </li>
+                        <li>
+                        This is an individual event. Any type of plagiarism will lead to disqualification.
+                        </li>
+                        <li>
+                        Top 5 ranked participants of each problem will be asked to submit their codes along with a mini description. Failing to do so will result in elimination. 
+                        </li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $('#rules-btn').click(function(){
+                var $this = $(this);
+                if ($this.hasClass('opened')) {
+                    $('#rules').stop().slideUp(500);
+                    $this.removeClass('opened');
+                }
+                else {
+                    $('#rules').stop().slideDown(500);
+                    $this.addClass('opened');
+                }
+            });
+        });
+    </script>
+{% endblock %}

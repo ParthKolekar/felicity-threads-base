@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 import datetime, os, binascii
+#import tasks 
 
 def question_image_filepath(instance , filename):
     return '/'.join(['images' , str(instance.question_level) , str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)) ,filename])
@@ -97,7 +98,7 @@ class Question(models.Model):
     # and checker script is the one which checks the submission.
     question_upload_file = models.FileField(
         blank = True,
-	upload_to = question_file_upload,
+        upload_to = question_file_upload,
     ) # if upload_type == ST, ignore. 
     question_checker_script = models.FileField(
         blank = True,
@@ -116,14 +117,12 @@ class Question(models.Model):
         else:
             return self.question_upload_file and self.question_checker_script
 
-    def check_submission(self,submission_string):
+    def check_submission(self,submission_string,submission_id):
         if self.question_upload_type == STRING:
             return self.question_answer_string.lower().replace(' ','') == submission_string.lower().replace(' ','')
-        else: #TODO -- FILE UPLOAD SUBMISSION CHECK
-            # Essentially Something like this.
-            # os.system ( "./" + self.question_checker_script + " " + self.upload_file + " " + self.submission_string )
-            pass
-            
+        else:
+            raise Exception("Question not String Type.")
+            #tasks.checker_queue(submission_id)
 
 """class Team(models.Model):
     
@@ -294,6 +293,7 @@ class Submission(models.Model):
         auto_now_add = True,
     )
     submission_string = models.CharField(
+        blank = True,
         editable = True,
         default = '',  
         max_length = 255,
@@ -313,8 +313,8 @@ class Submission(models.Model):
 
     def __check_ans__(self):
         if(self.submission_question.question_upload_type == FILE):
-            pass
-        elif(self.submission_question.check_submission(self.submission_string)):
+            raise Exception("Wrong Method Called.Question not String Type.")
+        elif(self.submission_question.check_submission(self.submission_string,self.id)):
             self.submission_state = AC
             self.submission_score = 100
         else:
