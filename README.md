@@ -25,3 +25,18 @@ Execute these:
 + source venv/bin/activate
 
 
+Notes
+-----
+
++ The checker script should have a python function named 'check' returning an integer between 0 to 100.
+
+
+QuickStart
+----------
+
++ Copy the app folder which is most similar to your usage with the contest name
++ Also copy the Templates accordingly.
++ `grep -ir old-name` and then `sed -i 's/old-name/new-name/g' *`
++ Register app in settings.py
++ Make Appropriate changes in views.py, tasks.py and templates.
++ Have fun. :)

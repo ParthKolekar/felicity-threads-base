@@ -98,7 +98,7 @@ class Question(models.Model):
     # and checker script is the one which checks the submission.
     question_upload_file = models.FileField(
         blank = True,
-	upload_to = question_file_upload,
+        upload_to = question_file_upload,
     ) # if upload_type == ST, ignore. 
     question_checker_script = models.FileField(
         blank = True,
