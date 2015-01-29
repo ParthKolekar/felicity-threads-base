@@ -17,18 +17,12 @@ def test(param):
 @app.task()
 def checker_queue(submission_id, bool_level_up):
     submission = Submission.objects.filter(id=submission_id)[0]
-    # the slicing of 15 to remove /contest/media.
-    # Yeah. I'm lazy that way.
     checker_path = submission.submission_question.question_checker_script.path
-    checker_path = os.path.join(MEDIA_ROOT, checker_path)
-
     module = imp.load_source('kings_of_ml.checker', checker_path)
+    
     level = submission.submission_question.question_level
     level_subs = Submission.objects.filter(submission_user__user_username=submission.submission_user.user_username).filter(submission_question__question_level=level)  
 
-    # the slicing of 15 to remove /contest/media.
-    # Yeah. I'm lazy that way.
-    # Comments also copied at times. So. That.
     perfect_file_path = submission.submission_question.question_upload_file.path
     to_check_file_path = submission.submission_storage.path
 
