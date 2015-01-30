@@ -49,12 +49,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('submission_timestamp', models.DateTimeField(auto_now=True, auto_now_add=True)),
-                ('submission_string', models.CharField(default=b'', max_length=255)),
+                ('submission_string', models.CharField(default=b'', max_length=255, blank=True)),
                 ('submission_storage', models.FileField(upload_to=base.models.submission_storage_path)),
                 ('submission_state', models.CharField(default=b'PR', max_length=2, choices=[(b'WA', b'Wrong Answer'), (b'AC', b'Accepted'), (b'PR', b'Processing')])),
                 ('submission_score', models.FloatField(default=0)),
-                ('submission_question', models.ForeignKey(to='gordian_knot.Question')),
-                ('submission_user', models.ForeignKey(related_name='gordian_knot_submission_related', to='base.User')),
+                ('submission_question', models.ForeignKey(to='kings_of_ml.Question')),
+                ('submission_user', models.ForeignKey(related_name='kings_of_ml_submission_related', to='base.User')),
             ],
             options={
                 'abstract': False,
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='comment',
             name='comment_question',
-            field=models.ForeignKey(to='gordian_knot.Question'),
+            field=models.ForeignKey(to='kings_of_ml.Question'),
             preserve_default=True,
         ),
         migrations.AddField(

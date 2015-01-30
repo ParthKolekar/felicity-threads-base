@@ -1,9 +1,9 @@
 {% extends 'base/layout.html' %}
-{% block title_block %}Scoreboard | Gordian Knot, Felicity Threads{% endblock %}
+{% block title_block %}Scoreboard | Kings Of ML, Felicity Threads{% endblock %}
 {% block pagesubtitle %}| Scoreboard{% endblock %}
 {% block main_block %}
 <div class="container" id="problems-list">
-    <h4>The scoreboard is now frozen. Stay tuned for updates.</h4>
+    <h4>The scoreboard updates every 1 minute.</h4>
 	<div id="problems-table-wrapper" class="box scoreboard">
 		<table border="0">
 			<thead>
@@ -33,7 +33,7 @@
 			$.each(results, function(i, row){
 				var n = $('<tr>')
 				.append( $('<td>').text(i+1) )
-				.append( (isSU(row[0])) ? $('<td>').text(row[0]) : $('<td>').html( row[0] ) )
+				.append( (isSU(row[0])) ? $('<td>').text(row[0]) : $('<td>').html( '<a href="/contest/kings_of_ml/accepted/'+row[0]+'">'+row[0]+'</a>') )
 				.append( $('<td>').text(row[1]) )
 				.appendTo( $tbody );
 				if ( row[0] == currUserNick )
