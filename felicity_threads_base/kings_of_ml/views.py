@@ -124,18 +124,24 @@ def submissions(request):
 def submit(request, level, id):
     context = RequestContext(request)
     user = User.objects.filter(user_username=request.user.username)[0]
-    if str(user.user_access_level) < level:
-        return render(request, 'base/error.html', {'error_code':1})
+#    if str(user.user_access_level) < level:
+#        return render(request, 'base/error.html', {'error_code':1})
     #print request.method
     time_last = None
-    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
+    number_of_submissions = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).count()
+    time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='AC').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
     time_limit = datetime.timedelta(0, 7200)
     print time_last, datetime.datetime.now(utc)
-    if(time_last is None or time_last + time_limit <= datetime.datetime.now(utc)):
-        ans_file = request.FILES.get("answer_file")
+    if ((time_last is None or time_last + time_limit <= datetime.datetime.now(utc)) and (number_of_submissions <= 10)):
+        ans_file = request.FILES.get("answer_file", None)
+        code_file = request.FILES.get("code_file", None)
         ans_text = request.POST.get("answer_text")
+
+	if (code_file == None or ans_file == None):
+            # Submit both files
+            return render(request, 'base/error.html', {'error_code':9})
 
         if not ans_text: #FILE Type Question.
             ans_text = ''
@@ -147,7 +153,7 @@ def submit(request, level, id):
         if len(question):
 
             question = question[0]
-            submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
+            submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file, submission_code = code_file)
             submission.save()
         
             if question.question_upload_type == 'ST':

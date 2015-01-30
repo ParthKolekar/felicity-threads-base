@@ -1,7 +1,6 @@
 {% extends "base/layout.html" %}
 {% block title_block %}Level {{question_data.question_level}} Question {{question_data.question_level_id}} | Kings Of ML, Felicity Threads{% endblock %}
 {% block head_block %}
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 {% endblock %}
 {% block main_block %}
 <div id="question">
@@ -30,9 +29,15 @@
 							<input type="text" placeholder="Answer" name="answer_text" />
 							{% endif %}
 							{% if question_data.question_upload_type == 'FL' %}
-							<input type="file" placeholder="File" name="answer_file" />
+							<div>
+							<div style=""> Evaluated Data</div><input type="file" style="btn btn-blue" placeholder="Evaluated Data" name="answer_file" />
+							</div>
+							<div style="margin-top: 20px">
+							<div style=""> Code </div><input type="file" style="btn btn-blue" placeholder="Code" name="code_file" />
+							</div>
+							
 							{% endif %}
-							<input type="submit" value="Submit" class="btn btn-yellow" />
+							<input type="submit" value="Submit" class="btn btn-blue" />
 						</div>
 					</div>
 				</form>

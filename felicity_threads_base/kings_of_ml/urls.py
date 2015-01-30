@@ -7,7 +7,7 @@ from kings_of_ml import views
 urlpatterns = patterns('',
 	url(r'^$' , views.index, name='index'),
     url(r'^problems$', views.problems, name='problems'),
-    url(r'^accepted/(.*)$', views.accepted, name='accepted'),
+    #url(r'^accepted/(.*)$', views.accepted, name='accepted'),
     #url(r'^submissions$', views.submissions, name='submissions'),
 
     #regex \d{1,2} means that the question level or question id will be at max 99.

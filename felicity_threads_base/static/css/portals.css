@@ -4,7 +4,7 @@ body {
 }
 /*
  * dark green used in cache in - #098816
- * Dark yellow used on page here and there (borders) - #96BC0B
+ * Dark yellow used on page here and there (borders) - #057cb8
  */
 
 ::-moz-selection {
@@ -15,42 +15,32 @@ body {
     color: white;
     background: #195684;
 }
-.btn.btn-yellow {
-    color: #fff;
-    background-color: #96BC0B;
-    border: 1px solid #71890F;
-}
-
-.btn.btn-yellow:hover {
-    background-color: #71890F;
-    border: 1px solid #515E15;
-}
 
 .box {
     border-radius: 25px 25px 0 0;
     margin-top: 20px;
 }
 hr {
-    background: #96BC0B;
+    background: #057cb8;
     margin: 20px 0;
     border: none;
     height: 2px;
 }
 .sub-navbar {
     text-align: center;
-    border-bottom: 1px solid #96BC0B;
+    border-bottom: 1px solid #057cb8;
 }
 .sub-navbar .box {
     background: rgb(5,17,22);
-    border-left: 1px solid #96BC0B;
+    border-left: 1px solid #057cb8;
     border-radius: 0 0 25px 25px;
-    border-right: 1px solid #96BC0B;
+    border-right: 1px solid #057cb8;
     float: right;
     margin-bottom: 25px;
     white-space: nowrap;
 }
 .sub-navbar .box, .box .well {
-    border-bottom: 3px solid #96BC0B;
+    border-bottom: 3px solid #057cb8;
 }
 .sub-navbar ul {
     display: inline-block;
@@ -61,17 +51,25 @@ hr {
 .sub-navbar li {
     display: inline-block;
 }
-.sub-navbar a {
+.sub-navbar a,
+.sub-navbar div {
     display: block;
     margin: 0 5px;
     padding: 5px 20px;
     transition: background-color 0.2s;
 }
-.sub-navbar a.active {
-    background-color: #96BC0B;
+.sub-navbar div {
+    border: 1px solid #057cb8;
+    cursor: pointer;
 }
+.sub-navbar div.active,
+.sub-navbar a.active {
+    color: white;
+    background-color: #057cb8;
+}
+.sub-navbar div:hover,
 .sub-navbar a:hover {
-    background-color: #71890F;
+    background-color: #035a91;
 }
 h1 {
     font-family: "Open Sans", sans-serif;
@@ -118,10 +116,10 @@ p.page-description {
     font-size: 1.2em;
     text-align: center;
 }
-#problems-list #problems-table-wrapper {
-    border: 1px solid #96BC0B;
+#problems-list #problems-table-wrapper, .score-wrapper {
+    border: 1px solid #057cb8;
     border-bottom: none;
-    box-shadow: 0 -2px 0px #96BC0B;
+    box-shadow: 0 -2px 0px #057cb8;
     display: inline-block;
 }
 #problems-list thead tr, #problems-list tbody tr:not(:last-child) {
@@ -157,13 +155,13 @@ p.page-description {
     white-space: nowrap;
 }
 #problems-list .label.correct {
-  background-color:  #96BC0B;
+  background-color:  darkgreen;
 }
 #problems-list .label.wrong {
-    background: #9B1E1B;
+    background: darkred;
 }
 #problems-list .label.unattempted {
-    background: #0C6FA0;
+    background: #057cb8;
 }
 #question .question-text {
     font-size: 1.1em;
@@ -199,7 +197,7 @@ p.page-description {
     max-height: 500px;
 }
 .footer {
-    border-top: 1px solid #96BC0B;
+    border-top: 1px solid #057cb8;
 }
 #notifications-box .box-item:nth-child(odd),
 .scoreboard tr:nth-child(even) {
@@ -223,10 +221,10 @@ tr.current-user {
 padding-bottom:50px;
 }
 td:nth-child(3):not(.scoreboard td) {
-  min-width: 300px;
+  amin-width: 300px;
 }
 .scoreboard table tr td:nth-child(2) {
-    min-width: 300px;
+   amin-width: 300px;
 }
 
 @media all and (max-width: 668px) {
@@ -246,8 +244,8 @@ td:nth-child(3):not(.scoreboard td) {
     margin-top: 7px;
     margin-bottom: 7px;
     padding-left: 5px;
-    border-bottom: 2px solid #77770D;
-    border-left: 2px solid #77770D;
+    border-bottom: 2px solid #035a91;
+    border-left: 2px solid #035a91;
 }
 .comment .usernick {
     line-height: 40px;
@@ -272,4 +270,7 @@ tbody:nth-child(even) {
 }
 .scoreboard tbody {
     background: none;
+}
+#score-nav {
+border-bottom: none;
 }

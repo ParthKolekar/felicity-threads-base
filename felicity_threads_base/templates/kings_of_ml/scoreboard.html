@@ -4,7 +4,16 @@
 {% block main_block %}
 <div class="container" id="problems-list">
     <h4>The scoreboard updates every 1 minute.</h4>
-	<div id="problems-table-wrapper" class="box scoreboard">
+    <div class="sub-navbar" id="score-nav">
+    	<ul>
+    		<li><div class="navitem" onclick="display(0)">Kings Of Language</div></li>
+    		<li><div class="navitem" onclick="display(1)">CAPTCHAcracker - Easy</div></li>
+    		<li><div class="navitem" onclick="display(2)">CAPTCHAcracker - Hard</div></li>
+    	</ul>
+    </div>
+
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
 		<table border="0">
 			<thead>
 				<tr>
@@ -17,6 +26,33 @@
 			</tbody>
 		</table>
 	</div>
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+				</tbody>
+		</table>
+	</div>
+    </div>
 </div>
 <div id="quick-float-nav">
 	<div class="quick-float-section">
@@ -26,23 +62,37 @@
 	</div>
 </div>
 <script type="text/javascript">
-	$(function(){
-        var currUserNick = '{{user_nick}}';
-		var $tbody = $('tbody');
-		$.get('/contest/static/score.json', function(results) {
-			$.each(results, function(i, row){
-				var n = $('<tr>')
-				.append( $('<td>').text(i+1) )
-				.append( (isSU(row[0])) ? $('<td>').text(row[0]) : $('<td>').html( '<a href="/contest/kings_of_ml/accepted/'+row[0]+'">'+row[0]+'</a>') )
-				.append( $('<td>').text(row[1]) )
-				.appendTo( $tbody );
-				if ( row[0] == currUserNick )
-					n.addClass('current-user').css({'background-color': 'rgb(113,137,15)', 'opacity':'0'});
-			});
-			try { highlightCurrent(); } catch (e) { }
+var currUserNick = '{{user_nick}}';
+function getScoreboard(url, $tbody) {
+	$.get(url, function(results) {
+		$.each(results, function(i, row){
+			var n = $('<tr>')
+			.append( $('<td>').text(i+1) )   //Rank
+			.append( $('<td>').text(row[0])) //Name
+			.append( $('<td>').text(row[4])) //score
+			.appendTo( $tbody );
+			if ( row[0] == currUserNick )
+				n.addClass('current-user').css({'background-color': '#057cb8', 'opacity':'0'});
 		});
-		$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
+		try { highlightCurrent(); } catch (e) { }
 	});
+}
+var jsons = ['http://felicity.iiit.ac.in/data/score1.json', 'http://felicity.iiit.ac.in/data/score2.json','http://felicity.iiit.ac.in/data/score3.json'];
+function display(i) {
+	var $this = $('.sub-navbar .navitem').eq( i );
+	if ( $this.hasClass('active') )
+		return;
+	var $tbody = $('tbody').eq(i);
+	if ( $tbody.children().length == 0 ) 
+		getScoreboard( jsons[ i ], $tbody );
+	$('.navitem.active').removeClass('active');
+	$this.addClass('active');
+	$('.score-wrapper').hide().eq( i ).fadeIn();
+}
+$(function(){
+	$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
+	display(0);
+});
 </script>
 <script>
 function highlightCurrent() {
@@ -53,10 +103,6 @@ function highlightCurrent() {
 		c.animate({ 'opacity':'1'}, 500);
 		$(document).scrollTop( c.offset().top - $(window).height()/2 + c.height());
 	}
-}
-var su = [ "watashi wa happy!!", "ghost_rider", "abhineet_jain", "primate", "oldschoolburke", "darkshadows", "hait10", "merci", "tajmahal" ];
-function isSU(n) {
-	return su.indexOf(n.toLowerCase().trim()) != -1;
 }
 </script>
 {% endblock %}

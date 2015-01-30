@@ -1,3 +1,5 @@
 flags/
 admin/
+contest_data/
 *.json
+*.mp3
