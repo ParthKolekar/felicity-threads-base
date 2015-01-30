@@ -39,6 +39,6 @@ def checker_queue(submission_id, bool_level_up):
         submission.submission_score = score
     else:
         submission.submission_state = 'WA'
-	submission.submission_score = 0.0
+        submission.submission_score = 0.0 # Wrong Answer means 0.0 I get score as -1.0
     submission.save()
     return str(submission) + " " + str(score)

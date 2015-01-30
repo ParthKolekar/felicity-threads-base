@@ -131,7 +131,7 @@ def submit(request, level, id):
     time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
-    time_limit = datetime.timedelta(0, 30)
+    time_limit = datetime.timedelta(0, 7200)
     print time_last, datetime.datetime.now(utc)
     if(time_last is None or time_last + time_limit <= datetime.datetime.now(utc)):
         ans_file = request.FILES.get("answer_file")
@@ -162,11 +162,15 @@ def submit(request, level, id):
                 level_acc_question_ids.add(subs.submission_question.question_level_id)
 
             bool_level_up = (int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids)
+            
             # Question Upload type is file. Yahaan ka done done :D
+            # The rules for score updation is in task queue itself, 
+            # If you change here, change there too. Don't be an ass.
             if question.question_upload_type == 'FL':
                 checker_queue.delay(submission.id,bool_level_up)
                 return HttpResponseRedirect('/contest/kings_of_ml/problems')
 
+            # the level up and the 'AC', 'WA' rules here.
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 pass
             submission.save()
