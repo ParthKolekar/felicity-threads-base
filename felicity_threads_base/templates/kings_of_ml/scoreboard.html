@@ -20,6 +20,7 @@
 					<th>Rank</th>
 					<th>Nick</th>
 					<th>Score</th>
+					<th>Time Stamp</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,6 +34,7 @@
 					<th>Rank</th>
 					<th>Nick</th>
 					<th>Score</th>
+					<th>Time Stamp</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,6 +48,7 @@
 					<th>Rank</th>
 					<th>Nick</th>
 					<th>Score</th>
+					<th>Time Stamp</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -69,7 +72,8 @@ function getScoreboard(url, $tbody) {
 			var n = $('<tr>')
 			.append( $('<td>').text(i+1) )   //Rank
 			.append( $('<td>').text(row[0])) //Name
-			.append( $('<td>').text(row[4])) //score
+			.append( $('<td>').text(row[1].slice(0,7))) //score
+			.append( $('<td>').text(row[2] + " UTC")) //TimeStamp
 			.appendTo( $tbody );
 			if ( row[0] == currUserNick )
 				n.addClass('current-user').css({'background-color': '#057cb8', 'opacity':'0'});
@@ -77,7 +81,7 @@ function getScoreboard(url, $tbody) {
 		try { highlightCurrent(); } catch (e) { }
 	});
 }
-var jsons = ['http://felicity.iiit.ac.in/data/score1.json', 'http://felicity.iiit.ac.in/data/score2.json','http://felicity.iiit.ac.in/data/score3.json'];
+var jsons = ['http://felicity.iiit.ac.in/contest/static/score1.json', 'http://felicity.iiit.ac.in/contest/static/score2.json','http://felicity.iiit.ac.in/contest/static/score3.json'];
 function display(i) {
 	var $this = $('.sub-navbar .navitem').eq( i );
 	if ( $this.hasClass('active') )
