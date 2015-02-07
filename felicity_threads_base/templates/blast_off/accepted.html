@@ -1,0 +1,78 @@
+{% extends "base/layout.html" %}
+{% block title_block %}Submissions | Blast Off, Felicity Pulsation {% endblock %}
+{% block pagesubtitle %}{% endblock %}
+{% block main_block %}
+<div class="container" id="problems-list">
+	<h2> Submissions for user &nbsp; <code> {{look_nick}} </code> </h2>
+	<div id="problems-table-wrapper" class="box">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Level</th>
+					<th>Question</th>
+					<th>Title</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for problem in problem_data %}
+					<tr>
+						<td>{{problem.0}}</td>
+						<td>{{problem.1}}</td>
+						<td><a href="/contest/blast_off/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
+						{% if problem.3 == "Accepted" %}
+							<td><span class="label correct">{{problem.3}}</span></td>
+						{% elif problem.3 == "Wrong Answer" %}
+							<td class="problem-title"><span class="label wrong">{{problem.3}}</span></td>
+						{% else %}
+							<td><span class="label unattempted">{{problem.3}}</span></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+$(function () {
+    questionsTr = [];
+    $('tbody tr').each(function(){
+        var $this = $(this);
+        var $children = $this.children();
+        var level = parseInt($children.eq(0).text());
+        if (isNaN(level)) {
+            return;
+        }
+        if (questionsTr[level] === undefined) {
+            questionsTr[level] = [];
+        }
+        var id = parseInt($children.eq(1).text());
+        if (isNaN(id)) {
+            return;
+        }
+        questionsTr[level][id] = this;
+    });
+    $('tbody').remove();
+    $.each(questionsTr, function(level, questionSet){
+        if (questionSet === undefined) {
+            return;
+        }
+        var $tbody = $('<tbody>');
+        $('table').append($tbody);
+        var shouldSetLevel = true;
+        for(var i=1; i<=5; i++) {
+            if (questionSet[i] === undefined) {
+                continue;
+            }
+            if (shouldSetLevel) {
+                shouldSetLevel = false;
+            }
+            else {
+                $(questionSet[i]).children().eq(0).text('');
+            }
+            $tbody.append(questionSet[i]);
+        }
+    });
+});
+</script>
+{% endblock %}
