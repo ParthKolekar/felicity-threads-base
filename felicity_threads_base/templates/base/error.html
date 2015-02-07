@@ -1,16 +1,16 @@
 {% extends "base/layout.html" %}
-{% block title_block %}Error | Kings Of ML, Felicity Threads{% endblock %}
+{% block title_block %}Error | Blast Off, Felicity Pulsation{% endblock %}
 {% block pagesubtitle %}| Error{% endblock %}
 {% block main_block %}
 	<div class="row">
 		<div class="col-offset-2-12 col-8-12">
 			{% if error_code == 1 %}
 				<h3>You do not have access to this level. Clear all previous levels.</h3>
-				<a href="/contest/kings_of_ml/problems" class="btn btn-blue">Go to Problems</a>
+				<a href="/contest/blast_off/problems" class="btn btn-blue">Go to Problems</a>
 			{% elif error_code == 2 %}
 				<h1>404</h1>
 				<h3>Problem does not exist.</h3>
-				<a href="/contest/kings_of_ml/problems" class="btn btn-blue">Go to Problems</a>
+				<a href="/contest/blast_off/problems" class="btn btn-blue">Go to Problems</a>
 			{% elif error_code == 3 %}
 				<h3>Answer too large<h3>
 				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
@@ -21,7 +21,7 @@
 				<h3>Can not comment before 30 seconds after previous comment.<h3>
 				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
 			{% elif error_code == 6 %}
-				<h3>Contest over.<h3>
+				<h3>Contest not yet started<h3>
 				<a href="javascript:void(0)" onclick="window.location.reload()" class="btn btn-blue">Refresh</a>
 			{% elif error_code == 9 %}
 				<h3> Submit both the code and the Output data <h3>
