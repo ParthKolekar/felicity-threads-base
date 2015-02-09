@@ -35,7 +35,7 @@ def index(request):
 
     notifs = ClarificationMessages.objects.all().order_by('id').reverse()
     print notifs
-    return render(request, 'blast_off/index.html', {'user_nick':profile.user_nick, 'notifs': notifs})
+    return render(request, 'blast_off/index.html', {'user_nick':profile.user_nick, 'notifs': notifs, 'user_access_level':profile.user_access_level})
 
 @login_required
 def problems(request):
@@ -56,7 +56,7 @@ def problems(request):
         else:
             sta = SUBMISSION_STATE_CHOICES['NA']
         problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
-    return render(request, 'blast_off/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick})
+    return render(request, 'blast_off/problems.html', {'problem_data':problem_data, 'user_nick':profile.user_nick, 'user_access_level':profile.user_access_level})
 
 @login_required
 def question(request, level, id):
@@ -69,7 +69,7 @@ def question(request, level, id):
         question_comments = Comment.objects.filter(comment_question=question_data).filter(comment_is_approved=True).order_by('comment_timestamp')
         if int(level) <= user_level or request.user.is_staff :
             question_details = question_data[0]
-            return render(request, 'blast_off/question.html', {'question_data':question_details, 'user_nick':user_nick, 'question_comments':question_comments})
+            return render(request, 'blast_off/question.html', {'question_data':question_details, 'user_nick':user_nick, 'question_comments':question_comments, 'user_access_level':profile.user_access_level})
         else:
             return render(request, 'base/error.html', {'error_code': 1, 'user_nick':user_nick})
     else:
@@ -118,7 +118,7 @@ def submit(request, level, id):
                 count = submission.submission_user.counter_inc(int(level))
                 if(count == 6):
                     no_of_submissions = len(level_subs) + 1 #for current submission +1
-                    submission.submission_user.score_up(int(level)*100)
+                    submission.submission_user.score_up(int(level)*300)
                 if(count == 5):
                     submission.submission_user.level_up()
                 submission.submission_user.score_up(int(level)*100)

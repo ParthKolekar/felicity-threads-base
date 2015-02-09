@@ -1,82 +1,100 @@
 {% extends 'base/layout.html' %}
 {% block title_block %}Dashboard | Blast Off, Felicity Pulsation {% endblock %}
 {% block main_block %}
-    <p class="page-description">
-        The event has started. Go to Problems page to view problems.
-    </p>
-    <div class="row">
-        <div class="col-offset-1-12 col-3-12">
-            <div class="box" id="notifications-box">
-                <div class="well">
-                    <h3>Updates</h3>
-                </div>
-                {% for notif in notifs %}
-                    <div class="box-item">{{notif.clarification_messages_message}}</div>
-                {% endfor %}
+<p class="page-description">
+The event has started. Go to Problems page to view problems.
+</p>
+<div class="row">
+    <div class="col-offset-1-12 col-3-12">
+        <div class="box" id="notifications-box">
+            <div class="well">
+                <h3>Updates</h3>
             </div>
+            {% for notif in notifs %}
+            <div class="box-item">{{notif.clarification_messages_message}}</div>
+            {% endfor %}
         </div>
-        <div class="col-offset-1-12 col-6-12">
-            <div class="box" id="rules-box">
-                <div class="well">
-                    <h3>Instructions</h3>
-                </div>
-                <div class="box-item">
-                    For any query, doubts, suggessions or discrepencies contact via
+    </div>
+    <div class="col-offset-1-12 col-6-12">
+        <div class="box" id="rules-box">
+            <div class="well">
+                <h3>Instructions</h3>
+            </div>
+            <div class="box-item">
+                For any query, doubts, suggessions or discrepencies contact via
+                <ul>
+                    <li>Email: <a href="mailto:blastoff@felicity.iiit.ac.in" target="_blank">blastoff@felicity.iiit.ac.in</a></li>
+                    <li>Facebook Events page: <a href="https://www.facebook.com/events/405701502936482/" target="_blank">Blast Off @ Felicity'15</a></li>
+                </ul>
+            </div>
+            <div class="box-item">
+                <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
+                <ol id="rules">
+                    <li>
+                    The answer to every question will be a word or number or alphanumeric Strings
+                    </li>
+                    <li>
+                    There are a total of 8 levels and you can go to next level only after completing a level
+                    </li>
+                    <li>
+                    The first 4 levels are based on the general knowledge in electronics and the next 4 levels are advanced levels.
+                    </li>
+                    <li>
+                    There are 6 questions in a level and each question carries some points depending on the level
+                    </li>
+                    <li>
                     <ul>
-                        <li>Email: <a href="mailto:blastoff@felicity.iiit.ac.in" target="_blank">blastoff@felicity.iiit.ac.in</a></li>
+                        <li>
+                        Unlockin Level and Bonus Question
+                        </li>
+                        <li>
+                        5 questions need to be answered to complete the level and go to next level.
+                        </li>
+                        <li>
+                        The sixth solved question of the level will fetch you bonus points.
+                        </li>
                     </ul>
-                </div>
-                <div class="box-item">
-                    <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
-                    <ol id="rules">
+                    </li>
+                    <li>
+                    <ul>
                         <li>
-                            There are 10 levels in all.
-                            Each question carries some points depending on its level.
-                            For unlocking each level, there are some requirements.
+                        Scoring
                         </li>
                         <li>
-                            Requirements for Unlocking Level:
-                            <ul>
-                                <li>Solve 3 questions in the previous level</li>
-                            </ul>
+                        For every correct answer in a level you will fetch level*100 points.
                         </li>
                         <li>
-                            Point Distribution:
-                            <ul>
-                                <li>For any question in a level, correct answer fetches (level * 100) points.</li>
-                            </ul>
-                            On completion of any level, bonus points are awarded in the following manner:
-                            <ul>
-                                <li>(level * 20) - Number of submissions in that level</li>
-                            </ul>
+                        For bonus question after every level you will fetch level*100 points.
                         </li>
-                        <li>
-                            Each wrong attempt on any question will have a penalty of 30 seconds, on that question.
-                        </li>
-                        <li>
-                            Tie in scores will be resolved, first by level, then by timestamp.
-                        </li>
-                        <li>
-                            Any attempt to play with the system would lead to <strong>disqualification</strong>.
-                        </li>
-                    </ol>
-                </div>
+                    </ul>
+                    </li>
+                    <li>
+                    Each wrong attempt on any question will have a penalty of 30 seconds, on that question.
+                    </li>
+                    <li>
+                    Tie in scores will be resolved, first by level, then by timestamp.
+                    </li>
+                    <li>
+                    Any attempt to play with the system would lead to disqualification.
+                    </li>
+                </ol>
             </div>
         </div>
     </div>
-    <script>
-        $(function(){
-            $('#rules-btn').click(function(){
-                var $this = $(this);
-                if ($this.hasClass('opened')) {
-                    $('#rules').stop().slideUp(500);
-                    $this.removeClass('opened');
-                }
-                else {
-                    $('#rules').stop().slideDown(500);
-                    $this.addClass('opened');
-                }
+</div>
+<script>
+$(function(){
+        $('#rules-btn').click(function(){
+            var $this = $(this);
+            if ($this.hasClass('opened')) {
+            $('#rules').stop().slideUp(500);
+            $this.removeClass('opened');
+            }
+            else {
+            $('#rules').stop().slideDown(500);
+            $this.addClass('opened');
+            }
             });
         });
-    </script>
+</script>
 {% endblock %}

@@ -1,9 +1,23 @@
 {% extends "base/layout.html" %}
 {% block title_block %}Level {{question_data.question_level}} Question {{question_data.question_level_id}} | Blast Off, Felicity Pulsation{% endblock %}
 {% block head_block %}
-<!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script> -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 {% endblock %}
 {% block main_block %}
+    <style>
+    #background-static {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: -10;
+        top: 0;
+        left: 0;
+        background-image: url('/contest/static/images/background-static-problem.jpg');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+    </style>
+
 <div id="question">
 	<div class="row">
 		{% if question_data != None %}
@@ -78,4 +92,5 @@
 		</div>
 	</div>
 </div>
+<div id="background-static"></div>
 {% endblock %}

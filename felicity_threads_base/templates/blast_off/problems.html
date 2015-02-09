@@ -2,6 +2,20 @@
 {% block title_block %}Problems | Blast Off, Felicity Pulsation {% endblock %}
 {% block pagesubtitle %}| Problems{% endblock %}
 {% block main_block %}
+    <style>
+    #background-static {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: -10;
+        top: 0;
+        left: 0;
+        background-image: url('/contest/static/images/background{{user_access_level}}.jpg');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+    </style>
+
 <div class="container" id="problems-list">
 	<div id="problems-table-wrapper" class="box">
 		<table border="0">
@@ -59,7 +73,7 @@ $(function () {
         var $tbody = $('<tbody>');
         $('table').append($tbody);
         var shouldSetLevel = true;
-        for(var i=1; i<=5; i++) {
+        for(var i=1; i<=6; i++) {
             if (questionSet[i] === undefined) {
                 continue;
             }
@@ -74,4 +88,5 @@ $(function () {
     });
 });
 </script>
+    <div id='background-static'></div>
 {% endblock %}
