@@ -7,19 +7,19 @@
     <link rel="stylesheet" href="http://felicity.iiit.ac.in/css/normalize.css">
     <link rel="stylesheet" href="http://felicity.iiit.ac.in/css/base.css"/>
     <link rel="stylesheet" href="/contest/static/css/portals.css"/>
-    <!@link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     {% block head_block %}{% endblock %}
     <script>window.jQuery || document.write('<script src="http://felicity.iiit.ac.in/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-    <meta name="description" content="Blast Off @ IIIT-H">
-    <meta name="keywords" content="felicity , blast , off , blast_off , contest, WATASHI , WA , HAPPY">
+    <meta name="description" content="TLE @ IIIT-H">
+    <meta name="keywords" content="felicity , tle , contest, WATASHI , WA , HAPPY">
 </head>
 <body>
     <div class="wrapper">
         <div class="navbar">
 	<a href="http://felicity.iiit.ac.in/home" class="navbar-title">felicity<sup>15</sup></a>
             &gt;
-            <a href="http://felicity.iiit.ac.in/pulsation/">Pulsation</a>
+            <a href="http://felicity.iiit.ac.in/threads/">Threads</a>
             <ul>
                 <li>Hello, {{user_nick}}</li>
                 <li>
@@ -29,17 +29,17 @@
         </div>
         <div class="sub-navbar">
             <ul class="box">
-                <li><a href="/contest/blast_off" id="dashboard-link">Dashboard</a></li>
-                <li><a href="/contest/blast_off/problems" id="problems-link">Problems</a></li>
-                <li><a href="/contest/blast_off/scoreboard" id="scoreboard-link">Scoreboard</a></li>
+                <li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
+                <li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
+                <li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
         <div class="container">
             <h1>
-                Blast Off {% block pagesubtitle %}{% endblock %}
+                TLE {% block pagesubtitle %}{% endblock %}
             </h1>
             <p class="page-sub-title">
-                Explore with Quizzing
+                Dare to code beyond the norms
             </p>
             {% block main_block %}
             {% endblock %}

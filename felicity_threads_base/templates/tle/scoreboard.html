@@ -1,0 +1,58 @@
+{% extends 'base/layout.html' %}
+{% block title_block %}Scoreboard | TLE, Felicity Threads{% endblock %}
+{% block pagesubtitle %}| Scoreboard{% endblock %}
+{% block main_block %}
+<div class="container" id="problems-list">
+    <h4>The scoreboard updates every 1 minute.</h4>
+	<div id="problems-table-wrapper" class="box scoreboard">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="quick-float-nav">
+	<div class="quick-float-section">
+		<div class="quick-float-icon" style="font-size:1.6em; line-height:35px;">
+▲
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+        var currUserNick = '{{user_nick}}';
+		var $tbody = $('tbody');
+		$.get('/contest/static/score.json', function(results) {
+			$.each(results, function(i, row){
+				var n = $('<tr>')
+				.append( $('<td>').text(i+1) )
+				.append( $('<td>').html(row[0]) )
+				.append( $('<td>').text(row[1]) )
+				.appendTo( $tbody );
+				if ( row[0] == currUserNick )
+					n.addClass('current-user').css({'background-color': 'rgb(113,137,15)', 'opacity':'0'});
+			});
+			try { highlightCurrent(); } catch (e) { }
+		});
+		$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
+	});
+</script>
+<script>
+function highlightCurrent() {
+	var c = $('.current-user');
+	if (c.length != 0) {
+		var target = c.offset().top - $(window).height()/2 + c.height();
+		var curr = $(document).scrollTop();
+		c.animate({ 'opacity':'1'}, 500);
+		$(document).scrollTop( c.offset().top - $(window).height()/2 + c.height());
+	}
+}
+</script>
+{% endblock %}

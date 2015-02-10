@@ -1,0 +1,86 @@
+{% extends 'base/layout.html' %}
+{% block title_block %}Dashboard | TLE, Felicity Threads{% endblock %}
+{% block main_block %}
+<p class="page-description">
+The event has started. Go to Problems page to view problems.
+</p>
+<div class="row">
+<div class="col-offset-1-12 col-3-12">
+<div class="box" id="notifications-box">
+<div class="well">
+<h3>Updates</h3>
+</div>
+{% for notif in notifs %}
+<div class="box-item">{{notif.clarification_messages_message}}</div>
+{% endfor %}
+</div>
+</div>
+<div class="col-offset-1-12 col-6-12">
+<div class="box" id="rules-box">
+<div class="well">
+<h3>Instructions</h3>
+</div>
+<div class="box-item">
+<div> Do not make the mistake of considering this as just another coding contest. Each question here is an exotic research problem in itself. So gear up all your statistics, machine learning, data mining and most importantly your intuition. </div>
+<div style="margin-top: 20px;">
+For any query, doubts, suggessions or discrepencies contact via
+</div>
+<ul>
+<li>Email: <a href="mailto:kingsofml@felicity.iiit.ac.in" target="_blank">kingsofml@felicity.iiit.ac.in</a></li>
+<li>Facebook Events page: <a href="https://www.facebook.com/events/1399059787059518/" target="_blank">Kings Of ML @ Felicity'15</a></li>
+</ul>
+</div>
+<div class="box-item">
+<div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
+<ol id="rules">
+<li>   
+The portal link will be available 5 minutes before the contest.
+</li>
+<li> 
+There are multiple questions, all of which are independent of one another and will have different winnners. 
+</li>   
+<li>  
+For each problem you will be given a dataset to work on and will be judged on a corresponding test data. 
+</li>
+<li>
+Participants will have to submit a .txt/.csv file along with their code as their submission for every problem they participate in.
+</li>
+<li>
+If your code contains more than one file, then zip them and upload. Also, if you are using any toolkit like WEKA, then submit the model file. 
+Any code which can ensure that you have not done any kind of hand labelling will be accepted and winners will be contacted at the end of the contest.
+</li>
+<li>
+The score you will see during the contest will only be partial (obtained on 40% of the test data). The test data you are provided with comprises of only 40% of the whole test data.
+</li>
+<li>
+Your latest code will be manually evaluated and run on the entire dataset at the end of the contest. Hand labeling will be considered as an act of plagarism.
+</li>
+<li>
+There is no restriction on the language/library you use. 
+</li>
+<li>
+Participant cannot submit a solution for a problem more than 10 times in a day. 
+</li>
+<li>
+This is an individual event. Any type of plagiarism will lead to disqualification. 
+</li>
+</div>
+</div>
+</div>
+</div>
+<script>
+$(function(){
+		$('#rules-btn').click(function(){
+			var $this = $(this);
+			if ($this.hasClass('opened')) {
+			$('#rules').stop().slideUp(500);
+			$this.removeClass('opened');
+			}
+			else {
+			$('#rules').stop().slideDown(500);
+			$this.addClass('opened');
+			}
+			});
+		});
+</script>
+{% endblock %}
