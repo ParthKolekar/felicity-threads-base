@@ -1,3 +1,8 @@
+"""
+    Custom authentication backend to populate database with user data.
+"""
+
+
 from django_cas.backends import CASBackend
 from base.models import User as Profile
 
@@ -26,8 +31,8 @@ class PopulatedCASBackend(CASBackend):
         profile, created = Profile.objects.get_or_create(user_username=user.username)
 
         if created is not None and attributes is not None:
-            profile.user_email = attributes['mail']
-            profile.user_nick = attributes['displayName']
+            profile.user_email = attributes.get('mail')
+            profile.user_nick = attributes.get('displayName')
 
         profile.user_last_ip = ip_address
         profile.save()

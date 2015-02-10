@@ -1,5 +1,5 @@
 from django.contrib import admin
-from kings_of_ml.models import *
+from tle.models import *
 
 # Register your models here.
 admin.site.register(Question)

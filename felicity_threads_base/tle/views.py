@@ -136,11 +136,9 @@ def submit(request, level, id):
     print time_last, datetime.datetime.now(utc)
     if ((time_last is None or time_last + time_limit <= datetime.datetime.now(utc)) and (number_of_submissions <= 30)):
         ans_file = request.FILES.get("answer_file", None)
-        code_file = request.FILES.get("code_file", None)
         ans_text = request.POST.get("answer_text")
 
-	if (code_file == None or ans_file == None):
-            # Submit both files
+	if (ans_file == None):
             return render(request, 'base/error.html', {'error_code':9})
 
         if not ans_text: #FILE Type Question.
@@ -153,7 +151,7 @@ def submit(request, level, id):
         if len(question):
 
             question = question[0]
-            submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file, submission_code = code_file)
+            submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
             submission.save()
         
             if question.question_upload_type == 'ST':

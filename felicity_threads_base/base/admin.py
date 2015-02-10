@@ -5,5 +5,6 @@ from base.models import *
 # admin.site.register(Team)
 admin.site.register(User)
 admin.site.register(ClarificationMessages)
+admin.site.register(Language)
 # admin.site.register(Submission)
 
