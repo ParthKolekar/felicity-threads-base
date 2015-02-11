@@ -11,11 +11,18 @@ def question_image_filepath(instance, filename):
     """
     return '/'.join(['images', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)), filename])
 
-def question_file_upload(instance, filename):
+def question_input_file_upload(instance, filename):
     """
         Function DocString
     """
-    return '/'.join(['question', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)), filename])
+    return '/'.join(['input', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)), filename])
+
+def question_gold_file_upload(instance, filename):
+    """
+        Function DocString
+    """
+    return '/'.join(['gold', str(instance.question_level), str(instance.question_level_id), binascii.b2a_hex(os.urandom(15)), filename])
+
 
 def question_checker_upload(instance, filename):
     """
@@ -107,6 +114,18 @@ class Language(models.Model):
         default = '',
         unique = True,
     )
+    language_is_sandboxed = models.BooleanField(
+        default = False,
+    )
+    language_is_compiled = models.BooleanField(
+        default = False,
+    )
+    language_is_checked = models.BooleanField(
+        default = False,
+    )
+    language_is_executed = models.BooleanField(
+        default = False,
+    )
     language_name = models.CharField(
         max_length = 255,
         blank = False,
@@ -164,8 +183,12 @@ class Question(models.Model):
     # and checker script is the one which checks the submission.
     question_upload_file = models.FileField(
         blank = True,
-        upload_to = question_file_upload,
+        upload_to = question_input_file_upload,
     ) # if upload_type == ST, ignore.
+    question_gold_upload_file = models.FileField(
+        blank = True,
+        upload_to = question_gold_file_upload,
+    )
     question_checker_script = models.FileField(
         blank = True,
         upload_to = question_checker_upload,
@@ -174,7 +197,23 @@ class Question(models.Model):
         blank = True,
         upload_to = question_preprocess_upload,
     )
-
+    question_restrict_language_to = models.ForeignKey(Language)
+    # In Kilobytes and seconds
+    question_time_limt = models.CharField(
+       blank = True,
+       max_length = 16,
+       default = '',
+    )
+    question_memory_limit = models.CharField(
+       blank = True,
+       max_length = 16,
+       default = '',
+    )
+    question_output_limit = models.CharField(
+       blank = True,
+       max_length = 16,
+       default = '',
+    )
     def is_question_accessible(self, level):
         """
             Function DocString
