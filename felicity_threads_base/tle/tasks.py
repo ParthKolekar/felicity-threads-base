@@ -48,9 +48,9 @@ def checker_queue(submission_id, bool_level_up):
         #if compiled, executable is the executable file.
         if compile_status != 0:
             correct_compiled = False
-            submission.submission_runtime_log = " Com Out: " + compile_output
+            submission.submission_runtime_log = compile_output
         else:
-            submission.submission_runtime_log = " Com Out: AC "
+            submission.submission_runtime_log = "Compiled: OK "
     elif (not language.language_is_compiled) and pre_passed:
         executable = submission_file_path # If the thing is not compiled, excutable is the file to be interpreted.
     #this is where we execute/interpret the code.
@@ -60,12 +60,12 @@ def checker_queue(submission_id, bool_level_up):
         if language.language_is_sandboxed:
             exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable, question.question_time_limit, question.question_memory_limit, question.question_output_limit ) ) 
         else:
-            exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable) )
+            exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable) ) #Changed it to default again.
         if exec_status != 0:
              correct_executed = False
-             submission.submission_runtime_log = "Exec Out: "+ exec_output
+             submission.submission_runtime_log = exec_output
         else:
-             submission.submission_runtime_log = " Exec Out: AC "
+             submission.submission_runtime_log = "Runtime: OK "
     question_base_dir = submission.submission_question.question_checker_script.path.split("/")[:-1]
     # this is where we diff/check the code as per checker script but not always. ( :/ )
     # the checker script must 'thus' contain a function check(args)

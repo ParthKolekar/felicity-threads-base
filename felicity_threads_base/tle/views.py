@@ -111,11 +111,13 @@ def question(request, level, id):
 
 @login_required
 def submissions(request):
+    profile = User.objects.filter(user_username=request.user.username)[0]
+    user_nick = profile.user_nick
     user_submissions = Submission.objects.order_by('id').reverse()
     user_submissions = user_submissions[:100]
     for sub in user_submissions:
         sub.submission_state = SUBMISSION_STATE_CHOICES[sub.submission_state]
-    return render(request, 'tle/submissions.html', {'user_submissions':user_submissions})
+    return render(request, 'tle/submissions.html', {'user_submissions':user_submissions, 'user_nick': user_nick})
 
 @login_required
 def submit(request, level, id):

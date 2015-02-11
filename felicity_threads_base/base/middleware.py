@@ -24,15 +24,18 @@ class RestrictAccessTillTime(object):
     def process_view(self, request, view_func, view_args, view_kwargs):
         if view_func == login or view_func == logout or view_func == cas_login or view_func == cas_logout:
             return None
+        time_now = datetime.datetime.now(utc)
         if request.user.is_authenticated():
             if request.user.is_staff:
                 return None
             profile = User.objects.filter(user_username=request.user.username)[0]
             user_nick = profile.user_nick
-            time_now = datetime.datetime.now(utc)
             if time_now < settings.CONTEST_START_DATETIME or time_now > settings.CONTEST_END_DATETIME:
                 return render(request, 'base/error.html', {'error_code': 6, 'user_nick':user_nick})
             else:
                 return None
         else:
-            return None
+            if time_now < settings.CONTEST_START_DATETIME or time_now > settings.CONTEST_END_DATETIME:
+                return render(request, 'base/error.html', {'error_code': 6, 'user_nick': None})
+            else:
+                return None

@@ -37,7 +37,9 @@
             <ul class="box">
                 <li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
                 <li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
+		{% if user.is_authenticated %}
                 <li><a href="/contest/tle/submissions" id="submissions-link">Submissions</a></li>
+		{% endif %}
                 <li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
