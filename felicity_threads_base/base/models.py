@@ -114,6 +114,9 @@ class Language(models.Model):
         default = '',
         unique = True,
     )
+    language_is_preprocessed = models.BooleanField(
+        default = False,
+    )
     language_is_sandboxed = models.BooleanField(
         default = False,
     )

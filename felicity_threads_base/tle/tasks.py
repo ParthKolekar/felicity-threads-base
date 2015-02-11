@@ -7,6 +7,7 @@ from base.models import User, Language
 import imp
 import os.path
 import commands
+import datetime
 
 @shared_task
 def test(param):
@@ -35,12 +36,13 @@ def checker_queue(submission_id, bool_level_up):
     # or a file to just diff
     submission_file_path = submission.submission_storage.path
     # The Preprocessing happens here.
-    pre_passed = True
     if language.language_is_preprocessed:
         pre_passed = preprocessor_module.check(submission_file_path)
+    else:
+        pre_passed = True
     #this is where we compile the code.
     correct_compiled = True
-    executable = '/tmp/'+ submission.id + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") + '.out' 
+    executable = '/tmp/'+ str(submission.id) + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") + '.out' 
     if language.language_is_compiled and pre_passed:
         compile_status, compile_output = commands.getstatusoutput(language.language_compile_arguments % (executable, submission_file_path) ) 
         #if compiled, executable is the executable file.
@@ -49,31 +51,30 @@ def checker_queue(submission_id, bool_level_up):
             submission.submission_runtime_log = " Com Out: " + compile_output
         else:
             submission.submission_runtime_log = " Com Out: AC "
-    elif (not langauge.language_is_compiled) and pre_passed:
+    elif (not language.language_is_compiled) and pre_passed:
         executable = submission_file_path # If the thing is not compiled, excutable is the file to be interpreted.
     #this is where we execute/interpret the code.
     correct_executed = True
-    output_file_path = '/tmp/'+ submission.id + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
+    output_file_path = '/tmp/'+ str(submission.id) + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
     if language.language_is_executed and pre_passed and correct_compiled:
-	if language.language_is_sandboxed:
+        if language.language_is_sandboxed:
             exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable, question.question_time_limit, question.question_memory_limit, question.question_output_limit ) ) 
         else:
             exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable) )
-	if exec_status != 0:
+        if exec_status != 0:
              correct_executed = False
              submission.submission_runtime_log = "Exec Out: "+ exec_output
         else:
              submission.submission_runtime_log = " Exec Out: AC "
-
-    submission.save() 
+    question_base_dir = submission.submission_question.question_checker_script.path.split("/")[:-1]
     # this is where we diff/check the code as per checker script but not always. ( :/ )
-    # the checker script must 'thus' contain a function check(perfect_file_path,to_check_file_path)
+    # the checker script must 'thus' contain a function check(args)
     # and should return a value between 0 to 100.
     if language.language_is_checked and pre_passed and correct_compiled and correct_executed:
         try:
-            score = checker_module.check(input_file_path, gold_file_path, submission_file_path, output_file_path, executable_path, question_base_dir)
+            score = checker_module.check(input_file_path, gold_file_path, submission_file_path, output_file_path, executable, question_base_dir)
         except:
-            score = -1.0
+            score = -2.0
     else:
         score = -1.0
     # the level up and the 'AC', 'WA' rules here 
