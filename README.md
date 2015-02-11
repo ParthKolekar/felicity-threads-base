@@ -38,5 +38,5 @@ QuickStart
 + Also copy the Templates accordingly.
 + `grep -ir old-name` and then `sed -i 's/old-name/new-name/g' *`
 + Register app in settings.py
-+ Make Appropriate changes in views.py, tasks.py and templates.
++ Make Appropriate changes in views.py, urls.py, tasks.py and templates.
 + Have fun. :)
