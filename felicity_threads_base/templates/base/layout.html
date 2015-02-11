@@ -21,16 +21,23 @@
             &gt;
             <a href="http://felicity.iiit.ac.in/threads/">Threads</a>
             <ul>
+                {% if user_nick != None %}
                 <li>Hello, {{user_nick}}</li>
                 <li>
                     <a href="/contest/accounts/logout">Logout</a>
                 </li>
+                {% else %}
+                <li>
+                    <a href="/contest/accounts/login">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
         <div class="sub-navbar">
             <ul class="box">
                 <li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
                 <li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
+                <li><a href="/contest/tle/submissions" id="submissions-link">Submissions</a></li>
                 <li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
@@ -58,6 +65,9 @@
         }
         else if (title.indexOf('score') !== -1) {
             $('#scoreboard-link').addClass('active');
+        }
+        else if (title.indexOf('submissions') !== -1) {
+            $('#submissions-link').addClass('active');
         }
     });
     </script>

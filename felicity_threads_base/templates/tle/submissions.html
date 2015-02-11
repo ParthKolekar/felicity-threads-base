@@ -1,9 +1,39 @@
-{% extends "base/submissions.html" %}
-<!--<table border=1>
-	<tr><th>Submission ID</th><th>Question Title</th><th>Timestamp</th><th>Verdict</th><th>Score</th></tr>
-	{% for submission in user_submissions %}
-		<tr>
-		<td>{{submission.id}}</td><td>{{submission.submission_question.question_title}}</td><td>{{submission.submission_timestamp}}</td><td>{{submission.submission_state}}</td><td>{{submission.submission_score}}</td>
-		</tr>
-	{% endfor %}
-</table>-->
+{% extends "base/layout.html" %}
+{% block title_block %}Submissions | TLE, Felicity Threads{% endblock %}
+{% block pagesubtitle %}| Submissions{% endblock %}
+{% block main_block %}
+<div class="container" id="submissions-list">
+	<div id="submissions-table-wrapper" class="box">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>User</th>
+					<th>Question</th>
+					<th>Status</th>
+					<th>Runtime Log</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for submission in user_submissions %}
+					<tr>
+						<td>{{submission.id}}</td>
+						<td>{{submission.submission_user.user_nick}}</td>
+						<td><a href="/contest/tle/question/{{submission.submission_question.question_level}}/{{submission.submission_question.question_level_id}}">{{submission.submission_question.question_title}}</a></td>
+						{% if submission.submission_state == "Processing" %}
+							<td><span class="label unattempted">{{submission.submission_state}}</span></td>
+						{% elif submission.submission_state == "Accepted" %}
+							<td><span class="label correct">{{submission.submission_state}}</span></td>
+						{% elif submission.submission_state == "Wrong Answer" %}
+							<td><span class="label wrong">{{submission.submission_state}}</span></td>
+						{% else %}
+							<td><span class="label unattempted">{{submission.submission_state}}</span></td>
+						{% endif %}
+						<td>{{submission.submission_runtime_log}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

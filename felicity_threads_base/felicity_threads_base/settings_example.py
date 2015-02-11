@@ -129,7 +129,8 @@ LOGIN_URL = '/contest/accounts/login'
 LOGOUT_URL = '/contest/accounts/logout'
 LOGIN_REDIRECT_URL = '/'
 
-CONTEST_START_DATETIME = datetime.datetime()
+#Add start and end datetime in the format year, month, day, hour, minute, second, milisecond, utc
+CONTEST_START_DATETIME = datetime.datetime() 
 CONTEST_END_DATETIME = datetime.datetime()
 
 LOGGING = {

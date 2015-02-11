@@ -12,8 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^contest/admin/', include(admin.site.urls)),
     #url(r'^base/' , include('base.urls')),
-    #url(r'^contest/accounts/login' , 'django_cas.views.login'),
-    #url(r'^contest/accounts/logout' ,'django_cas.views.logout'),
+    url(r'^contest/accounts/login' , 'django_cas.views.login'),
+    url(r'^contest/accounts/logout' ,'django_cas.views.logout'),
     url(r'^contest/tle/' , include('tle.urls')), 
 ) + static (settings.STATIC_URL , document_root = settings.STATIC_ROOT) + static (settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
 
