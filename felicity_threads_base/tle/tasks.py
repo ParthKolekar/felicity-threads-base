@@ -5,7 +5,7 @@ from felicity_threads_base.settings import MEDIA_ROOT
 from tle.models import Question, Submission
 from base.models import User, Language
 import imp
-import os.path
+import os
 import commands
 import datetime
 
@@ -34,7 +34,13 @@ def checker_queue(submission_id, bool_level_up):
         gold_file_path = "/dev/null"
     # This can be a code (to compile or interpret) 
     # or a file to just diff
-    submission_file_path = submission.submission_storage.path
+    try:
+        submission_file_path = submission.submission_storage.path
+        submission_base_dir = "/".join(submission.submission_storage.path.split("/")[:-1])
+        if not submission_file_path:
+            return
+    except:
+        return 
     # The Preprocessing happens here.
     if language.language_is_preprocessed:
         pre_passed = preprocessor_module.check(submission_file_path)
@@ -42,7 +48,7 @@ def checker_queue(submission_id, bool_level_up):
         pre_passed = True
     #this is where we compile the code.
     correct_compiled = True
-    executable = '/tmp/'+ str(submission.id) + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") + '.out' 
+    executable = submission_base_dir + str(submission.id) + '.executable' 
     if language.language_is_compiled and pre_passed:
         compile_status, compile_output = commands.getstatusoutput(language.language_compile_arguments % (executable, submission_file_path) ) 
         #if compiled, executable is the executable file.
@@ -55,10 +61,10 @@ def checker_queue(submission_id, bool_level_up):
         executable = submission_file_path # If the thing is not compiled, excutable is the file to be interpreted.
     #this is where we execute/interpret the code.
     correct_executed = True
-    output_file_path = '/tmp/'+ str(submission.id) + datetime.datetime.now().strftime("%I:%M%p-%m-%d-%Y") 
+    output_file_path = submission_base_dir + str(submission.id) + ".output"
     if language.language_is_executed and pre_passed and correct_compiled:
         if language.language_is_sandboxed:
-            exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable, question.question_time_limit, question.question_memory_limit, question.question_output_limit ) ) 
+            exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable, submission.submission_question.question_time_limit, submission.submission_question.question_memory_limit, submission.submission_question.question_output_limit ) ) 
         else:
             exec_status, exec_output = commands.getstatusoutput( language.language_runtime_arguments % (input_file_path, output_file_path, executable) ) #Changed it to default again.
         if exec_status != 0:
@@ -66,7 +72,7 @@ def checker_queue(submission_id, bool_level_up):
              submission.submission_runtime_log = exec_output
         else:
              submission.submission_runtime_log = "Runtime: OK "
-    question_base_dir = submission.submission_question.question_checker_script.path.split("/")[:-1]
+    question_base_dir = "".join(submission.submission_question.question_checker_script.path.split("/")[:-1])
     # this is where we diff/check the code as per checker script but not always. ( :/ )
     # the checker script must 'thus' contain a function check(args)
     # and should return a value between 0 to 100.
@@ -86,5 +92,11 @@ def checker_queue(submission_id, bool_level_up):
     else:
         submission.submission_state = 'WA'
         submission.submission_score = 0.0 # Wrong Answer means 0.0 I get score as -1.0
+    if not submission.submission_runtime_log:
+        submission.submission_runtime_log = "Nothing to Report"
     submission.save()
+    try:
+        os.remove(output_file_path)
+    except:
+        pass
     return str(submission) + " " + str(score)

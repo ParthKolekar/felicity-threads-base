@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect 
 from django.conf import settings
 from django.contrib.auth.views import login, logout
 from django_cas.views import login as cas_login, logout as cas_logout

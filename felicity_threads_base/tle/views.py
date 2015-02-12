@@ -42,25 +42,27 @@ def index(request):
     return render(request, 'tle/index.html', {'user_nick':profile.user_nick, 'notifs': notifs})
 
 def problems(request):
-    query_result = Question.objects.all().order_by('question_level_id').order_by('question_level')
+    query_result = Question.objects.filter(question_level=1).order_by('question_level_id').order_by('question_level')
     problem_data = []
     if request.user.is_authenticated() is False:
         for question in query_result:
             problem_data.append([question.question_level, question.question_level_id, question.question_title, 'Not Attempted'])
         return render(request, 'tle/problems.html', {'problem_data':problem_data, 'user_nick':None})
     else:
+        if request.user.is_staff:
+            query_result = Question.objects.all().order_by('question_level_id').order_by('question_level')
         profile = User.objects.filter(user_username = request.user.username)[0]
         success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
         for question in query_result:
             acc = success_sub.filter(submission_question=question).filter(submission_state='AC').order_by('submission_score')
             wan = success_sub.filter(submission_question=question).filter(submission_state='WA')
             prr = success_sub.filter(submission_question=question).filter(submission_state='PR')
-            if prr:
-                sta = SUBMISSION_STATE_CHOICES['PR']
-            elif acc:
+            if acc:
                 sta = SUBMISSION_STATE_CHOICES['AC']
             elif wan:
                 sta = SUBMISSION_STATE_CHOICES['WA']
+            elif prr:
+                sta = SUBMISSION_STATE_CHOICES['PR']
             else:
                 sta = SUBMISSION_STATE_CHOICES['NA']
             problem_data.append([question.question_level, question.question_level_id, question.question_title, sta, acc])
@@ -101,6 +103,12 @@ def question(request, level, id):
     if request.user.is_authenticated():
         profile = User.objects.filter(user_username=request.user.username)[0]
         user_nick = profile.user_nick
+        if request.user.is_staff == 0:
+            if int(level) != 1:
+                return render(request, 'base/error.html', {'error_code':2, 'user_nick':user_nick})
+    else:
+        if int(level) != 1:
+            return render(request, 'base/error.html', {'error_code':2, 'user_nick':user_nick})        
     question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
     if len(question_data):
         question_comments = Comment.objects.filter(comment_question=question_data).filter(comment_is_approved=True).order_by('comment_timestamp')
@@ -129,7 +137,7 @@ def submit(request, level, id):
     time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
-    time_limit = datetime.timedelta(0, 30)
+    time_limit = datetime.timedelta(0, 1)
     print time_last, datetime.datetime.now(utc)
     if ((time_last is None or time_last + time_limit <= datetime.datetime.now(utc))):
         ans_file = request.FILES.get("answer_file", None)
@@ -138,43 +146,43 @@ def submit(request, level, id):
 	if (ans_file == None and ans_text == ''):
             return render(request, 'base/error.html', {'error_code':9})
 
-    if not ans_text: #FILE Type Question.
-        ans_text = ''
+        if not ans_text: #FILE Type Question.
+            ans_text = ''
 
-    if ans_text and len(ans_text) > 255:
-        return render(request, 'base/error.html', {'error_code':3})
+        if ans_text and len(ans_text) > 255:
+            return render(request, 'base/error.html', {'error_code':3})
         
-    question = Question.objects.filter(question_level=level).filter(question_level_id=id)
-    if len(question):
+        question = Question.objects.filter(question_level=level).filter(question_level_id=id)
+        if len(question):
 
-        question = question[0]
-        submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
-        submission.save()
+            question = question[0]
+            submission = Submission(submission_question=question, submission_user=user, submission_string=ans_text, submission_storage=ans_file)
+            submission.save()
     
-        if question.question_upload_type == 'ST':
-            ans = submission.__check_ans__()
+            if question.question_upload_type == 'ST':
+                ans = submission.__check_ans__()
 
-        level_subs = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level)
-        level_acc_question_ids_query = level_subs.filter(submission_state='AC')       
+            level_subs = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level)
+            level_acc_question_ids_query = level_subs.filter(submission_state='AC')       
 
-        level_acc_question_ids = set()
+            level_acc_question_ids = set()
 
-        for subs in level_acc_question_ids_query:
-            level_acc_question_ids.add(subs.submission_question.question_level_id)
+            for subs in level_acc_question_ids_query:
+                level_acc_question_ids.add(subs.submission_question.question_level_id)
 
-        bool_level_up = (int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids)
+            bool_level_up = (int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids)
         
-        # Question Upload type is file. Yahaan ka done done :D
-        # The rules for score updation is in task queue itself, 
-        # If you change here, change there too. Don't be an ass.
-        if question.question_upload_type == 'FL':
-            checker_queue.delay(submission.id,bool_level_up)
-            return HttpResponseRedirect('/contest/tle/problems')
+            # Question Upload type is file. Yahaan ka done done :D
+            # The rules for score updation is in task queue itself, 
+            # If you change here, change there too. Don't be an ass.
+            if question.question_upload_type == 'FL':
+                checker_queue.delay(submission.id,bool_level_up)
+                return HttpResponseRedirect('/contest/tle/problems')
 
-        # the level up and the 'AC', 'WA' rules here.
-        if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
-            pass
-        submission.save()
+            # the level up and the 'AC', 'WA' rules here.
+            if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
+                pass
+            submission.save()
     else:
         # return HttpResponse(content = 'Cannot submit before 30s of last submission.', status=403)
         return render(request, 'base/error.html', {'error_code':4})

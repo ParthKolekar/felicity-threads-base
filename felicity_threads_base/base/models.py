@@ -202,7 +202,7 @@ class Question(models.Model):
     )
     question_restrict_language_to = models.ForeignKey(Language)
     # In Kilobytes and seconds
-    question_time_limt = models.CharField(
+    question_time_limit = models.CharField(
        blank = True,
        max_length = 16,
        default = '',

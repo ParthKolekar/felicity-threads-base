@@ -4,19 +4,154 @@
 {% block main_block %}
 <div class="container" id="problems-list">
     <h4>The scoreboard updates every 1 minute.</h4>
-	<div id="problems-table-wrapper" class="box scoreboard">
+    <div class="sub-navbar" id="score-nav">
+    	<ul>
+    		<li><div class="navitem" onclick="display(0)">Hi Felicity</div></li>
+    		<li><div class="navitem" onclick="display(1)">The Interview</div></li>
+    		<li><div class="navitem" onclick="display(2)">Hello World</div></li>
+    		<li><div class="navitem" onclick="display(3)">Reverse Quine</div></li>
+    		<li><div class="navitem" onclick="display(4)">ASCII Weaving</div></li>
+    		<li><div class="navitem" onclick="display(5)">Find the GCD</div></li>
+    		<!--li><div class="navitem" onclick="display(6)">7</div></li>
+    		<li><div class="navitem" onclick="display(7)">8</div></li>
+    		<li><div class="navitem" onclick="display(8)">9</div></li-->
+    	</ul>
+    </div>
+
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
 		<table border="0">
 			<thead>
 				<tr>
 					<th>Rank</th>
 					<th>Nick</th>
 					<th>Score</th>
+					<th>Time Stamp</th>
 				</tr>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+    <div class="board-container">
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+	<div class="box scoreboard score-wrapper">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Nick</th>
+					<th>Score</th>
+					<th>Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody>
+				</tbody>
+		</table>
+	</div>
+    </div>
 </div>
 <div id="quick-float-nav">
 	<div class="quick-float-section">
@@ -26,23 +161,38 @@
 	</div>
 </div>
 <script type="text/javascript">
-	$(function(){
-        var currUserNick = '{{user_nick}}';
-		var $tbody = $('tbody');
-		$.get('/contest/static/score.json', function(results) {
-			$.each(results, function(i, row){
-				var n = $('<tr>')
-				.append( $('<td>').text(i+1) )
-				.append( $('<td>').html(row[0]) )
-				.append( $('<td>').text(row[1]) )
-				.appendTo( $tbody );
-				if ( row[0] == currUserNick )
-					n.addClass('current-user').css({'background-color': 'rgb(113,137,15)', 'opacity':'0'});
-			});
-			try { highlightCurrent(); } catch (e) { }
+var currUserNick = '{{user_nick}}';
+function getScoreboard(url, $tbody) {
+	$.get(url, function(results) {
+		$.each(results, function(i, row){
+			var n = $('<tr>')
+			.append( $('<td>').text(i+1) )   //Rank
+			.append( $('<td>').text(row[0])) //Name
+			.append( $('<td>').text((parseFloat(row[1]) * 100 / parseFloat(results[0][1])).toString().slice(0, 7))) //score
+			.append( $('<td>').text(row[2] + " UTC")) //TimeStamp
+			.appendTo( $tbody );
+			if ( row[0] == currUserNick )
+				n.addClass('current-user').css({'background-color': '#057cb8', 'opacity':'0'});
 		});
-		$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
+		try { highlightCurrent(); } catch (e) { }
 	});
+}
+var jsons = ['http://felicity.iiit.ac.in/contest/static/score1.json', 'http://felicity.iiit.ac.in/contest/static/score2.json','http://felicity.iiit.ac.in/contest/static/score3.json', 'http://felicity.iiit.ac.in/contest/static/score4.json' ,'http://felicity.iiit.ac.in/contest/static/score5.json', 'http://felicity.iiit.ac.in/contest/static/score6.json', 'http://felicity.iiit.ac.in/contest/static/score7.json' , 'http://felicity.iiit.ac.in/contest/static/score8.json', 'http://felicity.iiit.ac.in/contest/static/score9.json'];
+function display(i) {
+	var $this = $('.sub-navbar .navitem').eq( i );
+	if ( $this.hasClass('active') )
+		return;
+	var $tbody = $('tbody').eq(i);
+	if ( $tbody.children().length == 0 ) 
+		getScoreboard( jsons[ i ], $tbody );
+	$('.navitem.active').removeClass('active');
+	$this.addClass('active');
+	$('.score-wrapper').hide().eq( i ).fadeIn();
+}
+$(function(){
+	$('#quick-float-nav').click(function(){ $(document).scrollTop(0); });
+	display(0);
+});
 </script>
 <script>
 function highlightCurrent() {

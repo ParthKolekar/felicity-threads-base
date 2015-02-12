@@ -4,7 +4,7 @@ body {
 }
 /*
  * dark green used in cache in - #098816
- * Crimson used on page here and there (borders) - lightsteelblue
+ * Crimson used on page here and there (borders) - lightseagreen
  */
 
 ::-moz-selection {
@@ -28,20 +28,20 @@ hr {
 }
 .sub-navbar {
     text-align: center;
-    border-bottom: 1px solid lightsteelblue;
+    border-bottom: 1px solid lightseagreen;
     background: none repeat scroll 0% 0% rgba(10, 34, 45, 0.5);
 }
 .sub-navbar .box {
     background: none repeat scroll 0% 0% rgba(10, 34, 45, 0.5);
-    border-left: 1px solid lightsteelblue;
+    border-left: 1px solid lightseagreen;
     border-radius: 0 0 25px 25px;
-    border-right: 1px solid lightsteelblue;
+    border-right: 1px solid lightseagreen;
     float: right;
     margin-bottom: 25px;
     white-space: nowrap;
 }
 .sub-navbar .box, .box .well {
-    border-bottom: 3px solid lightsteelblue;
+    border-bottom: 3px solid lightseagreen;
 }
 .sub-navbar ul {
     display: inline-block;
@@ -60,13 +60,13 @@ hr {
     transition: background-color 0.2s;
 }
 .sub-navbar div {
-    border: 1px solid lightsteelblue;
+    border: 1px solid lightseagreen;
     cursor: pointer;
 }
 .sub-navbar div.active,
 .sub-navbar a.active {
     color: white;
-    background-color: lightsteelblue;
+    background-color: lightseagreen;
 }
 .sub-navbar div:hover,
 .sub-navbar a:hover {
@@ -122,9 +122,9 @@ p.page-description {
     text-align: center;
 }
 #problems-list #problems-table-wrapper, .score-wrapper {
-    border: 1px solid lightsteelblue;
+    border: 1px solid lightseagreen;
     border-bottom: none;
-    box-shadow: 0 -2px 0px lightsteelblue;
+    box-shadow: 0 -2px 0px lightseagreen;
     display: inline-block;
 }
 #problems-list thead tr, #problems-list tbody tr:not(:last-child) {
@@ -166,7 +166,7 @@ p.page-description {
     background: darkred;
 }
 #problems-list .label.unattempted {
-    background: lightsteelblue;
+    background: lightseagreen;
 }
 #question .question-text {
     font-size: 1.1em;
@@ -202,7 +202,7 @@ p.page-description {
     max-height: 500px;
 }
 .footer {
-    border-top: 1px solid lightsteelblue;
+    border-top: 1px solid lightseagreen;
 
 }
 #notifications-box .box-item:nth-child(odd),
