@@ -31,11 +31,11 @@ class RestrictAccessTillTime(object):
             profile = User.objects.filter(user_username=request.user.username)[0]
             user_nick = profile.user_nick
             if time_now < settings.CONTEST_START_DATETIME or time_now > settings.CONTEST_END_DATETIME:
-                return render(request, 'base/error.html', {'error_code': 6, 'user_nick':user_nick})
+                return render(request, 'base/error.html', {'error_code': 6, 'user_nick':user_nick} , status = 401)
             else:
                 return None
         else:
             if time_now < settings.CONTEST_START_DATETIME or time_now > settings.CONTEST_END_DATETIME:
-                return render(request, 'base/error.html', {'error_code': 6, 'user_nick': None})
+                return render(request, 'base/error.html', {'error_code': 6, 'user_nick': None} , status = 401 )
             else:
                 return None
