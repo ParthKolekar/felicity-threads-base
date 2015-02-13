@@ -99,13 +99,13 @@ class Language(models.Model):
     language_compile_arguments = models.CharField(
         max_length = 255,
         blank = True,
-        default = None,
+        default = '',
         unique = False,
     )
     language_runtime_arguments = models.CharField(
         max_length = 255,
         blank = True,
-        default = None,
+        default = '',
         unique = False
     )
     language_file_extension = models.CharField(
@@ -200,7 +200,12 @@ class Question(models.Model):
         blank = True,
         upload_to = question_preprocess_upload,
     )
-    question_restrict_language_to = models.ForeignKey(Language)
+    question_restrict_language_to = models.ForeignKey(
+            Language,
+            blank=True,
+            null=True,
+            default=None,
+        )
     # In Kilobytes and seconds
     question_time_limit = models.CharField(
        blank = True,
@@ -400,6 +405,7 @@ class Submission(models.Model):
     submission_storage = models.FileField(
         editable = True,
         upload_to = submission_storage_path,
+        blank = True,
     )
     submission_state = models.CharField(
         max_length = 2,

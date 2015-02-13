@@ -37,15 +37,12 @@
             <ul class="box">
                 <li><a href="/contest/break_in" id="dashboard-link">Dashboard</a></li>
                 <li><a href="/contest/break_in/problems" id="problems-link">Problems</a></li>
-		{% if user.is_authenticated %}
-                <li><a href="/contest/break_in/submissions" id="submissions-link">Submissions</a></li>
-		{% endif %}
                 <li><a href="/contest/break_in/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
         <div class="container">
             <h1>
-                TLE {% block pagesubtitle %}{% endblock %}
+                Break In CTF {% block pagesubtitle %}{% endblock %}
             </h1>
             <p class="page-sub-title">
                 Dare to code beyond the norms
