@@ -13,10 +13,20 @@ class Comment(C):
     comment_question = models.ForeignKey(Question)
 
 class Team(models.Model):
-    team_user_first = models.ForeignKey(U, related_name='User1')
-    team_user_second = models.ForeignKey(U, blank=True, related_name='User2')
-    team_name = models.CharField(
+    
+    def __str__(self):
+        return str(self.team_teamname)
+    
+    team_teamname = models.CharField(
             default='',
             max_length = 255,
+            unique = True,
     )
 
+class TeamUser(models.Model):
+    
+    def __str__(self):
+        return str(self.teamuser_team.team_teamname) + '_' + str(self.teamuser_user.user_nick)
+
+    teamuser_team = models.ForeignKey(Team)
+    teamuser_user = models.ForeignKey(U, unique=True)

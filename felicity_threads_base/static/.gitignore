@@ -4,3 +4,11 @@ contest_data/
 images/
 *.json
 *.mp3
+problem_1
+problem_2
+problem_3
+problem_4
+*.tar.gz
+*.php
+*.tar
+*.pcapng

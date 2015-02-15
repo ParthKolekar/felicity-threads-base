@@ -171,9 +171,9 @@ p.page-description {
 #question .question-text {
     font-size: 1.1em;
 }
-#question input[type="text"], #question textarea {
+#question input[type="text"], #question textarea , #register-form input[type="text"] {
     background-color: #eee;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 2px;
     color: #111;
     display: block;
@@ -185,13 +185,16 @@ p.page-description {
             transition: all 0.1s;
     width: 100%;
 }
-#question input[type="text"]:focus, #question textarea:focus {
+#question input[type="text"]:focus, #question textarea:focus  , #register-form input[type="text"]:focus {
     border-color: #0EA010;
 }
 #question input[type="submit"] {
     display: block;
     width: 80%;
     margin: 20px auto;
+}
+#register-form input[type="text"] {
+    margin-bottom: 20px;
 }
 #question .question-image-wrapper {
     text-align: center;

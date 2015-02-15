@@ -275,7 +275,7 @@ class User(models.Model):
 
     # This is the highest level of questions that one can access.
     user_access_level = models.IntegerField(
-        default = 1,
+        default = 1000,
         editable = True,
     )
    

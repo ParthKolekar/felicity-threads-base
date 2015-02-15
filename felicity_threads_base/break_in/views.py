@@ -3,10 +3,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from base.models import User, ClarificationMessages
-from break_in.models import Question, Submission, Comment
+from break_in.models import Question, Submission, Comment, Team, TeamUser
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.db import IntegrityError
 import logging
 import datetime
 
@@ -176,15 +177,66 @@ def scoreboard(request):
     user_nick = profile.user_nick
     return render(request, 'break_in/scoreboard.html',  {'user_nick':user_nick})
 
-@login_required
-def register_team(request):
-    profile = User.objects.filter(user_username = request.user.username)[0]
-    user_nick = profile.user_nick
-    return render(request, 'break_in/register_team.html', {'user_nick':user_nick})
-
-"""
 @csrf_protect
 @login_required
 def register(request):
     context = RequestContext(request)
-"""     
+    profile = User.objects.filter(user_username = request.user.username)[0]
+    user_nick = profile.user_nick
+    user_team_check_query = TeamUser.objects.filter(teamuser_user__user_nick = profile.user_nick)
+    if request.method == "GET" and len(user_team_check_query) == 0:
+        return render(request, 'break_in/register.html', {'user_nick':user_nick})
+    if len(user_team_check_query) != 0:
+        user_team_check = user_team_check_query.first()
+        get_team_object = user_team_check.teamuser_team
+        teamuser_delete_query = TeamUser.objects.filter(teamuser_team = get_team_object)
+        if request.method == "GET":
+            teamuser_nicks = []
+            for i in teamuser_delete_query:
+                teamuser_nicks.append(i.teamuser_user.user_nick)
+            return render(request, 'break_in/register.html', {'user_nick':user_nick, 'team_name':get_team_object.team_teamname,  'member_list':teamuser_nicks})
+        for i in teamuser_delete_query:
+            i.delete()
+        team_delete_query = Team.objects.filter(team_teamname = get_team_object.team_teamname).first()
+        team_delete_query.delete()
+        return render(request, 'break_in/register.html', {'user_nick':user_nick}) 
+    team_name = request.POST.get('user_team_name')
+    team_member_nick = request.POST.get('user_team_member_nick')
+    logger.debug(str(team_member_nick == ''))
+    if team_name is None or team_member_nick is None:
+        return render(request, 'break_in/register.html', {'user_nick':user_nick, 'error':10})
+    if team_name == '':
+        return render(request, 'break_in/register.html', {'user_nick':user_nick, 'error':10})
+    team_object = Team(team_teamname=team_name)
+    teamuser_object_1 = None
+    teamuser_object_2 = None
+    if team_member_nick != '':
+        team_member_user = User.objects.filter(user_nick = team_member_nick)
+        if len(team_member_user) == 0:
+            return render(request, 'break_in/register.html', {'user_nick':user_nick, 'error':11})
+        team_member_user = team_member_user[0]
+    #try:
+    #except IntegrityError:
+        #return render(request, 'break_in/register.html', {'user_nick':user_nick, 'error':13})
+    
+    try:
+        team_object.save()
+        team_object = Team.objects.filter(team_teamname = team_name)[0]
+        logger.debug(str(team_object)+str(team_object.id))
+        logger.debug(str(teamuser_object_1))
+        teamuser_object_1 = TeamUser(teamuser_team = team_object, teamuser_user = profile)
+        teamuser_object_1.save()
+        teamuser_object_1 = TeamUser.objects.filter(teamuser_user__user_nick = profile.user_nick)[0]
+        logger.debug(str(teamuser_object_1))
+        if team_member_nick != '':
+            teamuser_object_2 = TeamUser(teamuser_team = team_object, teamuser_user = team_member_user)
+            teamuser_object_2.save()
+        logger.debug(str(teamuser_object_2))
+    except IntegrityError as e:
+        logger.debug('2 '+str(e))
+        if team_object.id is not None:
+            team_object.delete()
+        if teamuser_object_1.id is not None:
+            teamuser_object_1.delete()
+        return render(request, 'break_in/register.html', {'user_nick':user_nick, 'error':13})
+    return HttpResponseRedirect('/contest/break_in/register')   

@@ -1,0 +1,59 @@
+{% extends "base/layout.html" %}
+{% block title_block %}Register Team | Break In CTF, Felicity Threads{% endblock %}
+{% block head_block %}
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+{% endblock %}
+{% block pagesubtitle %}| Register Team{% endblock %}
+{% block main_block %}
+    <div class="comment-box row">
+        {% if team_name !=  None %}
+            <div style="margin-top: 30px;">
+                <div class="row">
+                    <div class="col-offset-4-12 col-4-12">
+                        Team Name: {{team_name}}
+                    </div>
+                    <div class="col-offset-4-12 col-4-12">
+                        Team Members:
+                        <ol>
+                        {% for i in member_list %}
+                            <li>{{i}}</li>
+                        {% endfor %}
+                        </ol>
+                    </div>
+                    <form action="/contest/break_in/register" method="post" id="register-form">
+                        {% csrf_token %}
+                        <div class="col-offset-4-12 col-4-12">
+                            <input type="submit" value="Delete team" class="btn btn-blue"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div style="margin-top: 30px;">
+                {% if error == 12 %}
+                    Registration Successful.
+                {% elif error == 10 %}
+                    Empty Fields not allowed.
+                {% elif error == 11 %}
+                    User does not exist.
+                {% elif error == 13 %}
+                    Either user or Team name already exists.
+                {% endif %} 
+                    <form action="/contest/break_in/register" method="post" id="register-form">
+                        {% csrf_token %}
+                        <div class="row text-center">
+                            <div class="col-offset-4-12 col-4-12">
+                                <input placeholder="Enter Team Name" type="text" name="user_team_name" />
+                            </div>
+                            <div class="col-offset-4-12 col-4-12">
+                                <input placeholder="Enter Second User Nick" type="text" name="user_team_member_nick" />
+                            </div>
+                            <div class="col-offset-4-12 col-4-12">
+                                <input type="submit" value="Register" class="btn btn-blue"/>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

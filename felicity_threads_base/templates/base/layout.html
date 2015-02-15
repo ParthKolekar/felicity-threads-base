@@ -15,24 +15,19 @@
     <meta name="keywords" content="felicity , break , in , ctf , break_in , contest, WATASHI , WA , HAPPY">
 </head>
 <body>
+    <div class="navbar">
+        <a href="http://felicity.iiit.ac.in/home" class="logo-text navbar-title">felicity<sup>15</sup></a>
+        <ul>
+            <li><a href="http://felicity.iiit.ac.in/Threads/">&lt; Threads</a></li>
+            {% if user_nick != None %}
+            <li>Hello, {{user_nick}}</li>
+            <li><a href="/contest/accounts/logout">Log out</a></li>
+            {% else %}
+            <li><a href="/contest/accounts/login">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
     <div class="wrapper">
-        <div class="navbar">
-	<a href="http://felicity.iiit.ac.in/home" class="navbar-title">felicity<sup>15</sup></a>
-            &gt;
-            <a href="http://felicity.iiit.ac.in/threads/">Threads</a>
-            <ul>
-                {% if user_nick != None %}
-                <li>Hello, {{user_nick}}</li>
-                <li>
-                    <a href="/contest/accounts/logout">Logout</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/contest/accounts/login">Login</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
         <div class="sub-navbar">
             <ul class="box">
                 <li><a href="/contest/break_in" id="dashboard-link">Dashboard</a></li>
@@ -45,7 +40,7 @@
                 Break In CTF {% block pagesubtitle %}{% endblock %}
             </h1>
             <p class="page-sub-title">
-                Dare to code beyond the norms
+                Break &amp; Get in
             </p>
             {% block main_block %}
             {% endblock %}

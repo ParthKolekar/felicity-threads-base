@@ -5,3 +5,5 @@ from break_in.models import *
 admin.site.register(Question)
 admin.site.register(Submission)
 admin.site.register(Comment)
+admin.site.register(Team)
+admin.site.register(TeamUser)

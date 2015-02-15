@@ -20,7 +20,9 @@ class PopulatedCASBackend(CASBackend):
         """
 
         user = super(PopulatedCASBackend, self).authenticate(ticket, service, request)
-        attributes = request.session['attr'] or None
+        if not user:
+            return None
+        attributes = request.session.get('attr')
         request.session['attr'] = None
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
