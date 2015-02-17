@@ -11,14 +11,14 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     {% block head_block %}{% endblock %}
     <script>window.jQuery || document.write('<script src="http://felicity.iiit.ac.in/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-    <meta name="description" content="Break In CTF @ IIIT-H">
-    <meta name="keywords" content="felicity , break , in , ctf , break_in , contest, WATASHI , WA , HAPPY">
+    <meta name="description" content="Lit Quiz, LitCafe @ IIIT-H">
+    <meta name="keywords" content="felicity , lit , cafe , Literary , Quiz , contest, xel, Literature">
 </head>
 <body>
     <div class="navbar">
         <a href="http://felicity.iiit.ac.in/home" class="logo-text navbar-title">felicity<sup>15</sup></a>
         <ul>
-            <li><a href="http://felicity.iiit.ac.in/Threads/">&lt; Threads</a></li>
+            <li><a href="http://felicity.iiit.ac.in/LitCafe/">&lt; LitCafe</a></li>
             {% if user_nick != None %}
             <li>Hello, {{user_nick}}</li>
             <li><a href="/contest/accounts/logout">Log out</a></li>
@@ -30,17 +30,17 @@
     <div class="wrapper">
         <div class="sub-navbar">
             <ul class="box">
-                <li><a href="/contest/break_in" id="dashboard-link">Dashboard</a></li>
-                <li><a href="/contest/break_in/problems" id="problems-link">Problems</a></li>
-                <li><a href="/contest/break_in/scoreboard" id="scoreboard-link">Scoreboard</a></li>
+                <li><a href="/contest/lit_quiz" id="dashboard-link">Dashboard</a></li>
+                <li><a href="/contest/lit_quiz/problems" id="problems-link">Problems</a></li>
+                <li><a href="/contest/lit_quiz/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
         <div class="container">
             <h1>
-                Break In CTF {% block pagesubtitle %}{% endblock %}
+                Literary Quiz {% block pagesubtitle %}{% endblock %}
             </h1>
             <p class="page-sub-title">
-                Break &amp; Get in
+                Sometimes Not Asking Questions is Better !
             </p>
             {% block main_block %}
             {% endblock %}

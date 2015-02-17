@@ -1,0 +1,65 @@
+{% extends 'base/layout.html' %}
+{% block title_block %}Dashboard | Literary Quiz, Felicity LitCafe {% endblock %}
+{% block main_block %}
+    <p class="page-description">
+        The event has started. Go to Problems page to view problems.
+    </p>
+    <div class="row">
+        <div class="col-offset-1-12 col-3-12">
+            <div class="box" id="notifications-box">
+                <div class="well">
+                    <h3>Updates</h3>
+                </div>
+                {% for notif in notifs %}
+                    <div class="box-item">{{notif.clarification_messages_message}}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-offset-1-12 col-6-12">
+            <div class="box" id="rules-box">
+                <div class="well">
+                    <h3>Instructions</h3>
+                </div>
+                <div class="box-item">
+                    For any query, doubts, suggessions or discrepencies contact via
+                    <ul>
+                        <li>Email: <a href="mailto:litcafe@felicity.iiit.ac.in" target="_blank">litcafe@felicity.iiit.ac.in</a></li>
+                        <li>Facebook Events page: <a href="" target="_blank">Literary Quiz @ Felicity'15</a></li>
+                    </ul>
+                </div>
+                <div class="box-item">
+                    <div id="rules-btn">Rules &nbsp;<span id="rules-arrow">▼</span></div>
+                    <ol id="rules">
+                        <li>
+                            There are 10 levels in all.
+                            Each question carries some points depending on its level.
+                        </li>
+                            Each wrong attempt on any question will have a penalty of 30 seconds, on that question.
+                        </li>
+                        <li>
+                            Tie in scores will be resolved, first by level, then by timestamp.
+                        </li>
+                        <li>
+                            Any attempt to play with the system would lead to <strong>disqualification</strong>.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $('#rules-btn').click(function(){
+                var $this = $(this);
+                if ($this.hasClass('opened')) {
+                    $('#rules').stop().slideUp(500);
+                    $this.removeClass('opened');
+                }
+                else {
+                    $('#rules').stop().slideDown(500);
+                    $this.addClass('opened');
+                }
+            });
+        });
+    </script>
+{% endblock %}

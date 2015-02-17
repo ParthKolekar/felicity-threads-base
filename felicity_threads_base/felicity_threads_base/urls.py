@@ -14,6 +14,6 @@ urlpatterns = patterns('',
     #url(r'^base/' , include('base.urls')),
     url(r'^contest/accounts/login' , 'django_cas.views.login'),
     url(r'^contest/accounts/logout' ,'django_cas.views.logout'),
-    url(r'^contest/code_da_circuit/' , include('code_da_circuit.urls')), 
+    url(r'^contest/lit_quiz/' , include('lit_quiz.urls')), 
 ) + static (settings.STATIC_URL , document_root = settings.STATIC_ROOT) + static (settings.MEDIA_URL , document_root = settings.MEDIA_ROOT)
 
