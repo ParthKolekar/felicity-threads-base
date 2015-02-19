@@ -275,7 +275,7 @@ class User(models.Model):
 
     # This is the highest level of questions that one can access.
     user_access_level = models.IntegerField(
-        default = 1000,
+        default = 1,
         editable = True,
     )
    
@@ -331,7 +331,66 @@ class User(models.Model):
         elif level == 10:
             self.user_level_10 += 1
             return self.user_level_10
-
+        elif level == 11:
+            self.user_level_11 += 1
+            return self.user_level_11
+        elif level == 12:
+            self.user_level_12 += 1
+            return self.user_level_12
+        elif level == 13:
+            self.user_level_13 += 1
+            return self.user_level_13
+        elif level == 14:
+            self.user_level_14 += 1
+            return self.user_level_14
+        elif level == 15:
+            self.user_level_15 += 1
+            return self.user_level_15
+        elif level == 16:
+            self.user_level_16 += 1
+            return self.user_level_16
+        elif level == 17:
+            self.user_level_17 += 1
+            return self.user_level_17
+        elif level == 18:
+            self.user_level_18 += 1
+            return self.user_level_18
+        elif level == 19:
+            self.user_level_19 += 1
+            return self.user_level_19
+        elif level == 20:
+            self.user_level_20 += 1
+            return self.user_level_20
+        elif level == 21:
+            self.user_level_21 += 1
+            return self.user_level_21
+        elif level == 22:
+            self.user_level_22 += 1
+            return self.user_level_22
+        elif level == 23:
+            self.user_level_23 += 1
+            return self.user_level_23
+        elif level == 24:
+            self.user_level_24 += 1
+            return self.user_level_24
+        elif level == 25:
+            self.user_level_25 += 1
+            return self.user_level_25
+        elif level == 26:
+            self.user_level_26 += 1
+            return self.user_level_26
+        elif level == 27:
+            self.user_level_27 += 1
+            return self.user_level_27
+        elif level == 28:
+            self.user_level_28 += 1
+            return self.user_level_28
+        elif level == 29:
+            self.user_level_29 += 1
+            return self.user_level_29
+        elif level == 30:
+            self.user_level_30 += 1
+            return self.user_level_30
 
     # flash message
     user_notification_flash = models.BooleanField(
@@ -375,6 +434,86 @@ class User(models.Model):
     )
 
     user_level_10 = models.IntegerField(
+        default = 0,
+    
+        )
+    user_level_11 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_12 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_13 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_14 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_15 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_16 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_17 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_18 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_19 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_20 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_21 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_22 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_23 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_24 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_25 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_26 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_27 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_28 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_29 = models.IntegerField(
+        default = 0,
+    )
+
+    user_level_30 = models.IntegerField(
         default = 0,
     )
 

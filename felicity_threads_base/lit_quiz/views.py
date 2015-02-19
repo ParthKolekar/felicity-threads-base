@@ -113,7 +113,7 @@ def submissions(request):
 def submit(request, level, id):
     context = RequestContext(request)
     user = User.objects.filter(user_username=request.user.username)[0]
-    if str(user.user_access_level) < level:
+    if int(user.user_access_level) < int(level):
         return render(request, 'base/error.html', {'error_code':1})
     #print request.method
     time_last = None
@@ -144,8 +144,8 @@ def submit(request, level, id):
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 print "Correct"
                 count = submission.submission_user.counter_inc(int(level))
-                if(count == 5):
-                    submission.submission_user.level_up()
+                                if count == 1:
+                                    submission.submission_user.level_up()
                 submission.submission_user.score_up(int(level)*100)
                 submission.submission_user.save()
             submission.save()

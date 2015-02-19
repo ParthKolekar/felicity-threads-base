@@ -5,77 +5,77 @@
 {% endblock %}
 {% block main_block %}
 <div id="question">
-	<div class="row">
-		{% if question_data != None %}
-			<div class="col-offset-1-12 col-10-12">
-				<h4>Level {{question_data.question_level}}</h4>
-				<h3>{{question_data.question_title}}</h3>
-				<hr/>
-				<p class="question-text">{{question_data.question_desc | safe}}</p>
-				{% if question_data.question_image != '' %}
-					<div class="question-image-wrapper">
-						<img class="question-image" src="/contest/media/{{question_data.question_image}}" />
-					</div>
-				{% endif %}
-			</div>
-			<div class="col-offset-2-12 col-8-12">
-				<hr/>
-			</div>
-			<div class="col-offset-3-12 col-6-12">
-				<form action="/contest/lit_quiz/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
-					{% csrf_token %}
-					<div class="row">
-						<div>
-							{% if question_data.question_upload_type == 'ST' %}
-							<input type="text" placeholder="Answer" name="answer_text" />
-							{% endif %}
-							{% if question_data.question_upload_type == 'FL' %}
-							<input type="file" placeholder="File" name="answer_file" />
-							{% endif %}
-							<input type="submit" value="Submit" class="btn btn-yellow" />
-						</div>
-					</div>
-				</form>
-			</div>
-		{% else %}
-			<div class="col-offset-1-12 col-10-12">
-				<p>{{'You don\'t have access to view this question, or the question doesn\'t exists.'}}</p>
-			</div>
-		{% endif %}
-	</div>
-	<hr />
-	<div class="comment-box row">
-		<div class="col-offset-1-12 col-10-12 row">
-			<h2 style="font-weight: normal;">Comments</h2>
-			<div class="col-9-12">
-				{% if question_comments != None %}
-					{% for comment in question_comments %}
-						<div class="comment row">
-							<div class="col-7-12 usernick">{{comment.comment_user.user_nick}}</div>
-							<div class="col-5-12 time">{{comment.comment_timestamp}} UTC</div>
-							<div class="col-11-12 comment-text"> {{comment.comment_message}} </div>
-						</div>
-					{% endfor %}
-				{% endif %}
-			</div>
-			<div class="commentform" style="margin-top: 30px;">
-				<form action="/contest/lit_quiz/comment_submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post">
-					{% csrf_token %}
-					<div class="row">
-						<div class="col-9-12">
-							<textarea placeholder="You can comment here..." name="comment_text" rows="2" ></textarea>
-						</div>
-						<div class="col-5-12">
-							<input type="submit" value="Comment" class="btn btn-blue" id="comment-btn"/>
-						</div>
-						<div class="col-11-12">
-							<br>
-							Your comment will appear only after admin's approval.
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        {% if question_data != None %}
+            <div class="col-offset-1-12 col-10-12">
+                <h4>Level {{question_data.question_level}}</h4>
+                <h3>{{question_data.question_title}}</h3>
+                <hr/>
+                <p class="question-text">{{question_data.question_desc | safe}}</p>
+                {% if question_data.question_image != '' %}
+                    <div class="question-image-wrapper">
+                        <img class="question-image" src="/contest/media/{{question_data.question_image}}" />
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-offset-2-12 col-8-12">
+                <hr/>
+            </div>
+            <div class="col-offset-3-12 col-6-12">
+                <form action="/contest/lit_quiz/submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div>
+                            {% if question_data.question_upload_type == 'ST' %}
+                            <input type="text" placeholder="Answer" name="answer_text" />
+                            {% endif %}
+                            {% if question_data.question_upload_type == 'FL' %}
+                            <input type="file" placeholder="File" name="answer_file" />
+                            {% endif %}
+                            <input type="submit" value="Submit" class="btn btn-blue" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="col-offset-1-12 col-10-12">
+                <p>{{'You don\'t have access to view this question, or the question doesn\'t exists.'}}</p>
+            </div>
+        {% endif %}
+    </div>
+    <hr />
+    <div class="comment-box row">
+        <div class="col-offset-1-12 col-10-12 row">
+            <h2 style="font-weight: normal;">Comments</h2>
+            <div class="col-9-12">
+                {% if question_comments != None %}
+                    {% for comment in question_comments %}
+                        <div class="comment row">
+                            <div class="col-7-12 usernick">{{comment.comment_user.user_nick}}</div>
+                            <div class="col-5-12 time">{{comment.comment_timestamp}} UTC</div>
+                            <div class="col-11-12 comment-text"> {{comment.comment_message}} </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="commentform" style="margin-top: 30px;">
+                <form action="/contest/lit_quiz/comment_submit/{{question_data.question_level}}/{{question_data.question_level_id}}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-9-12">
+                            <textarea placeholder="You can comment here..." name="comment_text" rows="2" ></textarea>
+                        </div>
+                        <div class="col-5-12">
+                            <input type="submit" value="Comment" class="btn btn-blue" id="comment-btn"/>
+                        </div>
+                        <div class="col-11-12">
+                            <br>
+                            Your comment will appear only after admin's approval.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

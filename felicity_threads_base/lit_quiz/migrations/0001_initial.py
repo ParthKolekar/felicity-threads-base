@@ -8,7 +8,7 @@ import base.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0003_auto_20150216_2237'),
+        ('base', '0001_initial'),
     ]
 
     operations = [

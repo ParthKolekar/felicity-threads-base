@@ -52,6 +52,8 @@ def problems(request):
         if request.user.is_staff:
             query_result = Question.objects.all().order_by('question_level_id').order_by('question_level')
         profile = User.objects.filter(user_username = request.user.username)[0]
+        query_result = Question.objects.filter(question_level__lt=profile.user_access_level+1).order_by('question_level_id').order_by('question_level')
+        profile = User.objects.filter(user_username = request.user.username)[0]
         success_sub = Submission.objects.filter(submission_user__user_username = profile.user_username)
         for question in query_result:
             acc = success_sub.filter(submission_question=question).filter(submission_state='AC').order_by('submission_score')
@@ -96,19 +98,10 @@ def accepted(request, uid):
         problem_data.append([question.question_level, question.question_level_id, question.question_title, sta])
     return render(request, 'code_da_circuit/accepted.html', {'problem_data':problem_data, 'user_nick':profile_curr.user_nick, 'look_nick': profile.user_nick})
 
-
+@login_required
 def question(request, level, id):
-    question_comments = None
-    user_nick = None
-    if request.user.is_authenticated():
-        profile = User.objects.filter(user_username=request.user.username)[0]
-        user_nick = profile.user_nick
-        if request.user.is_staff == 0:
-            if int(level) != 1:
-                return render(request, 'base/error.html', {'error_code':2, 'user_nick':user_nick})
-    else:
-        if int(level) != 1:
-            return render(request, 'base/error.html', {'error_code':2, 'user_nick':user_nick})        
+    profile = User.objects.filter(user_username=request.user.username)[0]
+    user_nick = profile.user_nick
     question_data = Question.objects.filter(question_level=level).filter(question_level_id=id)
     if len(question_data):
         question_comments = Comment.objects.filter(comment_question=question_data).filter(comment_is_approved=True).order_by('comment_timestamp')
@@ -137,13 +130,13 @@ def submit(request, level, id):
     time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
-    time_limit = datetime.timedelta(0, 1)
+    time_limit = datetime.timedelta(0, 60)
     print time_last, datetime.datetime.now(utc)
     if ((time_last is None or time_last + time_limit <= datetime.datetime.now(utc))):
         ans_file = request.FILES.get("answer_file", None)
         ans_text = request.POST.get("answer_text")
 
-	if (ans_file == None and ans_text == ''):
+        if (ans_file == None and ans_text == ''):
             return render(request, 'base/error.html', {'error_code':9})
 
         if not ans_text: #FILE Type Question.
