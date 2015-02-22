@@ -1,6 +1,13 @@
-from django.db import models
-from base.models import Question as Q, Submission as S, Comment as C, User as U
 import datetime
+
+from django.db import models
+
+from base.models import Comment as C
+from base.models import Question as Q
+from base.models import Submission as S
+from base.models import User as U
+
+
 # Create your models here.
 
 def submission_code_storage_path(instance, filename):

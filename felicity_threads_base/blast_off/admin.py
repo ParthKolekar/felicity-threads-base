@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from blast_off.models import *
 
 # Register your models here.

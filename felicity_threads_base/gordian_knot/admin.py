@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from gordian_knot.models import *
 
 # Register your models here.

@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, url
-
 from django.conf import settings
+from django.conf.urls import patterns, url
 from django.conf.urls.static import static
+
 from code_da_circuit import views
 
 urlpatterns = patterns('',

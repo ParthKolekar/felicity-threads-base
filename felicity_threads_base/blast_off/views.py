@@ -1,13 +1,16 @@
-from django.shortcuts import render
+import datetime
+import logging
+
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from base.models import User, ClarificationMessages
-from blast_off.models import Question, Submission, Comment
-from django.shortcuts import render_to_response
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
+from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-import logging
-import datetime
+
+from base.models import ClarificationMessages, User
+from blast_off.models import Comment, Question, Submission
+
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):

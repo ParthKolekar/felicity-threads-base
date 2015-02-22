@@ -1,18 +1,16 @@
-from django.shortcuts import render
+import datetime
+import logging
 
 from django.contrib.auth.decorators import login_required
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 
-from base.models import User, ClarificationMessages
-from tle.models import Question, Submission, Comment
-
+from base.models import ClarificationMessages, User
+from tle.models import Comment, Question, Submission
 from tle.tasks import checker_queue
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-
-import logging
-import datetime
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):
@@ -143,7 +141,7 @@ def submit(request, level, id):
         ans_file = request.FILES.get("answer_file", None)
         ans_text = request.POST.get("answer_text")
 
-	if (ans_file == None and ans_text == ''):
+    if (ans_file == None and ans_text == ''):
             return render(request, 'base/error.html', {'error_code':9})
 
         if not ans_text: #FILE Type Question.

@@ -1,15 +1,18 @@
-from django.shortcuts import render
+import datetime
+import logging
+
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
-from base.models import User, ClarificationMessages
-from break_in.models import Question, Submission, Comment, Team, TeamUser
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.db import IntegrityError
-import logging
-import datetime
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_protect
+
+from base.models import ClarificationMessages, User
+from break_in.models import Comment, Question, Submission, Team, TeamUser
+
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):

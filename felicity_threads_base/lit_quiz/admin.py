@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from lit_quiz.models import *
 
 # Register your models here.

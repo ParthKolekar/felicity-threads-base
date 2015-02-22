@@ -1,10 +1,14 @@
-from django.http import HttpResponseForbidden, HttpResponseRedirect 
+import datetime
+
 from django.conf import settings
 from django.contrib.auth.views import login, logout
-from django_cas.views import login as cas_login, logout as cas_logout
-import datetime
-from base.models import User
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render
+
+from base.models import User
+from django_cas.views import login as cas_login
+from django_cas.views import logout as cas_logout
+
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):

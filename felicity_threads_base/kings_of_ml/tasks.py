@@ -1,14 +1,15 @@
 from __future__ import absolute_import
 
-from celery import task,shared_task
-from felicity_threads_base.celery import app
-from felicity_threads_base.settings import MEDIA_ROOT
-
-from kings_of_ml.models import Question, Submission
-from base.models import User
-
 import imp
 import os.path
+
+from celery import shared_task, task
+
+from base.models import User
+from felicity_threads_base.celery import app
+from felicity_threads_base.settings import MEDIA_ROOT
+from kings_of_ml.models import Question, Submission
+
 
 @shared_task
 def test(param):

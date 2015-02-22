@@ -1,16 +1,16 @@
 {% extends "base/layout.html" %}
-{% block title_block %}Error | Lit Cafe, Felicity {% endblock %}
+{% block title_block %}Error | Animanga Kuizu, Felicity LitCafe {% endblock %}
 {% block pagesubtitle %}| Error{% endblock %}
 {% block main_block %}
     <div class="row">
         <div class="col-offset-2-12 col-8-12">
             {% if error_code == 1 %}
                 <h3>You do not have access to this level. Clear all previous levels.</h3>
-                <a href="/contest/lit_quiz/problems" class="btn btn-blue">Go to Problems</a>
+                <a href="/contest/animanga_kuizu/problems" class="btn btn-blue">Go to Problems</a>
             {% elif error_code == 2 %}
                 <h1>404</h1>
                 <h3>Problem does not exist.</h3>
-                <a href="/contest/lit_quiz/problems" class="btn btn-blue">Go to Problems</a>
+                <a href="/contest/animanga_kuizu/problems" class="btn btn-blue">Go to Problems</a>
             {% elif error_code == 3 %}
                 <h3>Answer too large<h3>
                 <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>

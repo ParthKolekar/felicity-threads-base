@@ -3,8 +3,9 @@
 """
 
 
-from django_cas.backends import CASBackend
 from base.models import User as Profile
+from django_cas.backends import CASBackend
+
 
 class PopulatedCASBackend(CASBackend):
     """

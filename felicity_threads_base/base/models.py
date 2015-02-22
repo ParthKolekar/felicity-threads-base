@@ -2,8 +2,12 @@
     Module DocString
 """
 
+import binascii
+import datetime
+import os
+
 from django.db import models
-import datetime, os, binascii
+
 
 def question_image_filepath(instance, filename):
     """

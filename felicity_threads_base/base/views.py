@@ -1,10 +1,10 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+
 # Create your views here.
 from base.models import Question, Submission, User
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect
 
 SUBMISSION_STATE_CHOICES = { 'WA': 'Wrong Answer', 'AC': 'Accepted', 'PR': 'Processing' }
 

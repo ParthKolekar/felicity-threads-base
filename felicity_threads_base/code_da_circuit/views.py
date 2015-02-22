@@ -1,18 +1,16 @@
-from django.shortcuts import render
+import datetime
+import logging
 
 from django.contrib.auth.decorators import login_required
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 
-from base.models import User, ClarificationMessages
-from code_da_circuit.models import Question, Submission, Comment
-
+from base.models import ClarificationMessages, User
+from code_da_circuit.models import Comment, Question, Submission
 from code_da_circuit.tasks import checker_queue
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-
-import logging
-import datetime
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):

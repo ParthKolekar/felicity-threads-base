@@ -1,11 +1,11 @@
-from django.conf.urls import patterns, url
-
 from django.conf import settings
+from django.conf.urls import patterns, url
 from django.conf.urls.static import static
+
 from kings_of_ml import views
 
 urlpatterns = patterns('',
-	url(r'^$' , views.index, name='index'),
+    url(r'^$' , views.index, name='index'),
     url(r'^problems$', views.problems, name='problems'),
     #url(r'^accepted/(.*)$', views.accepted, name='accepted'),
     #url(r'^submissions$', views.submissions, name='submissions'),

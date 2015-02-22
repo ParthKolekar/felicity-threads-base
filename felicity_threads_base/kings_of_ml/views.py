@@ -1,18 +1,16 @@
-from django.shortcuts import render
+import datetime
+import logging
 
 from django.contrib.auth.decorators import login_required
+from django.http import (HttpResponse, HttpResponseForbidden,
+                         HttpResponseRedirect)
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 
-from base.models import User, ClarificationMessages
-from kings_of_ml.models import Question, Submission, Comment
-
+from base.models import ClarificationMessages, User
+from kings_of_ml.models import Comment, Question, Submission
 from kings_of_ml.tasks import checker_queue
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-
-import logging
-import datetime
 
 class UTC(datetime.tzinfo):
     def utcoffset(self, dt):
@@ -139,7 +137,7 @@ def submit(request, level, id):
         code_file = request.FILES.get("code_file", None)
         ans_text = request.POST.get("answer_text")
 
-	if (code_file == None or ans_file == None):
+    if (code_file == None or ans_file == None):
             # Submit both files
             return render(request, 'base/error.html', {'error_code':9})
 

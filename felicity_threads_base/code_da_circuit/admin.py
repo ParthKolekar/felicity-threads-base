@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from code_da_circuit.models import *
 
 # Register your models here.

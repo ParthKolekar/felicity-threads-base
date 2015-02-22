@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from tle.models import *
 
 # Register your models here.
