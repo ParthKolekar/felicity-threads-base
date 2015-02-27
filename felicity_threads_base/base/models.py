@@ -151,7 +151,7 @@ class Question(models.Model):
         abstract = True
 
     def __str__(self):
-        return str(self.question_title)
+        return " ".join([str(self.question_level), str(self.question_level_id) , str(self.question_title)])
     # Sets the question level and the identifier inside the level.
     # Level can also be designated as question type.
     # Example - Question 4 of Level 3.

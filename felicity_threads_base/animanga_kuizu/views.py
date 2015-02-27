@@ -121,13 +121,15 @@ def submit(request, level, id):
     time_last_query = Submission.objects.filter(submission_user__user_username=request.user.username).filter(submission_question__question_level=level).filter(submission_question__question_level_id=id).filter(submission_state='WA').order_by('submission_timestamp').last()
     if time_last_query:
         time_last = time_last_query.submission_timestamp
-    time_limit = datetime.timedelta(0, 15)
+    time_limit = datetime.timedelta(0, 5)
     if(time_last is None or time_last + time_limit <= datetime.datetime.now(utc)):
         ans_file = request.FILES.get("answer_file")
         ans_text = request.POST.get("answer_text")
         if ans_text and len(ans_text) > 255:
             # return HttpResponse(content = 'String too large.', status=413)
             return render(request, 'base/error.html', {'error_code':3})
+                if not ans_text:
+                    return render(request, 'base/error.html', {'error_code':3})
         question = Question.objects.filter(question_level=level).filter(question_level_id=id)
         if len(question):
             question = question[0]
@@ -140,9 +142,8 @@ def submit(request, level, id):
                 level_acc_question_ids.add(subs.submission_question.question_level_id)
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):
                 count = submission.submission_user.counter_inc(int(level))
-                                if count == 1:
-                                    submission.submission_user.level_up()
                                 if count == 3:
+                                    submission.submission_user.level_up()
                                     submission.submission_user.score_up(int(level) * 25)
                                 if count == 5:
                                     submission.submission_user.score_up(int(level) * 50)
