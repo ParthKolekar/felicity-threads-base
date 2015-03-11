@@ -175,7 +175,7 @@ def submit(request, level, id):
             # If you change here, change there too. Don't be an ass.
             if question.question_upload_type == 'FL':
                 checker_queue.delay(submission.id,bool_level_up)
-                return HttpResponseRedirect('/contest/tle/problems')
+                return HttpResponseRedirect('/contest/tle/submissions')
 
             # the level up and the 'AC', 'WA' rules here.
             if(ans == 'AC' and int(level) <= int(submission.submission_user.user_access_level) and int(id) not in level_acc_question_ids):

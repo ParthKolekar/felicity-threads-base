@@ -531,7 +531,7 @@ class Submission(models.Model):
         abstract = True
 
     def __str__(self):
-        return "    ".join([str(self.submission_question.question_title), str(self.submission_user.user_nick)])
+        return "    ".join([str(self.submission_score), str(self.submission_question.question_title), str(self.submission_user.user_nick)])
 
     submission_user = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_related")
 

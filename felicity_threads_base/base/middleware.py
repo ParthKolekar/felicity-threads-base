@@ -26,6 +26,7 @@ class RestrictAccessTillTime(object):
         pass
 
     def process_view(self, request, view_func, view_args, view_kwargs):
+        return None
         if view_func == login or view_func == logout or view_func == cas_login or view_func == cas_logout:
             return None
         time_now = datetime.datetime.now(utc)

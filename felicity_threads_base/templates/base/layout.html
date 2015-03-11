@@ -11,7 +11,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     {% block head_block %}{% endblock %}
     <script>window.jQuery || document.write('<script src="http://felicity.iiit.ac.in/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-    <meta name="description" content="Animanga Kuizu, LitCafe @ IIIT-H">
+    <meta name="description" content="TLE @ IIIT-H">
     <meta name="keywords" content="felicity , threads, tle , contest, WATASHI , WA , HAPPY">
 </head>
 <body>
@@ -32,6 +32,9 @@
             <ul class="box">
                 <li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
                 <li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
+                {% if user_nick != None %}
+                <li><a href="/contest/tle/submissions" id="problems-link">Submissions</a></li>
+                {% endif %}
                 <li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
             </ul>
         </div>
