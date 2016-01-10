@@ -3,33 +3,33 @@
 {% block pagesubtitle %}| Problems{% endblock %}
 {% block main_block %}
 <div class="container" id="problems-list">
-    <div id="problems-table-wrapper" class="box">
-        <table border="0">
-            <thead>
-                <tr>
-                    <th>Points</th>
-                    <th>Title</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for problem in problem_data %}
-                    <tr>
-                        <td>{{problem.0}}</td>
+	<div id="problems-table-wrapper" class="box">
+		<table border="0">
+			<thead>
+				<tr>
+					<th>Points</th>
+					<th>Title</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for problem in problem_data %}
+					<tr>
+						<td>{{problem.0}}</td>
                         <td style="display: none;">{{problem.1}}</td>
-                        <td><a href="/contest/break_in/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
-                        {% if problem.3 == "Accepted" %}
-                            <td><span class="label correct">{{problem.3}}</span></td>
-                        {% elif problem.3 == "Wrong Answer" %}
-                            <td class="problem-title"><span class="label wrong">{{problem.3}}</span></td>
-                        {% else %}
-                            <td><span class="label unattempted">{{problem.3}}</span></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+						<td><a href="/contest/break_in/question/{{problem.0}}/{{problem.1}}">{{problem.2}}</a></td>
+						{% if problem.3 == "Accepted" %}
+							<td><span class="label correct">{{problem.3}}</span></td>
+						{% elif problem.3 == "Wrong Answer" %}
+							<td class="problem-title"><span class="label wrong">{{problem.3}}</span></td>
+						{% else %}
+							<td><span class="label unattempted">{{problem.3}}</span></td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
 <script>
 $(function () {

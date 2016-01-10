@@ -9,11 +9,11 @@ from base.models import User as U
 # Create your models here.
 
 class Question(Q):
-    pass
+	pass
 
 class Submission(S):
-    submission_question = models.ForeignKey(Question)
+	submission_question = models.ForeignKey(Question)
 
 
 class Comment(C):
-    comment_question = models.ForeignKey(Question)
+	comment_question = models.ForeignKey(Question)

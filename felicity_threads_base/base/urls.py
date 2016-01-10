@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from base import views
 
 urlpatterns = patterns('',
-    url(r'^$' , views.index, name='index'),
+	url(r'^$' , views.index, name='index'),
     url(r'^problems$', views.problems, name='problems'),
     url(r'^submissions$', views.submissions, name='submissions'),
 

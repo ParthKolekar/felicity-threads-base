@@ -141,7 +141,7 @@ def submit(request, level, id):
         ans_file = request.FILES.get("answer_file", None)
         ans_text = request.POST.get("answer_text")
 
-    if (ans_file == None and ans_text == ''):
+	if (ans_file == None and ans_text == ''):
             return render(request, 'base/error.html', {'error_code':9})
 
         if not ans_text: #FILE Type Question.

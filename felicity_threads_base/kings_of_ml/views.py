@@ -137,7 +137,7 @@ def submit(request, level, id):
         code_file = request.FILES.get("code_file", None)
         ans_text = request.POST.get("answer_text")
 
-    if (code_file == None or ans_file == None):
+	if (code_file == None or ans_file == None):
             # Submit both files
             return render(request, 'base/error.html', {'error_code':9})
 

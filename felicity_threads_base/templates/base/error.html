@@ -2,35 +2,35 @@
 {% block title_block %}Error | TLE, Felicity Threads {% endblock %}
 {% block pagesubtitle %}| Error{% endblock %}
 {% block main_block %}
-    <div class="row">
-        <div class="col-offset-2-12 col-8-12">
-            {% if error_code == 1 %}
-                <h3>You do not have access to this level. Clear all previous levels.</h3>
-                <a href="/contest/tle/problems" class="btn btn-blue">Go to Problems</a>
-            {% elif error_code == 2 %}
-                <h1>404</h1>
-                <h3>Problem does not exist.</h3>
-                <a href="/contest/tle/problems" class="btn btn-blue">Go to Problems</a>
-            {% elif error_code == 3 %}
-                <h3>Answer length mismatch.<h3>
-                <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
-            {% elif error_code == 4 %}
-                <h3>Submission Limits Exceeded. Try again after 5s.<h3>
-                <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
-            {% elif error_code == 5 %}
-                <h3>Can not comment before 30 seconds after previous comment.<h3>
-                <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
-            {% elif error_code == 6 %}
-                <h3> Contest has ended </h3>
-                <a href="javascript:void(0)" onclick="window.location.reload()" class="btn btn-blue">Refresh</a>
-            {% elif error_code == 7 %}
-                <h3> Request Invalidated. </h3>
-                <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back To Question</a>
-            {% elif error_code == 9 %}
-                <h3> Submit the code with proper extensions.<h3>
-                <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back To Question</a>
-            {% endif %}
-            
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-offset-2-12 col-8-12">
+			{% if error_code == 1 %}
+				<h3>You do not have access to this level. Clear all previous levels.</h3>
+				<a href="/contest/tle/problems" class="btn btn-blue">Go to Problems</a>
+			{% elif error_code == 2 %}
+				<h1>404</h1>
+				<h3>Problem does not exist.</h3>
+				<a href="/contest/tle/problems" class="btn btn-blue">Go to Problems</a>
+			{% elif error_code == 3 %}
+				<h3>Answer length mismatch.<h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
+			{% elif error_code == 4 %}
+				<h3>Submission Limits Exceeded. Try again after 5s.<h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
+			{% elif error_code == 5 %}
+				<h3>Can not comment before 30 seconds after previous comment.<h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back to Question</a>
+			{% elif error_code == 6 %}
+				<h3> Contest has ended </h3>
+				<a href="javascript:void(0)" onclick="window.location.reload()" class="btn btn-blue">Refresh</a>
+			{% elif error_code == 7 %}
+				<h3> Request Invalidated. </h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back To Question</a>
+			{% elif error_code == 9 %}
+				<h3> Submit the code with proper extensions.<h3>
+				<a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-blue">Go Back To Question</a>
+			{% endif %}
+			
+		</div>
+	</div>
 {% endblock %}

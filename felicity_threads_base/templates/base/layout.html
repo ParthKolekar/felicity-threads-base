@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title_block %}{% endblock %}</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://felicity.iiit.ac.in/css/normalize.css">
-    <link rel="stylesheet" href="http://felicity.iiit.ac.in/css/base.css"/>
-    <link rel="stylesheet" href="/contest/static/css/portals.css"/>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    {% block head_block %}{% endblock %}
-    <script>window.jQuery || document.write('<script src="http://felicity.iiit.ac.in/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-    <meta name="description" content="TLE @ IIIT-H">
-    <meta name="keywords" content="felicity , threads, tle , contest, WATASHI , WA , HAPPY">
+	<title>{% block title_block %}{% endblock %}</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://felicity.iiit.ac.in/css/normalize.css">
+	<link rel="stylesheet" href="http://felicity.iiit.ac.in/css/base.css"/>
+	<link rel="stylesheet" href="/contest/static/css/portals.css"/>
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	{% block head_block %}{% endblock %}
+	<script>window.jQuery || document.write('<script src="http://felicity.iiit.ac.in/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+	<meta name="description" content="TLE @ IIIT-H">
+	<meta name="keywords" content="felicity , threads, tle , contest, WATASHI , WA , HAPPY">
 </head>
 <body>
-    <div class="navbar">
-        <a href="http://felicity.iiit.ac.in/home" class="logo-text navbar-title">felicity<sup>15</sup></a>
-        <ul>
-            <li><a href="http://felicity.iiit.ac.in/threads/">&lt; Threads</a></li>
-            {% if user_nick != None %}
-            <li>Hello, {{user_nick}}</li>
-            <li><a href="/contest/accounts/logout">Log out</a></li>
-            {% else %}
-            <li><a href="/contest/accounts/login">Login</a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="wrapper">
-        <div class="sub-navbar">
-            <ul class="box">
-                <li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
-                <li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
+	<div class="navbar">
+		<a href="http://felicity.iiit.ac.in/home" class="logo-text navbar-title">felicity<sup>15</sup></a>
+		<ul>
+			<li><a href="http://felicity.iiit.ac.in/threads/">&lt; Threads</a></li>
+			{% if user_nick != None %}
+			<li>Hello, {{user_nick}}</li>
+			<li><a href="/contest/accounts/logout">Log out</a></li>
+			{% else %}
+			<li><a href="/contest/accounts/login">Login</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="wrapper">
+		<div class="sub-navbar">
+			<ul class="box">
+				<li><a href="/contest/tle" id="dashboard-link">Dashboard</a></li>
+				<li><a href="/contest/tle/problems" id="problems-link">Problems</a></li>
                 {% if user_nick != None %}
-                <li><a href="/contest/tle/submissions" id="problems-link">Submissions</a></li>
+				<li><a href="/contest/tle/submissions" id="problems-link">Submissions</a></li>
                 {% endif %}
-                <li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
-            </ul>
-        </div>
-        <div class="container">
-            <h1>
-                TLE {% block pagesubtitle %}{% endblock %}
-            </h1>
-            <p class="page-sub-title">
-                Dare to code beyond the norms
-            </p>
-            {% block main_block %}
-            {% endblock %}
-        </div>
-    </div>
+				<li><a href="/contest/tle/scoreboard" id="scoreboard-link">Scoreboard</a></li>
+			</ul>
+		</div>
+		<div class="container">
+			<h1>
+				TLE {% block pagesubtitle %}{% endblock %}
+			</h1>
+			<p class="page-sub-title">
+				Dare to code beyond the norms
+			</p>
+			{% block main_block %}
+			{% endblock %}
+		</div>
+	</div>
 
-    <script>
-    $(function(){
-        $('.wrapper').css('min-width', ($('.sub-navbar .box').outerWidth()+10)+'px');
-        var title = $('title').text().toLowerCase();
-        if (title.indexOf('dashboard') !== -1) {
-            $('#dashboard-link').addClass('active');
-        }
-        else if (title.indexOf('problem') !== -1) {
-            $('#problems-link').addClass('active');
-        }
-        else if (title.indexOf('score') !== -1) {
-            $('#scoreboard-link').addClass('active');
-        }
-        else if (title.indexOf('submissions') !== -1) {
-            $('#submissions-link').addClass('active');
-        }
-    });
-    </script>
-    <script>
+	<script>
+	$(function(){
+		$('.wrapper').css('min-width', ($('.sub-navbar .box').outerWidth()+10)+'px');
+		var title = $('title').text().toLowerCase();
+		if (title.indexOf('dashboard') !== -1) {
+			$('#dashboard-link').addClass('active');
+		}
+		else if (title.indexOf('problem') !== -1) {
+			$('#problems-link').addClass('active');
+		}
+		else if (title.indexOf('score') !== -1) {
+			$('#scoreboard-link').addClass('active');
+		}
+		else if (title.indexOf('submissions') !== -1) {
+			$('#submissions-link').addClass('active');
+		}
+	});
+	</script>
+	<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-57607777-1', 'auto');
   ga('send', 'pageview');
-    </script>
-    <div class="footer">
-        <p>&copy; Felicity 2014-2015</p>
-    </div>
+	</script>
+	<div class="footer">
+		<p>&copy; Felicity 2014-2015</p>
+	</div>
 </body>
 </html>

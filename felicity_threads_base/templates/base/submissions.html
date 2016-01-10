@@ -1,8 +1,8 @@
 <table border=1>
-    <tr><th>Submission ID</th><th>Question Title</th><th>Timestamp</th><th>Verdict</th><th>Score</th></tr>
-    {% for submission in user_submissions %}
-        <tr>
-        <td>{{submission.id}}</td><td>{{submission.submission_question.question_title}}</td><td>{{submission.submission_timestamp}}</td><td>{{submission.submission_state}}</td><td>{{submission.submission_score}}</td>
-        </tr>
-    {% endfor %}
+	<tr><th>Submission ID</th><th>Question Title</th><th>Timestamp</th><th>Verdict</th><th>Score</th></tr>
+	{% for submission in user_submissions %}
+		<tr>
+		<td>{{submission.id}}</td><td>{{submission.submission_question.question_title}}</td><td>{{submission.submission_timestamp}}</td><td>{{submission.submission_state}}</td><td>{{submission.submission_score}}</td>
+		</tr>
+	{% endfor %}
 </table>
